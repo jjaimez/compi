@@ -1,0 +1,386 @@
+
+/* ----------------------Preliminary Declarations Section--------------------*/
+   
+/* Import the class java_cup.runtime.*  */
+package parser;
+import java_cup.runtime.*;
+import java.lang.*;
+import java.util.*;
+import ir.ast.*;
+import error.*;
+import ir.*;
+import ir.semcheck.*;
+import tabladesimbolos.*;
+
+   
+/* Parser code to change the way the parser reports errors (include
+   line and column number of the error). */
+action code{:
+	/*atributos globales*/
+	TablaDeSimbolos tds = new TablaDeSimbolos();
+	Type tipoVar;
+	LinkedList<DescriptorSimple> params;
+	int OffsetParametros = 8;
+	int nivel = 0;
+
+		private void putParameters(){
+		if (params!=null){
+			for (DescriptorSimple d : params){
+				tds.top().put(d.getNombre(),d);
+			}
+		}
+		}
+
+		public void imprimir(){
+			for(int i = 0; i < tds.getPila().size(); i++){
+				System.out.println("AMBIENTE/NIVEL: "+i);
+            	Ambiente a = tds.getPila().get(i);
+            	for(Descriptor d : a.values()){
+               		System.out.println(d.getTipo().toString()+" "+d.getNombre()+" "+d.isGlob());
+            	}
+			}
+            System.out.println("");
+            System.out.println("");
+            System.out.println("");
+        
+    }
+/*
+    public int searchLevel(String id){
+        for(int i = tds.getPila().size()-1; i >= 0; i--){
+            Ambiente a = tds.getPila().get(i);
+            Descriptor d = a.get(id);
+            if(d != null){
+                return a.getLevel();
+            }
+        }
+        return -1;
+    }*/
+
+		
+:};
+parser code {:
+    
+	LinkedList<Block> asts = new LinkedList<Block>();
+	
+    /* Change the method report_error so it will display the line and
+       column of where the error occurred in the input as well as the
+       reason for the error which is passed into the method in the
+       String 'message'. */
+    public void report_error(String message, int line, int col) {
+   
+        StringBuilder m = new StringBuilder("Error");
+        if (line >= 0) {                
+        	m.append(" in line "+(line+1));   
+            if (col >= 0)
+            	m.append(", column "+(col+1));
+            }
+        m.append(" : "+message);
+        System.err.println(m);
+    }
+   
+    public void report_fatal_error(String message, int line, int col) {
+        report_error(message, line, col);
+        System.exit(1);
+    }
+
+	
+	public LinkedList<Block> getASTs(){
+		return asts;
+	}
+
+	TablaDeSimbolos t = new TablaDeSimbolos();
+
+	public TablaDeSimbolos getTds(){
+		return t;
+	}
+:};
+   
+
+   
+/* ------------Declaration of Terminals and Non Terminals Section----------- */
+   
+/* Terminals (tokens returned by the scanner).*/
+
+/*LITERALES*/
+terminal	Integer  INT_LITERAL; 
+terminal	Float  FLOAT_LITERAL;
+terminal	String  STRING_LITERAL;
+/*OPERADORES*/
+terminal    PLUS, MINUS, TIMES, DIVIDE, MOD, AND, OR, NOT, EQ, NOTEQ, GT, LT, EQEQ, LTEQ, GTEQ, PLUSEQ, MINUSEQ;
+terminal UMINUS;
+/*SEPARADORES*/
+terminal	SEMI,COMMA, LPAREN, RPAREN, LKEY, RKEY, LBRACKET, RBRACKET;	
+/*PALABRAS RESERVADAS*/
+terminal	BOOLEAN, BREAK, CLASS, CONTINUE, ELSE, IF, FOR, WHILE, FLOAT, INT, RETURN, VOID, EXTERNINVK;
+terminal	Boolean TRUE;
+terminal	Boolean FALSE;
+/*IDENTIFICADORES*/
+terminal	String IDENTIFIER;
+   
+/* Non terminals used in the grammar section.*/
+non terminal       program, decl, field_decl,  method_decl, externinvk_arg, id_sequence;
+non terminal LinkedList<Object> externinvk_arg_sequence;
+non terminal LinkedList<Expression> expr_sequence;
+non terminal LinkedList<DescriptorSimple> parameters ;
+non terminal LinkedList<Statement>  statement_decl;
+non terminal Type type;
+non terminal MethodCall method_call;
+non terminal Location location; 
+non terminal VarLocation location_decl, method;
+non terminal Expression expr;
+non terminal Extern extern;
+non terminal Statement statement;
+non terminal Block block, block_content ;
+non terminal String id;
+ 
+/*operadores*/
+non terminal	AssignOpType assign_op;
+/*literales*/
+non terminal 	Literal literal;
+non terminal 	IntLiteral int_literal;
+non terminal 	BoolLiteral bool_literal;
+non terminal 	FloatLiteral float_literal;
+non terminal 	String string_literal;
+
+   
+
+/* -------------Precedence and Associatively of Terminals Section----------- */
+
+precedence left OR;
+precedence left AND;
+precedence nonassoc LT, GT, LTEQ, GTEQ, NOTEQ, EQEQ;
+precedence left PLUS, MINUS;   
+precedence left TIMES, DIVIDE, MOD;
+precedence right UMINUS;
+
+/* ----------------------------Grammar Section-------------------- */
+   
+   
+   program ::= CLASS id LKEY {: tds.push(new Ambiente()); ;parser.t=tds.clone();:} decl  RKEY {: parser.t=tds.clone();tds.pop();:}
+			   |CLASS id LKEY RKEY;
+
+   decl ::= field_decl
+			| method_decl
+			| field_decl method_decl;
+
+
+   field_decl ::= type id_sequence	SEMI
+				 | field_decl type id_sequence SEMI;
+
+   id_sequence ::= location_decl:l {: tds.top().put(l.getId(),l.getDesc()) ;:}
+				| id_sequence COMMA location_decl:l {: tds.top().put(l.getId(),l.getDesc()) ;:};
+
+
+   location_decl ::= id:i {: 
+						if (tds.top().get(i)==null){
+								if(nivel == 0){
+									RESULT = new VarLocation(i,new DescriptorSimple(i,tipoVar,true),null,ileft,iright);
+								}else{
+									RESULT = new VarLocation(i,new DescriptorSimple(i,tipoVar,false),null,ileft,iright);
+								}		
+							}else{
+								parser.report_fatal_error("Variable redeclarada",ileft,iright);}:}
+				| id:i LBRACKET int_literal:il RBRACKET {: 
+						if (tds.top().get(i)==null){
+								if (nivel == 0)
+									RESULT = new VarLocation(i,new DescriptorArreglo(i,tipoVar,il.getValue(),true),null,ileft,iright);
+								else
+									RESULT = new VarLocation(i,new DescriptorArreglo(i,tipoVar,il.getValue(),false),null,ileft,iright);
+							}else
+								parser.report_fatal_error("Variable redeclarada",ileft,iright);:} ;
+	
+
+   method_decl ::= method:m {: tds.top().put(m.getId(),m.getDesc()) ;Descriptor.setOffsetCorriente(0);OffsetParametros = 8;:}
+					| method_decl:md method:m {: tds.top().put(m.getId(),m.getDesc()) ;Descriptor.setOffsetCorriente(0);OffsetParametros = 8;:};
+
+   method	 ::= type:t id:i {DescriptorFuncion d = new DescriptorFuncion(i,t,new LinkedList<DescriptorSimple>());} LPAREN RPAREN block:b {: b.setOffSetMax(Descriptor.getOffsetCorriente());b.setMethodName(i);					    
+						if (tds.top().get(i)==null){
+								parser.asts.add(b);
+								RESULT = new VarLocation(i,b,d,ileft,iright) ;
+							}
+							else
+								parser.report_fatal_error("Metodo redeclarado",ileft,iright); :}
+				    |VOID id:i {DescriptorFuncion d = new DescriptorFuncion(i,Type.VOID,new LinkedList<DescriptorSimple>());}LPAREN RPAREN block:b {: b.setOffSetMax(Descriptor.getOffsetCorriente());b.setMethodName(i);    
+						if (tds.top().get(i)==null){
+								parser.asts.add(b);
+								RESULT = new VarLocation(i,b,d,ileft,iright) ;
+							}
+							else 
+								parser.report_fatal_error("Metodo redeclarado",ileft,iright); :} 
+					| VOID id:i  LPAREN parameters:p  {:params = p;:} RPAREN {DescriptorFuncion d = new DescriptorFuncion(i,Type.VOID,p;} block:b {:  b.setOffSetMax(Descriptor.getOffsetCorriente());b.setMethodName(i); 
+						if (tds.top().get(i)==null){
+								parser.asts.add(b);
+								RESULT = new VarLocation(i,b,d,ileft,iright) ;
+							}
+							else
+								parser.report_fatal_error("Metodo redeclarado",ileft,iright);
+						params = null; :}  
+					| type:t id:i LPAREN parameters:p {:params = p;:} RPAREN {DescriptorFuncion d = new DescriptorFuncion(i,Type.VOID,new LinkedList<DescriptorSimple>());} block:b {: b.setOffSetMax(Descriptor.getOffsetCorriente());b.setMethodName(i); 
+						if (tds.top().get(i)==null){
+								parser.asts.add(b);
+								RESULT = new VarLocation(i,b,new DescriptorFuncion(i,t,p),ileft,iright) ;
+							}
+							else
+								parser.report_fatal_error("Metodo redeclarado",ileft,iright);
+						params = null; :}  ;
+
+   parameters ::= type:t id:i {: LinkedList<DescriptorSimple> l = new LinkedList<DescriptorSimple>() ;
+   								DescriptorSimple desc = new DescriptorSimple(i,t);
+   								desc.setOffset(OffsetParametros);
+								l.add(desc);
+								OffsetParametros = OffsetParametros + 4;
+								RESULT = l; :}
+				| parameters:p COMMA type:t id:i {: DescriptorSimple desc = new DescriptorSimple(i,t);
+   													desc.setOffset(OffsetParametros); 
+													p.add(desc);
+													OffsetParametros = OffsetParametros + 4;
+													RESULT = p ; :};
+
+
+   block ::=  LKEY {:tds.push(new Ambiente());nivel++ ; putParameters();:} block_content:b  RKEY {: RESULT = b;
+	tds.pop();:};
+																		 
+
+   block_content ::= statement_decl:sd {: RESULT = new Block(sd);:}
+					| field_decl  {: RESULT = new Block(null);:}
+					| field_decl statement_decl:sd  {: RESULT = new Block(sd);:}
+					|{: RESULT = new Block(null);:};
+
+   type ::= INT {:tipoVar = Type.INT;  RESULT = Type.INT ; :}
+			| FLOAT {:tipoVar = Type.FLOAT; RESULT = Type.FLOAT ; :}
+			| BOOLEAN {:tipoVar = Type.BOOL; RESULT = Type.BOOL ; :};
+
+   statement_decl ::= statement:s {: LinkedList<Statement> l = new LinkedList<Statement>() ;
+									l.add(s);
+									RESULT = l; :} 
+						| statement_decl:sd statement:s {:  sd.add(s);
+															RESULT = sd ; :};
+
+   statement ::= location:loc assign_op:aop expr:e SEMI {: VarLocation vl = (VarLocation) loc;
+   															vl.getDesc().setValor(e);
+   															RESULT = new AssignStmt(vl,aop,e,locleft,locright) ; :}
+			| method_call:m SEMI {: RESULT = new MethodCallStmt(m) ; :}
+			| extern:e SEMI {: RESULT = new ExternStmt(e) ; :}
+			| IF LPAREN expr:e RPAREN block:b1 ELSE block:b2 {: RESULT = new IfStmt(e,b1,b2) ; :}
+			| IF LPAREN expr:e RPAREN block:b {: RESULT = new IfStmt(e,b) ; :}
+			| FOR id:i EQ expr:e COMMA expr:c block:b {:Descriptor d = tds.search(i);
+														if(d != null)
+															if(d.getClase().equals("descriptorSimple")){ 
+																if(d.getTipo() == Type.INT)
+																	RESULT = new ForStmt(d,i,e,c,b); }
+															else
+																parser.report_fatal_error("Los tipos no concuerdan",ileft,iright);
+														else
+															parser.report_fatal_error("Variable no declarada",ileft,iright); :}
+			| WHILE expr:e block:b {: RESULT = new WhileStmt(b,e) ; :}
+			| RETURN expr:e SEMI {: RESULT = new ReturnStmt(e) 	; :}
+			| RETURN SEMI	{: RESULT = new ReturnStmt(); :}
+			| BREAK SEMI    {: RESULT = new BreakStmt() ; :}
+			| CONTINUE SEMI {: RESULT = new ContinueStmt() ; :}
+			| SEMI  {: RESULT = new SkipStmt() ; :}
+			| block:b {: RESULT = b ; :};
+
+
+	assign_op ::= EQ {: RESULT = AssignOpType.ASSIGN;:}
+				 | PLUSEQ  {: RESULT = AssignOpType.INCREMENT;:}
+				 | MINUSEQ  {: RESULT = AssignOpType.DECREMENT;:};
+
+	method_call ::= id:i LPAREN RPAREN {: Descriptor d = tds.search(i);
+										if (d!=null)
+											if (d.getClase().equals("descriptorFuncion")){
+												DescriptorFuncion df = (DescriptorFuncion) d;
+												if (df.getParametros() != null){
+													if (df.getParametros().size()==0)
+														RESULT = new MethodCall(i,d.getTipo(),new LinkedList<Expression>(),ileft,iright) ;
+													else
+														parser.report_fatal_error("Incorrecta cantidad de parametros",ileft,iright);
+												}
+
+											}					
+											else
+												parser.report_fatal_error("Funcion no declarada",ileft,iright);		
+										else
+											parser.report_fatal_error("Los tipos no concuerdan",ileft,iright); :}
+				| id:i LPAREN expr_sequence:l RPAREN {: Descriptor d = tds.search(i);
+										if (d!=null)
+											if (d.getClase().equals("descriptorFuncion")){
+												DescriptorFuncion df = (DescriptorFuncion) d;
+												if (df.getParametros() != null){
+													if (df.getParametros().size()==l.size())
+														RESULT = new MethodCall(i,d.getTipo(),l,ileft,iright) ;
+													else
+														parser.report_fatal_error("Incorrecta cantidad de parametros",ileft,iright);
+												}
+											}
+											else
+												parser.report_fatal_error("Funcion no declarada",ileft,iright);			
+										else
+											parser.report_fatal_error("Los tipos no concuerdan",ileft,iright); :};
+
+	extern ::=  EXTERNINVK LPAREN string_literal:s COMMA type:t RPAREN {: RESULT = new Extern(s,t,null,sleft,sright)  ;:}
+				| EXTERNINVK LPAREN string_literal:s COMMA VOID RPAREN {: RESULT = new Extern(s,Type.VOID,null,sleft,sright)  ;:}
+				| EXTERNINVK LPAREN string_literal:s COMMA type:t COMMA externinvk_arg_sequence:l RPAREN {: RESULT = new Extern(s,t,l,sleft,sright)  ;:}
+				| EXTERNINVK LPAREN string_literal:s COMMA VOID COMMA externinvk_arg_sequence:l RPAREN {: RESULT = new Extern(s,Type.VOID,l,sleft,sright)  ;:};
+
+	location ::= id:i {:  Descriptor d = tds.search(i);
+						if (d!=null){
+							if (d.getClase().equals("descriptorSimple")){
+								//imprimir();
+								RESULT = new VarLocation(i,d,null,ileft,iright);	
+							}else{
+								parser.report_fatal_error("Los tipos no concuerdan",ileft,iright);}				
+						}else{
+							parser.report_fatal_error("Variable no declarada",ileft,iright);} :} 
+				| id:i LBRACKET expr:e RBRACKET {:  Descriptor d = tds.search(i);
+						if (d!=null){
+							if (d.getClase().equals("descriptorArreglo")){
+								RESULT = new VarLocation(i,d,e,ileft,iright);								
+							}else{
+								parser.report_fatal_error("Los tipos no concuerdan",ileft,iright);}			
+						}else{
+							parser.report_fatal_error("Variable no declarada",ileft,iright);}:}  ;
+
+	expr_sequence ::= expr:e {: LinkedList<Expression> l = new LinkedList<Expression>() ;
+								l.add(e);
+								RESULT = l; :} 
+					| expr_sequence:es COMMA expr:e {: es.add(e); 
+													RESULT = es  ;:} ; 
+ 
+	expr ::= location:loc {: RESULT =loc ; :}
+		 | method_call:mc {: RESULT = mc ; :}
+		 | extern:e {: RESULT = e  ;:}
+		 | literal:l {: RESULT =l ; :} 
+		 | expr:e PLUS expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.PLUS,e2,eleft,eright) ; :}
+		 | expr:e MINUS expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.MINUS,e2,eleft,eright) ; :}
+		 | expr:e TIMES expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.TIMES,e2,eleft,eright) ; :}
+		 | expr:e MOD expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.MOD,e2,eleft,eright) ; :}
+		 | expr:e DIVIDE expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.DIVIDE,e2,eleft,eright) ; :}
+		 | expr:e LT expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.LT,e2,eleft,eright) ; :}
+		 | expr:e GT expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.GT,e2,eleft,eright) ; :}
+		 | expr:e LTEQ expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.LTEQ,e2,eleft,eright) ; :}
+		 | expr:e GTEQ expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.GTEQ,e2,eleft,eright) ; :}
+		 | expr:e EQEQ expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.EQEQ,e2,eleft,eright) ; :}
+		 | expr:e NOTEQ expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.NOTEQ,e2,eleft,eright) ; :}
+		 | expr:e AND expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.AND,e2,eleft,eright) ; :}
+		 | expr:e OR expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.OR,e2,eleft,eright) ; :}
+		 | MINUS expr:e {: RESULT = new UnaryOpExpr(UnaryOpType.MINUS,e,eleft,eright) ; :} %prec UMINUS
+		 | NOT expr:e {: RESULT = new UnaryOpExpr(UnaryOpType.NOT,e,eleft,eright) ; :} %prec UMINUS
+		 | LPAREN expr:e RPAREN  {: RESULT = e; :};
+
+	externinvk_arg_sequence ::= externinvk_arg:e {: LinkedList<Object> l = new LinkedList<Object>() ;
+													l.add(e);
+													RESULT = l; :}  
+								| externinvk_arg_sequence:es COMMA externinvk_arg:e {: es.add(e); 
+																					RESULT = es  ;:} ; 
+		 
+	externinvk_arg ::= expr:e {: RESULT = e  ;:} 
+					| string_literal:s {: RESULT = s  ;:};
+	
+	
+	literal ::= int_literal:il {: RESULT = il ; :} | float_literal:fl {: RESULT = fl ; :} | bool_literal:bl {: RESULT = bl ; :};
+	id ::= IDENTIFIER:i {: RESULT = i ;:};
+	int_literal ::= INT_LITERAL:n {: RESULT = new IntLiteral(n,nleft,nright) ;:};
+	bool_literal ::= TRUE:t {: RESULT = new BoolLiteral(t,tleft,tright) ;:} 
+					| FALSE:f {: RESULT = new BoolLiteral(f,fleft,fright) ;:} ;
+	float_literal ::= FLOAT_LITERAL:f {: RESULT = new FloatLiteral(f,fleft,fright);:} ;
+	string_literal ::= STRING_LITERAL:s {: RESULT = s ;:};

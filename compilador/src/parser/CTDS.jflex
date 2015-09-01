@@ -79,18 +79,18 @@ OctDigit          = [0-7]
 {Comment}		{/*skip*/}
 
 //literales
-"-2147483648"           { return symbol(sym.INT_LITERAL, new Integer(Integer.MIN_VALUE)); }
+"-2147483648"     { return symbol(sym.INT_LITERAL, new Integer(Integer.MIN_VALUE)); }
 {IntLit}		  		{return symbol(sym.INT_LITERAL, new Integer(yytext()));}
-{FloatLit}		  		{return symbol(sym.FLOAT_LITERAL, new Float(yytext().substring(0,yylength()-1)));}
+{FloatLit}		  	{return symbol(sym.FLOAT_LITERAL, new Float(yytext().substring(0,yylength()-1)));}
 
 //operadores
 "+"				{return symbol(sym.PLUS);}
 "-"				{return symbol(sym.MINUS);}
-"*"                             {return symbol(sym.TIMES);}
-"/"                             {return symbol(sym.DIVIDE);}
+"*"       {return symbol(sym.TIMES);}
+"/"       {return symbol(sym.DIVIDE);}
 "%"				{return symbol(sym.MOD);}
-"||"				{return symbol(sym.OR);}
-"&&"				{return symbol(sym.AND);}
+"||"			{return symbol(sym.OR);}
+"&&"			{return symbol(sym.AND);}
 "!"				{return symbol(sym.NOT);}
 "="				{return symbol(sym.EQ);}
 "!="			{return symbol(sym.NOTEQ);}
@@ -101,14 +101,14 @@ OctDigit          = [0-7]
 ">="			{return symbol(sym.GTEQ);}
 "-="			{return symbol(sym.MINUSEQ);}
 "+="			{return symbol(sym.PLUSEQ);}
-"++"                           { return symbol(sym.PLUSPLUS); }
-"--"                           { return symbol(sym.MINUSMINUS); }
+"++"     	{ return symbol(sym.PLUSPLUS); }
+"--"      { return symbol(sym.MINUSMINUS); }
 
 //separadores
 ";"				{return symbol(sym.SEMI);}
 ","				{return symbol(sym.COMMA);}
-"("             {return symbol(sym.LPAREN);}
-")"             {return symbol(sym.RPAREN);}
+"("       {return symbol(sym.LPAREN);}
+")"       {return symbol(sym.RPAREN);}
 "{"				{return symbol(sym.LKEY);}
 "}"				{return symbol(sym.RKEY);}
 "["				{return symbol(sym.LBRACKET);}
@@ -118,18 +118,18 @@ OctDigit          = [0-7]
 "boolean"		{return symbol(sym.BOOLEAN);}
 "break"			{return symbol(sym.BREAK);}
 "class"			{return symbol(sym.CLASS);}
-"continue"		{return symbol(sym.CONTINUE);}
+"continue"	{return symbol(sym.CONTINUE);}
 "else"			{return symbol(sym.ELSE);}
 "false"			{return symbol(sym.FALSE, false);}
 "float"			{return symbol(sym.FLOAT);}
-"for"			{return symbol(sym.FOR);}
-"if"			{return symbol(sym.IF);}
-"int"			{return symbol(sym.INT);}
+"for"				{return symbol(sym.FOR);}
+"if"				{return symbol(sym.IF);}
+"int"				{return symbol(sym.INT);}
 "return"		{return symbol(sym.RETURN);}
 "true"			{return symbol(sym.TRUE, true);}
 "void"			{return symbol(sym.VOID);}
 "while"			{return symbol(sym.WHILE);}
-"extern"                {return symbol(sym.EXTERN);}
+"extern"    {return symbol(sym.EXTERN);}
 
 /* string literal */
   \"                             { yybegin(STRING); string.setLength(0); }
@@ -158,7 +158,7 @@ OctDigit          = [0-7]
   \\[0-3]?{OctDigit}?{OctDigit}  { char val = (char) Integer.parseInt(yytext().substring(1),8);
                         				   string.append( val ); }
   
-  /* error cases /*
+  /* error cases */
   \\.                            { throw new RuntimeException("Illegal escape sequence \""+yytext()+"\""); }
   {LineTerminator}               { throw new RuntimeException("Unterminated string at end of line"); }
 }
