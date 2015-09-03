@@ -26,6 +26,7 @@ terminal	INT_LITERAL;
 terminal	FLOAT_LITERAL;
 /*OPERADORES*/
 terminal    PLUS, MINUS, TIMES, DIVIDE, MOD, OR, AND, NOT, EQ, NOTEQ, EQEQ, LT, GT, LTEQ, GTEQ, PLUSEQ, MINUSEQ;
+terminal UMINUS;
 /*SEPARADORES*/
 terminal	SEMI, COMMA, LPAREN, RPAREN, LKEY, RKEY, LBRACKET, RBRACKET;	
 /*PALABRAS RESERVADAS*/
@@ -44,16 +45,125 @@ non terminal 	int_literal;
 non terminal 	bool_literal;
 non terminal 	float_literal;
 
+
 non terminal program;
 non terminal class_decl;
+non terminal operations;
    
 /* Precedences */
-precedence left PLUS, MINUS;
+precedence left OR;
+precedence left AND;
+precedence nonassoc LT, GT, LTEQ, GTEQ, NOTEQ, EQEQ;
+precedence left PLUS, MINUS;   
 precedence left TIMES, DIVIDE, MOD;
+precedence right UMINUS;
 
 start with program;
 
 program ::= class_decl
 
-;
+class_decl ::= CLASS id LKEY decl RKEY
+	         |CLASS id LKEY RKEY;
 
+decl ::= field_decl
+	      | method_decl
+      	| field_decl method_decl;
+
+field_decl ::= type id_sequence	SEMI
+				      | field_decl type id_sequence SEMI;
+
+id_sequence ::= location_decl
+        				| id_sequence COMMA location_decl;
+
+
+location_decl ::= id
+				        | id LBRACKET int_literal RBRACKET;
+	
+
+method_decl ::= method
+					    | method_decl;
+ 
+method ::= type id LPAREN RPAREN block;					    
+					|VOID id LPAREN RPAREN block
+					|VOID id LPAREN parameters RPAREN block  
+					| type id LPAREN parameters RPAREN block;
+
+parameters ::= type id 
+				| parameters COMMA type id;
+
+
+block ::=  LKEY block_content RKEY;
+																		 
+block_content ::= statement_decl
+					| field_decl
+					| field_decl statement_decl
+					|;
+
+type ::= TYPE_INT 
+			  | TYPE_FLOAT 
+			  | TYPE_BOOLEAN ;
+
+statement_decl ::= statement
+					    	| statement_decl statement;
+
+statement ::= location assign_op expr SEMI 
+			      | method_call SEMI 
+			      | IF LPAREN expr RPAREN block ELSE block
+			      | IF LPAREN expr RPAREN block
+			      | FOR id EQ expr COMMA expr block
+			      | WHILE expr block 
+			      | RETURN expr SEMI 
+			      | RETURN SEMI	
+			      | BREAK SEMI  
+			      | CONTINUE SEMI 
+			      | SEMI  
+			      | block;
+
+
+assign_op ::= EQ 
+				     | PLUSEQ  
+				     | MINUSEQ ;
+
+method_call ::= id LPAREN RPAREN										
+				      | id LPAREN expr_sequence RPAREN ;
+
+location ::= id
+				    |id LBRACKET expr RBRACKET;
+
+expr_sequence ::= expr
+					      | expr_sequence COMMA expr; 
+ 
+expr ::= location
+		   | method_call
+		   | literal
+		   | expr operations expr  
+		   | MINUS expr  %prec UMINUS 
+		   | NOT expr  %prec UMINUS
+		   | LPAREN expr RPAREN;
+
+operations ::= PLUS
+              |	MINUS
+              | TIMES
+              | MOD
+              | DIVIDE
+              | LT
+              | GT
+              | LTEQ
+              | GTEQ
+              | EQEQ
+              | NOTEQ
+              | AND
+              | OR 
+	
+literal ::= int_literal
+	        | float_literal
+	        | bool_literal
+	
+id ::= IDENTIFIER;
+
+int_literal ::= INT_LITERAL;
+
+bool_literal ::= TRUE
+    					| FALSE;
+
+float_literal ::= FLOAT_LITERAL;
