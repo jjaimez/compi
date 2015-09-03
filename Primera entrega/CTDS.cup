@@ -46,10 +46,20 @@ non terminal 	bool_literal;
 non terminal 	float_literal;
 
 
-non terminal program;
-non terminal class_decl;
+non terminal program, decl, field_decl,  method_decl, id_sequence, id, class_decl;
+non terminal expr_sequence;
+non terminal parameters ;
+non terminal statement_decl;
+non terminal type;
+non terminal method_call;
+non terminal location; 
+non terminal location_decl, method;
+non terminal expr;
+non terminal extern;
+non terminal statement;
+non terminal block, block_content ;
 non terminal operations;
-   
+
 /* Precedences */
 precedence left OR;
 precedence left AND;
@@ -60,11 +70,11 @@ precedence right UMINUS;
 
 start with program;
 
-program ::= class_decl
+program ::= class_decl;
 
 class_decl ::= CLASS id LKEY decl RKEY
 	         |CLASS id LKEY RKEY;
-
+	         
 decl ::= field_decl
 	      | method_decl
       	| field_decl method_decl;
@@ -81,12 +91,12 @@ location_decl ::= id
 	
 
 method_decl ::= method
-					    | method_decl;
- 
-method ::= type id LPAREN RPAREN block;					    
+					    | method_decl method;
+
+method ::= type id LPAREN RPAREN block					    
 					|VOID id LPAREN RPAREN block
 					|VOID id LPAREN parameters RPAREN block  
-					| type id LPAREN parameters RPAREN block;
+					|type id LPAREN parameters RPAREN block;
 
 parameters ::= type id 
 				| parameters COMMA type id;
@@ -153,11 +163,11 @@ operations ::= PLUS
               | EQEQ
               | NOTEQ
               | AND
-              | OR 
+              | OR; 
 	
 literal ::= int_literal
 	        | float_literal
-	        | bool_literal
+	        | bool_literal;
 	
 id ::= IDENTIFIER;
 
@@ -167,3 +177,5 @@ bool_literal ::= TRUE
     					| FALSE;
 
 float_literal ::= FLOAT_LITERAL;
+
+
