@@ -9,11 +9,11 @@ import java_cup.runtime.*;
 
 parser code {:
 	 public void syntax_error(Symbol s){
-	 	System.out.println(s.right);
+	 	System.out.println("Sintax error in line: " + s.left +" column: "+ s.right +" symbol:"+s.value);
 	 }
 
 	 public void unrecovered_syntax_error(Symbol s){
-    System.out.println(s.right);
+	 	System.out.println("Unrecovered sintax error in line: " + s.left +" column: "+ s.right +" symbol:"+s.value);
 	 }
 
 
@@ -57,7 +57,6 @@ non terminal method_call;
 non terminal location; 
 non terminal location_decl, method;
 non terminal expr;
-non terminal extern;
 non terminal statement;
 non terminal block, block_content ;
 non terminal operations;
@@ -104,7 +103,8 @@ parameters ::= type id
 				| parameters COMMA type id;
 
 
-block ::=  LKEY block_content RKEY;
+block ::=  LKEY block_content RKEY
+        |   EXTERN SEMI;
 																		 
 block_content ::= statement_decl
 					| field_decl
