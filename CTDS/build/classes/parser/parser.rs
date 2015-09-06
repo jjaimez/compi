@@ -1,2 +1,0 @@
-parser
-CUP$parser$actions

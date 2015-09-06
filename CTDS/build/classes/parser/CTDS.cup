@@ -180,5 +180,3 @@ bool_literal ::= TRUE
             | FALSE;
 
 float_literal ::= FLOAT_LITERAL;
-
-
