@@ -20,6 +20,7 @@ class Program {
 			break;
 			;
 			;
+			continue;
 		return 0;
 	}
 }
