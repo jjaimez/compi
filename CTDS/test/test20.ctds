@@ -12,7 +12,16 @@ class Program {
 		while (true == true){
 			i+=1;
 		}
-
+		if (id == true)
+			id = 5;
+		else 
+			id = 5;
+		if (id == true){
+			id = 5;
+		}
+		else {
+			id = 5;
+		}
 
 	}
 }

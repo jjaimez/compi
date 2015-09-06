@@ -48,7 +48,7 @@ non terminal    bool_literal;
 non terminal    float_literal;
 
 
-non terminal program, decl, field_decl,  method_decl, id_sequence, id, class_decl;
+non terminal program, decl, field_decl,  method_decl, id_def, id, class_decl;
 non terminal expr_sequence;
 non terminal parameters ;
 non terminal statement_decl;
@@ -58,7 +58,7 @@ non terminal location;
 non terminal location_decl, method;
 non terminal expr;
 non terminal statement;
-non terminal block, block_content ;
+non terminal body, block ;
 non terminal operations;
 
 /* Precedences */
@@ -81,11 +81,11 @@ decl ::= field_decl
             | method_decl
             | field_decl method_decl;
 
-field_decl ::= type id_sequence SEMI
-            | field_decl type id_sequence SEMI;
+field_decl ::= type id_def SEMI
+            | field_decl type id_def SEMI;
 
-id_sequence ::= location_decl
-            | id_sequence COMMA location_decl;
+id_def ::= location_decl
+            | id_def COMMA location_decl;
 
 
 location_decl ::= id
@@ -95,19 +95,19 @@ location_decl ::= id
 method_decl ::= method
             | method_decl method;
 
-method ::= type id LPAREN RPAREN block                      
-            |VOID id LPAREN RPAREN block
-            |VOID id LPAREN parameters RPAREN block  
-            |type id LPAREN parameters RPAREN block;
+method ::= type id LPAREN RPAREN body                      
+            |VOID id LPAREN RPAREN body
+            |VOID id LPAREN parameters RPAREN body  
+            |type id LPAREN parameters RPAREN body;
 
 parameters ::= type id 
             | parameters COMMA type id;
 
 
-block ::=  LKEY block_content RKEY
+body ::=  LKEY block RKEY
             |EXTERN SEMI;
                                                                          
-block_content ::= statement_decl
+block ::= statement_decl
             | field_decl
             | field_decl statement_decl
             |;
@@ -130,14 +130,15 @@ statement ::= location assign_op expr SEMI
             | BREAK SEMI  
             | CONTINUE SEMI 
             | SEMI  
-            | block;
+            | body;
 
 
 assign_op ::= EQ 
             | PLUSEQ  
             | MINUSEQ ;
 method_call ::= id LPAREN RPAREN                                        
-            | id LPAREN expr_sequence RPAREN ;
+            | id LPAREN expr_sequence RPAREN 
+            | id DOT method_call;
 
 location ::= id
             |id DOT location

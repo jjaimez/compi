@@ -1,0 +1,8 @@
+class Program {
+	void main() {
+	 	id = id.id.id();
+		id = id.id.id(exp);
+		id = id.id.id(exp,exp2,5-4);
+		id.id = id.id();
+	}
+}

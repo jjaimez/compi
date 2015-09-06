@@ -3,6 +3,11 @@ class Program {
 	void main() {
 		int y;
 		boolean b;
+		float s;
+		s = 91.1;
+		b = true;
+		b = false;
+		b = false && b;
 
 		f = y/y;
 		y = y+y;
