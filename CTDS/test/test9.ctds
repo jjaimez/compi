@@ -1,0 +1,28 @@
+class Program {
+	
+	void main() {
+		int y;
+		boolean b;
+
+		f = y/y;
+		y = y+y;
+		y = y - y;
+		y = y + y - y;
+		y = (y + y) / y;
+		y = y % y;
+		y = y * y;
+	
+
+		b = b == b;
+		b = b != b;
+		b = y > y;
+		b = y >= y;
+		b = y <= y;
+		b = y < y;
+
+    b = b && b;
+    b = b || b;
+    b = b || (b && b) && ((y + y  == y) );
+
+	}
+}

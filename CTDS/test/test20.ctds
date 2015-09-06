@@ -1,0 +1,18 @@
+class Program {
+	void method() {
+		for id=5, id<7 
+			id.id[id] = 5;
+		id.id[id] = 5;
+		while (true == true)
+			i+=1;
+		for id=5, id<7{
+			id.id[id] = 5;
+		}
+		id.id[id] = 5;
+		while (true == true){
+			i+=1;
+		}
+
+
+	}
+}

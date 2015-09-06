@@ -1,0 +1,21 @@
+class Program {
+	int inc(int x) {
+		return x;
+	}
+
+	int inc2() {
+		return 3;
+	}
+
+	void inc(int x) {
+		return;
+	}
+
+	int inc(int x) {
+	}
+
+
+	void main() {
+		return 0;
+	}
+}

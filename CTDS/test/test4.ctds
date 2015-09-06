@@ -1,0 +1,4 @@
+class Program {
+	int int1;
+	int method() extern;
+}

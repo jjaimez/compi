@@ -1,0 +1,9 @@
+class Program {
+	int read_int() extern;
+	void main() {
+		int y;
+		while (y == 1){
+		
+		}
+	}
+}
