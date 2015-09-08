@@ -18,7 +18,7 @@ public class main {
 
         }
             System.out.println("<<<<<<<<<< Comienzan los test negativos >>>>>>>>>>");
-           for(int i =1; i< 9; i++){
+           for(int i =1; i< 14; i++){
             System.out.println("test"+i+ ".ctds" );
             BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/test/negativos/test"+i+".ctds"));
             Lexer lex = new Lexer(br);
