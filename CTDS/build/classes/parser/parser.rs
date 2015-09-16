@@ -1,2 +1,2 @@
-parser
 CUP$parser$actions
+parser

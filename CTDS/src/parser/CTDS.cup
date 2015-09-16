@@ -1,3 +1,10 @@
+/*
+ * Autores: Jaimez Jacinto, Pereyra Nicolas
+ * Proyecto: CompiladorCTDS
+ * definicion de la gramatica
+ */
+
+
 import java_cup.runtime.*;
 
 /* Preliminaries to set up and use the scanner.  */
@@ -74,8 +81,9 @@ start with program;
 
 program ::= class_decl;
 
-class_decl ::= CLASS id LKEY decl RKEY
-            |CLASS id LKEY RKEY;
+class_decl ::= CLASS id LKEY decl RKEY class_decl
+            |CLASS id LKEY RKEY class_decl
+						| ;
              
 decl ::= field_decl
             | method_decl
@@ -107,17 +115,17 @@ parameters ::= type id
 body ::=  LKEY block RKEY
             |EXTERN SEMI;
                                                                          
-block ::= statement_decl
-            | field_decl
-            | field_decl statement_decl
-            |;
+block ::= statement_decl:sd {: RESULT = new Block(sd);:}
+            | field_decl {: RESULT = new Block(null);:}
+            | field_decl statement_decl:sd  {: RESULT = new Block(sd);:}
+            | {: RESULT = new Block(null);:};
 
-type ::= TYPE_INT 
-            | TYPE_FLOAT 
-            | TYPE_BOOLEAN ;
+type ::= TYPE_INT {:tipoVar = Type.INT;  RESULT = Type.INT ; :}
+       | TYPE_FLOAT {:tipoVar = Type.FLOAT; RESULT = Type.FLOAT ; :}
+       | TYPE_BOOLEAN {:tipoVar = Type.BOOL; RESULT = Type.BOOL ; :};
 
 statement_decl ::= statement
-            | statement_decl statement;
+		| statement_decl;
 
 statement ::= location assign_op expr SEMI 
             | method_call SEMI 
@@ -133,9 +141,10 @@ statement ::= location assign_op expr SEMI
             | body;
 
 
-assign_op ::= EQ 
-            | PLUSEQ  
-            | MINUSEQ ;
+assign_op ::= EQ {: RESULT = AssignOpType.ASSIGN;:}
+            | PLUSEQ  {: RESULT = AssignOpType.INCREMENT;:}
+            | MINUSEQ  {: RESULT = AssignOpType.DECREMENT;:};
+
 method_call ::= id LPAREN RPAREN                                        
             | id LPAREN expr_sequence RPAREN 
             | id DOT method_call;
@@ -144,40 +153,40 @@ location ::= id
             |id DOT location
             |id LBRACKET expr RBRACKET;
 
-expr_sequence ::= expr
-            | expr_sequence COMMA expr; 
+expr_sequence ::= expr expr
+            | expr_sequence COMMA expr ; 
  
-expr ::= location
-            | method_call
-            | literal
-            | expr operations expr  
-            | MINUS expr  %prec UMINUS 
-            | NOT expr  %prec UMINUS
-            | LPAREN expr RPAREN;
+expr ::= location:loc {: RESULT =loc ; :}
+            | method_call:mc {: RESULT = mc ; :}
+            | literal:l {: RESULT =l ; :} 
+            | expr:e operations:op expr:e2 {: RESULT = new BinOpExpr(e,op,e2) ; :} 
+            | MINUS expr:e {: RESULT = new UnaryOpExpr(UnaryOpType.MINUS,e) ; :}  %prec UMINUS 
+            | NOT expr:e {: RESULT = new UnaryOpExpr(UnaryOpType.NOT,e) ; :}  %prec UMINUS
+            | LPAREN expr RPAREN {: RESULT = e; :};
 
-operations ::= PLUS
-            | MINUS
-            | TIMES
-            | MOD
-            | DIVIDE
-            | LT
-            | GT
-            | LTEQ
-            | GTEQ
-            | EQEQ
-            | NOTEQ
-            | AND
-            | OR; 
+operations ::= PLUS {: RESULT BinOpType.PLUS; :}
+            | MINUS {: RESULT BinOpType.MINUS; :}
+            | TIMES {: RESULT BinOpType.TIMES; :}
+            | MOD {: RESULT BinOpType.MOD; :}
+            | DIVIDE {: RESULT BinOpType.DIVIDE; :}
+            | LT {: RESULT BinOpType.LT; :}
+            | GT {: RESULT BinOpType.GT; :}
+            | LTEQ {: RESULT BinOpType.LTEQ; :}
+            | GTEQ {: RESULT BinOpType.GTEQ; :}
+            | EQEQ {: RESULT BinOpType.EQEQ; :}
+            | NOTEQ {: RESULT BinOpType.NOTEQ; :}
+            | AND {: RESULT BinOpType.AND; :}
+            | OR {: RESULT BinOpType.OR; :}; 
     
-literal ::= int_literal
-            | float_literal
-            | bool_literal;
+literal ::= int_literal:il {: RESULT = il ; :}
+            | float_literal:fl {: RESULT = fl ; :}
+            | bool_literal:bl {: RESULT = bl ; :};
     
-id ::= IDENTIFIER;
+id ::= IDENTIFIER:i {: RESULT = i ;:};
 
-int_literal ::= INT_LITERAL;
+int_literal ::= INT_LITERAL:n {: RESULT = new IntLiteral(n) ;:};
 
-bool_literal ::= TRUE
-            | FALSE;
+bool_literal ::= TRUE:t {: RESULT = new BoolLiteral(t) ;:} 
+            | FALSE:f {: RESULT = new BoolLiteral(f) ;:} ;
 
-float_literal ::= FLOAT_LITERAL;
+float_literal ::= FLOAT_LITERAL:f {: RESULT = new FloatLiteral(f);:} ;

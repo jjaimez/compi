@@ -74,8 +74,9 @@ start with program;
 
 program ::= class_decl;
 
-class_decl ::= CLASS id LKEY decl RKEY
-            |CLASS id LKEY RKEY;
+class_decl ::= CLASS id LKEY decl RKEY class_decl
+            |CLASS id LKEY RKEY class_decl
+						| ;
              
 decl ::= field_decl
             | method_decl
