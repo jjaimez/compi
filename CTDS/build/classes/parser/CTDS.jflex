@@ -1,3 +1,10 @@
+/*
+ * Autores: Jaimez Jacinto, Pereyra Nicolas
+ * Proyecto: CompiladorCTDS
+ * definicion de los tokens
+ */
+
+
 import java_cup.runtime.*;
 
 %%

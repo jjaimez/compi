@@ -1,3 +1,9 @@
+/*
+ * Autores: Jaimez Jacinto, Pereyra Nicolas
+ * Proyecto: CompiladorCTDS
+ * Representacion bloque del programa
+ */
+
 package ir.ast;
 
 import java.util.ArrayList;
