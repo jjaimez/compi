@@ -28,7 +28,7 @@ public class BoolLiteral extends Literal {
 
     @Override
     public String toString() {
-        return value.toString();
+        return String.valueOf(value);
     }
 
     

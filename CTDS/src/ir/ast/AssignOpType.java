@@ -1,3 +1,8 @@
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * definicion de asignaciones
+ */
 package ir.ast;
 
 public enum AssignOpType {

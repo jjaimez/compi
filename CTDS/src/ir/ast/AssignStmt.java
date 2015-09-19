@@ -1,3 +1,8 @@
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * Sentencia de asignación
+ */
 package ir.ast;
 
 import ir.ASTVisitor;
