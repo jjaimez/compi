@@ -1,3 +1,9 @@
+/*
+ * Autores: Jaimez Jacinto, Pereyra Nicolas
+ * Proyecto: CompiladorCTDS
+ * Representacion sentencia if
+ */
+
 package ir.ast;
 
 import ir.ASTVisitor;

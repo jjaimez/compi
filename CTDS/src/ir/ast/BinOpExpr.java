@@ -1,3 +1,9 @@
+/*
+ * Autores: Jaimez Jacinto, Pereyra Nicolas
+ * Proyecto: CompiladorCTDS
+ * Representacion expresion con operadores binarios
+ */
+
 package ir.ast;
 
 import ir.ASTVisitor;
@@ -11,12 +17,6 @@ public class BinOpExpr extends Expression {
 		operator = op;
 		lOperand = l;
 		rOperand = r;
-	}
-	
-	public BinOpExpr(Expression e, TempExpression t) {
-		lOperand = e;
-		operator = t.getOperator();
-		rOperand = t.getRightOperand();
 	}
 	
 	public BinOpType getOperator() {

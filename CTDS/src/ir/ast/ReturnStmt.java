@@ -1,3 +1,8 @@
+/*
+ * Autores: Jaimez Jacinto, Pereyra Nicolas
+ * Proyecto: CompiladorCTDS
+ * Representacion sentencia return
+ */
 package ir.ast;
 
 import ir.ASTVisitor;
