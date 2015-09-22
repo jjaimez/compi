@@ -8,7 +8,11 @@ public interface ASTVisitor<T> {
 	T visit(AssignStmt stmt);
 	T visit(ReturnStmt stmt);
 	T visit(IfStmt stmt);
-
+        T visit(BreakStmt stmt);
+        T visit(ContinueStmt stmt);
+        T visit(WhileStmt stmt);
+        T visit(MethodCall stmt);
+        T visit(ExternStmt stmt);
 // visit expressions
 	T visit(BinOpExpr expr);
         T visit(UnaryOpExpr expr);
@@ -22,4 +26,5 @@ public interface ASTVisitor<T> {
         
 // visit blocks
         T visit(Block bl);
+        T visit(Body bl);
 }

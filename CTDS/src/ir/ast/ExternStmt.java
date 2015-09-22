@@ -1,16 +1,16 @@
 /*
  * Autores: Jaimez Jacinto, Pereyra Nicolas
  * Proyecto: CompiladorCTDS
- * Representacion sentencia continue
+ * Representacion extern
  */
 
 package ir.ast;
 
 import ir.ASTVisitor;
 
-public class ContinueStmt extends Statement {
+public class ExternStmt extends Statement {
 
-    public ContinueStmt() {
+    public ExternStmt() {
     }
     
 

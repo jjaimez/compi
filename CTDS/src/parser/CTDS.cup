@@ -112,8 +112,8 @@ parameters ::= type id
             | parameters COMMA type id;
 
 
-body ::=  LKEY block RKEY
-            |EXTERN SEMI;
+body ::=  LKEY block:b RKEY{:RESULT= new Body(b);:}
+            |EXTERN SEMI{:RESULT= new ExternStmt();:};
                                                                          
 block ::= statement_decl:sd {: RESULT = new Block(sd);:}
             | field_decl {: RESULT = new Block(null);:}
@@ -124,36 +124,39 @@ type ::= TYPE_INT {:tipoVar = Type.INT;  RESULT = Type.INT ; :}
        | TYPE_FLOAT {:tipoVar = Type.FLOAT; RESULT = Type.FLOAT ; :}
        | TYPE_BOOLEAN {:tipoVar = Type.BOOL; RESULT = Type.BOOL ; :};
 
-statement_decl ::= statement
-		| statement_decl;
+statement_decl ::= statement:s {: LinkedList<Statement> l = new LinkedList<Statement>() ;
+                                l.add(s);
+				RESULT = l; :} 
+		| statement_decl:sd statement:s {: sd.add(s);
+						RESULT = sd ; :};
 
-statement ::= location assign_op expr SEMI 
-            | method_call SEMI 
-            | IF LPAREN expr RPAREN statement ELSE statement
-            | IF LPAREN expr RPAREN statement
-            | FOR id EQ expr COMMA expr statement
-            | WHILE expr statement 
-            | RETURN expr SEMI 
-            | RETURN SEMI 
-            | BREAK SEMI  
-            | CONTINUE SEMI 
-            | SEMI  
-            | body;
+statement ::= location:loc assign_op:op expr:e SEMI  {:RESULT =  new AssignStmt(loc,op,e):}
+            | method_call:m SEMI {:RESULT = m;:} // ESTA BIEN ESTE?
+            | IF LPAREN expr:cond RPAREN statement:ifBl ELSE statement:elseBl {:RESULT = new ifStmt(cond,ifBl,elseBl);:}
+            | IF LPAREN expr:cond RPAREN statement:ifBl {:RESULT = new ifStmt(cond,ifBl);:}
+            | FOR id EQ expr COMMA expr statement // ESTO PARECE QUE ESTA MAL EL STATEMENT
+            | WHILE expr statement // LO MISMO DE ARRIBA
+            | RETURN expr:exp SEMI {:RESULT= new ReturnStmt(exp);:}
+            | RETURN SEMI {:RESULT= new ReturnStmt();:}
+            | BREAK SEMI  {:RESULT= new BreakStmt();:}
+            | CONTINUE SEMI {:RESULT= new ContinueStmt();:}
+            | SEMI  //COMO SE HACE ACA?
+            | body:b {:RESULT = b;:};
 
 
 assign_op ::= EQ {: RESULT = AssignOpType.ASSIGN;:}
             | PLUSEQ  {: RESULT = AssignOpType.INCREMENT;:}
             | MINUSEQ  {: RESULT = AssignOpType.DECREMENT;:};
 
-method_call ::= id LPAREN RPAREN                                        
-            | id LPAREN expr_sequence RPAREN 
-            | id DOT method_call;
+method_call ::= id:i LPAREN RPAREN  {:RESULT = new MethodCall(i);:}                                      
+            | id:i LPAREN expr_sequence:exp RPAREN  {:RESULT = new MethodCall(i,exp);:}  
+            | id:i DOT method_call;// ANALZAR CUANTAS VECES PUEDO HACERLO AL IGUAL QUE LOCATION
 
-location ::= id
-            |id DOT location
-            |id LBRACKET expr RBRACKET;
+location ::= id:i {:RESULT = new VarLocation(i);:}
+            |id DOT location //cuantas veces puede tener location?
+            |id:i LBRACKET expr:exp RBRACKET;{:RESULT = new VarLocation(i,exp);:}
 
-expr_sequence ::= expr expr
+expr_sequence ::= expr expr //REEEEEEEEEEEVISAR !!!!! 
             | expr_sequence COMMA expr ; 
  
 expr ::= location:loc {: RESULT =loc ; :}
