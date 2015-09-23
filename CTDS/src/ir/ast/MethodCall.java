@@ -12,6 +12,7 @@ public class MethodCall extends Expression {
 
     private String id;
     private List<Expression> expressions;
+    private MethodCall mc;
 
     public MethodCall(String id) {
         this.id = id;
@@ -21,6 +22,11 @@ public class MethodCall extends Expression {
     public MethodCall(String id, List<Expression> expressions) {
         this.id = id;
         this.expressions = expressions;
+    }
+    
+      public MethodCall(String id, MethodCall mc) {
+        this.id = id;
+        this.mc = mc;
     }
 
     public void setId(String id) {

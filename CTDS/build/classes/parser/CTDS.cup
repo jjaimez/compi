@@ -79,37 +79,49 @@ precedence right IF, ELSE;
 
 start with program;
 
-program ::= class_decl;
+program ::= class_decl:cd {:RESULT = new Program(cd); :};
 
-class_decl ::= CLASS id LKEY decl RKEY class_decl
-            |CLASS id LKEY RKEY class_decl
-						| ;
+class_decl ::= CLASS id:i LKEY decl:d RKEY class_decl:l {: l.add(new ClassDeclaration(i,d)) ;
+            RESULT = l; :}
+            |CLASS id:i LKEY RKEY class_decl:l {: l.add(new ClassDeclaration(i)) ;
+            RESULT = l; :}
+            | {: LinkedList<ClassDeclaration> l = new LinkedList<ClassDeclaration>() ;
+            RESULT = l; :};
              
-decl ::= field_decl
-            | method_decl
-            | field_decl method_decl;
+decl ::= field_decl:fd {:RESULT = new Declaration(fd,null):;}
+            | method_decl:md {:RESULT = new Declaration(null,md):;}
+            | field_decl:fd method_decl:md {:RESULT = new Declaration(fd,md):;};
 
-field_decl ::= type id_def SEMI
-            | field_decl type id_def SEMI;
+field_decl ::= type:t id_def:id SEMI {: LinkedList<FieldDeclaration> l = new LinkedList<FieldDeclaration>() ;
+                                l.add(new FieldDeclaration(t,id) );
+				RESULT = l; :}
+            | field_decl:fd type:t id_def:id SEMI  {: fd.add(new FieldDeclaration(t,id) );
+				RESULT = fd; :};
 
-id_def ::= location_decl
-            | id_def COMMA location_decl;
+id_def ::= location_decl:ld {: LinkedList<LocationDeclaration> l = new LinkedList<LocationDeclaration>() ;
+                                l.add(ld);
+				RESULT = l; :};
+            | id_def:l COMMA location_decl:ld {: l.add(ld);
+				RESULT = l; :};;
 
 
-location_decl ::= id
-            | id LBRACKET int_literal RBRACKET;
+location_decl ::= id:i {:RESULT = new LocationDeclaration(i); :}
+            | id:i LBRACKET int_literal:il RBRACKET {:RESULT = new LocationDeclaration(i,il); :};
     
 
-method_decl ::= method
-            | method_decl method;
+method_decl ::= method:m {: LinkedList<Method> l = new LinkedList<Method>() ;
+                                l.add(m);
+				RESULT = l; :} 
+            | method_decl:l method:m {: l.add(m);
+						RESULT = l ; :};
 
-method ::= type id LPAREN RPAREN body                      
-            |VOID id LPAREN RPAREN body
-            |VOID id LPAREN parameters RPAREN body  
-            |type id LPAREN parameters RPAREN body;
+method ::= type:t id:i LPAREN RPAREN body:b      {:RESULT = new Method(t,i,b);:}               
+            |VOID:t id:i LPAREN RPAREN body {:RESULT = new Method(t,i,b);:}
+            |VOID:t id:i LPAREN parameters:p RPAREN body:b  {:RESULT = new Method(t,i,p,b);:}
+            |type:t id:i LPAREN parameters:p RPAREN body:b {:RESULT = new Method(t,i,p,b);:};
 
-parameters ::= type id 
-            | parameters COMMA type id;
+parameters ::= type:t id:i {: LinkedList<Parameter> l = new LinkedList<Parameter>() ; l.add(new Parameter(t,i)); RESULT= l;:}
+             | parameters:l COMMA type:t id:i {:  l.add(new Parameter(t,i)); RESULT= l;:};
 
 
 body ::=  LKEY block:b RKEY{:RESULT= new Body(b);:}
@@ -131,16 +143,16 @@ statement_decl ::= statement:s {: LinkedList<Statement> l = new LinkedList<State
 						RESULT = sd ; :};
 
 statement ::= location:loc assign_op:op expr:e SEMI  {:RESULT =  new AssignStmt(loc,op,e):}
-            | method_call:m SEMI {:RESULT = m;:} // ESTA BIEN ESTE?
-            | IF LPAREN expr:cond RPAREN statement:ifBl ELSE statement:elseBl {:RESULT = new ifStmt(cond,ifBl,elseBl);:}
-            | IF LPAREN expr:cond RPAREN statement:ifBl {:RESULT = new ifStmt(cond,ifBl);:}
-            | FOR id EQ expr COMMA expr statement // ESTO PARECE QUE ESTA MAL EL STATEMENT
+            | method_call:m SEMI {:RESULT = m;:}
+            | IF LPAREN expr:cond RPAREN statement:ifBl ELSE statement:elseBl {:RESULT = new IfStmt(cond,ifBl,elseBl);:}
+            | IF LPAREN expr:cond RPAREN statement:ifBl {:RESULT = new IfStmt(cond,ifBl);:}
+            | FOR id:i EQ expr:e COMMA expr:e2 statement:s {:RESULT = new ForStmt(id,e,e2,s);:}
             | WHILE expr statement // LO MISMO DE ARRIBA
             | RETURN expr:exp SEMI {:RESULT= new ReturnStmt(exp);:}
             | RETURN SEMI {:RESULT= new ReturnStmt();:}
             | BREAK SEMI  {:RESULT= new BreakStmt();:}
             | CONTINUE SEMI {:RESULT= new ContinueStmt();:}
-            | SEMI  //COMO SE HACE ACA?
+            | SEMI 
             | body:b {:RESULT = b;:};
 
 
@@ -150,14 +162,17 @@ assign_op ::= EQ {: RESULT = AssignOpType.ASSIGN;:}
 
 method_call ::= id:i LPAREN RPAREN  {:RESULT = new MethodCall(i);:}                                      
             | id:i LPAREN expr_sequence:exp RPAREN  {:RESULT = new MethodCall(i,exp);:}  
-            | id:i DOT method_call;// ANALZAR CUANTAS VECES PUEDO HACERLO AL IGUAL QUE LOCATION
+            | id:i DOT method_call:mc  {:RESULT = new MethodCall(i,mc);:} ; {  
 
 location ::= id:i {:RESULT = new VarLocation(i);:}
-            |id DOT location //cuantas veces puede tener location?
+            |id:i DOT location:l {:RESULT = new VarLocation(i,l);:}
             |id:i LBRACKET expr:exp RBRACKET;{:RESULT = new VarLocation(i,exp);:}
 
-expr_sequence ::= expr expr //REEEEEEEEEEEVISAR !!!!! 
-            | expr_sequence COMMA expr ; 
+expr_sequence ::= expr:e {: LinkedList<Expression> l = new LinkedList<Expression>() ;
+			l.add(e);
+			RESULT = l; :}   
+            | expr_sequence:exps COMMA expr:exp {: exps.add(exp); 
+                                                RESULT = exps;:};
  
 expr ::= location:loc {: RESULT =loc ; :}
             | method_call:mc {: RESULT = mc ; :}

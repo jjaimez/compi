@@ -4,6 +4,15 @@ import ir.ast.*;
 
 // Abstract visitor
 public interface ASTVisitor<T> {
+    
+    //declarations
+        T visit(Parameter p);
+        T visit(Method m);
+        T visit(LocationDeclaration ld);
+        T visit(FieldDeclaration fd);
+        T visit(Declaration d);
+        T visit(ClassDeclaration cd);
+        T visit(Program p);
 // visit statements
 	T visit(AssignStmt stmt);
 	T visit(ReturnStmt stmt);
@@ -13,6 +22,7 @@ public interface ASTVisitor<T> {
         T visit(WhileStmt stmt);
         T visit(MethodCall stmt);
         T visit(ExternStmt stmt);
+        T visit(ForStmt stmt);
 // visit expressions
 	T visit(BinOpExpr expr);
         T visit(UnaryOpExpr expr);
