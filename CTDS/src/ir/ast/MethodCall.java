@@ -1,7 +1,7 @@
 /*
  * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
  * Proyecto: CompiladorCTDS
- * Sentencia de asignación
+ * Expresion de llamada a un metodo.
  */
 package ir.ast;
 

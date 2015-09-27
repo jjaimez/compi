@@ -156,7 +156,7 @@ statement_decl ::= statement:s {: LinkedList<Statement> l = new LinkedList<State
 						RESULT = sd ; :};
 
 statement ::= location:loc assign_op:op expr:e SEMI  {:RESULT =  new AssignStmt(loc,op,e);:}
-            | method_call:m SEMI {:RESULT = m;:}
+            | method_call:m SEMI {:RESULT = new MethodCallStmt(m);:}
             | IF LPAREN expr:cond RPAREN statement:ifBl ELSE statement:elseBl {:RESULT = new IfStmt(cond,ifBl,elseBl);:}
             | IF LPAREN expr:cond RPAREN statement:ifBl {:RESULT = new IfStmt(cond,ifBl);:}
             | FOR id:i EQ expr:e COMMA expr:e2 statement:s {:RESULT = new ForStmt(i,e,e2,s);:}

@@ -23,6 +23,7 @@ public interface ASTVisitor<T> {
         T visit(MethodCall stmt);
         T visit(ExternStmt stmt);
         T visit(ForStmt stmt);
+        T visit(MethodCallStmt stmt);
 // visit expressions
 	T visit(BinOpExpr expr);
         T visit(UnaryOpExpr expr);

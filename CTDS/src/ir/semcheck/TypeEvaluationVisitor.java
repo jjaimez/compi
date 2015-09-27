@@ -145,4 +145,9 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
     public Type visit(Program p) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public Type visit(MethodCallStmt stmt) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
