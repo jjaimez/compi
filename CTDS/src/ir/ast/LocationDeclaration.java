@@ -13,13 +13,13 @@ import ir.ASTVisitor;
  */
 public class LocationDeclaration extends AST{
     private String id;
-    private int size;
+    private IntLiteral size;
 
     public LocationDeclaration(String id) {
         this.id = id;
     }
 
-    public LocationDeclaration(String id, int size) {
+    public LocationDeclaration(String id, IntLiteral size) {
         this.id = id;
         this.size = size;
     }
@@ -32,11 +32,11 @@ public class LocationDeclaration extends AST{
         this.id = id;
     }
 
-    public int getSize() {
+    public IntLiteral getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    public void setSize(IntLiteral size) {
         this.size = size;
     }
     

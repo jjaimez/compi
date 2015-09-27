@@ -14,9 +14,9 @@ import java.util.LinkedList;
  */
 public class ClassDeclaration extends AST{
     private String id;
-    private LinkedList<Declaration> declarations;
+    private Declaration declarations;
 
-    public ClassDeclaration(String id, LinkedList<Declaration> declarations) {
+    public ClassDeclaration(String id, Declaration declarations) {
         this.id = id;
         this.declarations = declarations;
     }
@@ -33,11 +33,11 @@ public class ClassDeclaration extends AST{
         this.id = id;
     }
 
-    public LinkedList<Declaration> getDeclarations() {
+    public Declaration getDeclarations() {
         return declarations;
     }
 
-    public void setDeclarations(LinkedList<Declaration> declarations) {
+    public void setDeclarations(Declaration declarations) {
         this.declarations = declarations;
     }
        

@@ -8,7 +8,7 @@ package ir.ast;
 
 import ir.ASTVisitor;
 
-public class ExternStmt extends Statement {
+public class ExternStmt extends Body {
 
     public ExternStmt() {
     }

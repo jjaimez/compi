@@ -11,15 +11,15 @@ import ir.ASTVisitor;
 
 public class WhileStmt extends Statement {
 
-    private Block block;
+    private Statement block;
     private Expression expr;
 
-    public WhileStmt(Block block, Expression expr) {
+    public WhileStmt(Statement block, Expression expr) {
         this.block = block;
         this.expr = expr;
     }
 
-    public Block getBlock() {
+    public Statement getBlock() {
         return block;
     }
 
