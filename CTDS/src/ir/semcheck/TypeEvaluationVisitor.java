@@ -1,6 +1,5 @@
 package ir.semcheck;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ir.ASTVisitor;

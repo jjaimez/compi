@@ -8,10 +8,7 @@ package ir.ast;
 import ir.ASTVisitor;
 import java.util.List;
 
-/**
- *
- * @author jacinto
- */
+
 public class FieldDeclaration extends AST{
     private Type type;
     private List<LocationDeclaration> l;

@@ -7,10 +7,7 @@ package ir.ast;
 
 import ir.ASTVisitor;
 
-/**
- *
- * @author jacinto
- */
+
 public class LocationDeclaration extends AST{
     private String id;
     private IntLiteral size;

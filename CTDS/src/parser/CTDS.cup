@@ -44,7 +44,7 @@ terminal UMINUS;
 terminal    SEMI, COMMA, LPAREN, RPAREN, LKEY, RKEY, LBRACKET, RBRACKET, DOT;    
 /*PALABRAS RESERVADAS*/
 terminal    TYPE_BOOLEAN, BREAK, CLASS, CONTINUE, ELSE, IF, FOR, WHILE, TYPE_FLOAT, TYPE_INT, RETURN, EXTERN;
-terminal Type VOID;
+terminal  VOID;
 terminal Boolean TRUE;
 terminal Boolean FALSE;
 /*IDENTIFICADORES*/
@@ -129,8 +129,8 @@ method_decl ::= method:m {: LinkedList<Method> l = new LinkedList<Method>() ;
 						RESULT = l ; :};
 
 method ::= type:t id:i LPAREN RPAREN body:b      {:RESULT = new Method(t,i,b);:}               
-            |VOID:t id:i LPAREN RPAREN body:b {:RESULT = new Method(t,i,b);:}
-            |VOID:t id:i LPAREN parameters:p RPAREN body:b  {:RESULT = new Method(t,i,p,b);:}
+            |VOID id:i LPAREN RPAREN body:b {:RESULT = new Method(Type.VOID,i,b);:}
+            |VOID id:i LPAREN parameters:p RPAREN body:b  {:RESULT = new Method(Type.VOID,i,p,b);:}
             |type:t id:i LPAREN parameters:p RPAREN body:b {:RESULT = new Method(t,i,p,b);:};
 
 parameters ::= type:t id:i {: LinkedList<Parameter> l = new LinkedList<Parameter>() ; l.add(new Parameter(t,i)); RESULT= l;:}
@@ -217,7 +217,7 @@ id ::= IDENTIFIER:i {: RESULT = i ;:};
 
 int_literal ::= INT_LITERAL:n {: RESULT = new IntLiteral(n) ;:};
 
-bool_literal ::= TRUE:t {: RESULT = new BoolLiteral(t) ;:} 
-            | FALSE:f {: RESULT = new BoolLiteral(f) ;:} ;
+bool_literal ::= TRUE {: RESULT = new BoolLiteral(true) ;:} 
+            | FALSE {: RESULT = new BoolLiteral(false) ;:} ;
 
 float_literal ::= FLOAT_LITERAL:f {: RESULT = new FloatLiteral(f);:} ;

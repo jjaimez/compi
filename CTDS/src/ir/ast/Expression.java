@@ -1,3 +1,9 @@
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * Clase abstracta de una expresion
+ */
+
 package ir.ast;
 
 public abstract class Expression extends AST {

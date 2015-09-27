@@ -1,3 +1,9 @@
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * Clase abstracta para definicion de location
+ */
+
 package ir.ast;
 
 public abstract class Location extends Expression {

@@ -1,3 +1,8 @@
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * interface ast visitor
+ */
 package ir;
 
 import ir.ast.*;
