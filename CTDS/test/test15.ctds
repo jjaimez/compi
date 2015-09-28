@@ -19,7 +19,6 @@ class Program {
 		if (true)
 			break;
 			;
-			;
 			continue;
 		return 0;
 	}

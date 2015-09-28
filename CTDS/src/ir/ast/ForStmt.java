@@ -59,7 +59,7 @@ public class ForStmt extends Statement {
 
     @Override
     public String toString() {
-        return "for " + id + "=" + expr + "," + expr2 + statement.toString() ;
+        return "for " + id + "=" + expr.toString() + "," + expr2.toString() + statement.toString() ;
     }
 
     @Override

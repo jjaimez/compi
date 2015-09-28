@@ -18,7 +18,10 @@ import java.util.LinkedList;
 
 //code
 
+action code {: public static Program ast; :};
+
 parser code {:
+
      public void syntax_error(Symbol s){
         System.out.println("Sintax error in line: " + s.left +" column: "+ s.right +" symbol:"+s.value);
      }
@@ -26,8 +29,10 @@ parser code {:
      public void unrecovered_syntax_error(Symbol s){
         System.out.println("Unrecovered sintax error in line: " + s.left +" column: "+ s.right +" symbol:"+s.value);
      }
-
-
+     
+     public Program getAST(){
+        return CUP$parser$actions.ast;
+    }
 :}
 
 /* ------------Declaration of Terminals and Non Terminals Section----------- */
@@ -92,7 +97,7 @@ precedence right IF, ELSE;
 
 start with program;
 
-program ::= class_decl:cd {:RESULT = new Program(cd); :};
+program ::= class_decl:cd {: ast = new Program(cd); :};
 
 class_decl ::= CLASS id:i LKEY decl:d RKEY class_decl:l {: l.add(new ClassDeclaration(i,d)) ;
             RESULT = l; :}
@@ -141,9 +146,9 @@ body ::=  LKEY block:b RKEY{:RESULT= new Body(b);:}
             |EXTERN SEMI{:RESULT= new ExternStmt();:};
                                                                          
 block ::= statement_decl:sd {: RESULT = new Block(sd);:}
-            | field_decl {: RESULT = new Block(null);:}
-            | field_decl statement_decl:sd  {: RESULT = new Block(sd);:}
-            | {: RESULT = new Block(null);:};
+            | field_decl:fd {: RESULT = new Block(fd);:}
+            | field_decl:fd statement_decl:sd  {: RESULT = new Block(sd,fd);:}
+            | {: RESULT = new Block();:};
 
 type ::= TYPE_INT {:RESULT = Type.INT ; :}
        | TYPE_FLOAT {:RESULT = Type.FLOAT ; :}
@@ -165,7 +170,7 @@ statement ::= location:loc assign_op:op expr:e SEMI  {:RESULT =  new AssignStmt(
             | RETURN SEMI {:RESULT= new ReturnStmt();:}
             | BREAK SEMI  {:RESULT= new BreakStmt();:}
             | CONTINUE SEMI {:RESULT= new ContinueStmt();:}
-            | SEMI 
+            | SEMI {:RESULT = null;:}
             | body:b {:RESULT = b;:};
 
 

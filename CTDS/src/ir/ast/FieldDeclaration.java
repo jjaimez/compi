@@ -8,8 +8,8 @@ package ir.ast;
 import ir.ASTVisitor;
 import java.util.List;
 
+public class FieldDeclaration extends AST {
 
-public class FieldDeclaration extends AST{
     private Type type;
     private List<LocationDeclaration> l;
 
@@ -33,15 +33,20 @@ public class FieldDeclaration extends AST{
     public void setL(List<LocationDeclaration> l) {
         this.l = l;
     }
-   
-    
-    
-     @Override
+
+    @Override
+    public String toString() {
+        String s = type.toString() + " ";
+        if (l != null) {
+            for (LocationDeclaration c : l) {
+                s += c.toString();
+            }
+        }
+        return s;
+    }
+
+    @Override
     public <T> T accept(ASTVisitor<T> v) {
         return v.visit(this);
     }
-    
-    
-    
-    
 }

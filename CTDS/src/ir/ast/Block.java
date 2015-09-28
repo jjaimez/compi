@@ -5,17 +5,20 @@
  */
 package ir.ast;
 
-import java.util.ArrayList;
 import java.util.List;
 import ir.ASTVisitor;
+import java.util.LinkedList;
 
 public class Block extends Statement {
 
     private List<Statement> statements;
     private int blockId;
+    private LinkedList<FieldDeclaration> fd;
+
+    public Block() {
+    }
 
     public Block(int bId) {
-        statements = new ArrayList<Statement>();
         blockId = bId;
     }
 
@@ -26,6 +29,15 @@ public class Block extends Statement {
     public Block(int bId, List<Statement> s) {
         blockId = bId;
         statements = s;
+    }
+
+    public Block(List<Statement> statements, LinkedList<FieldDeclaration> fd) {
+        this.statements = statements;
+        this.fd = fd;
+    }
+
+    public Block(LinkedList<FieldDeclaration> fd) {
+        this.fd = fd;
     }
 
     public void addStatement(Statement s) {
@@ -47,14 +59,19 @@ public class Block extends Statement {
     @Override
     public String toString() {
         String rtn = "";
-
-        for (Statement s : statements) {
-            rtn += s.toString() + '\n';
+        if (fd != null) {
+            for (FieldDeclaration s1 : fd) {
+                rtn += s1.toString() + '\n';
+            }
+        }
+        if (statements != null) {
+            for (Statement s : statements) {
+                if (s != null) {
+                    rtn += s.toString() + '\n';
+                }
+            }
         }
 
-        if (rtn.length() > 0) {
-            return rtn.substring(0, rtn.length() - 1); // remove last new line char
-        }
         return rtn;
     }
 
@@ -62,5 +79,4 @@ public class Block extends Statement {
     public <T> T accept(ASTVisitor<T> v) {
         return v.visit(this);
     }
-
 }

@@ -19,8 +19,26 @@ public class Body extends Statement {
     }
 
     @Override
+    public String toString() {
+        if (block != null) {
+            return block.toString();
+        } else {
+            return "";
+        }
+    }
+
+    public Block getBlock() {
+        return block;
+    }
+
+    public void setBlock(Block block) {
+        this.block = block;
+    }
+
+    
+    
+    @Override
     public <T> T accept(ASTVisitor<T> v) {
         return v.visit(this);
     }
-
 }

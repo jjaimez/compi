@@ -12,7 +12,8 @@ import java.util.LinkedList;
  *
  * @author jacinto
  */
-public class ClassDeclaration extends AST{
+public class ClassDeclaration extends AST {
+
     private String id;
     private Declaration declarations;
 
@@ -40,12 +41,19 @@ public class ClassDeclaration extends AST{
     public void setDeclarations(Declaration declarations) {
         this.declarations = declarations;
     }
-       
-    
-      @Override
+
+    @Override
+    public String toString() {
+
+        if (declarations != null) {
+            return "class " + id + " " + declarations.toString();
+        } else {
+            return "class " + id;
+        }
+    }
+
+    @Override
     public <T> T accept(ASTVisitor<T> v) {
         return v.visit(this);
     }
-    
-    
 }

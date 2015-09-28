@@ -23,8 +23,8 @@ public class MethodCall extends Expression {
         this.id = id;
         this.expressions = expressions;
     }
-    
-      public MethodCall(String id, MethodCall mc) {
+
+    public MethodCall(String id, MethodCall mc) {
         this.id = id;
         this.mc = mc;
     }
@@ -35,6 +35,25 @@ public class MethodCall extends Expression {
 
     public void setExpressions(List<Expression> expressions) {
         this.expressions = expressions;
+    }
+    
+     public List<Expression> getExpressions() {
+        return expressions;
+    }
+    
+
+    @Override
+    public String toString() {
+        String s = id + " ";
+        if (expressions != null) {
+            s += expressions.toString();
+        }
+        if (mc != null) {
+            s += mc.toString();
+        }
+
+        return s;
+
     }
 
     @Override

@@ -23,6 +23,13 @@ public class MethodCallStmt extends Statement {
     public MethodCallStmt(MethodCall m) {
         this.m = m;
     }
+    
+    @Override
+    public String toString(){
+        return m.toString();
+    }
+    
+    
     @Override
     public <T> T accept(ASTVisitor<T> v) {
         return v.visit(this);

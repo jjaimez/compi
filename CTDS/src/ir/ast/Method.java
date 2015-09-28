@@ -9,13 +9,12 @@ import ir.ASTVisitor;
 import java.util.List;
 
 public class Method extends Expression {
-    
+
     private Type type;
     private String id;
     private List<Parameter> parameters;
     private Body body;
-    
-    
+
     public Method(String id) {
         this.id = id;
 
@@ -32,6 +31,50 @@ public class Method extends Expression {
         this.type = type;
         this.id = id;
         this.body = body;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public List<Parameter> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(List<Parameter> parameters) {
+        this.parameters = parameters;
+    }
+
+    public Body getBody() {
+        return body;
+    }
+
+    public void setBody(Body body) {
+        this.body = body;
+    }
+
+    public Expression getExpr() {
+        return expr;
+    }
+
+    public void setExpr(Expression expr) {
+        this.expr = expr;
+    }
+
+    @Override
+    public String toString() {
+        String s = type.toString() + " " + id + "(";
+        if (parameters != null) {
+            for (Parameter p : parameters) {
+                s += p.toString();
+            }
+        }
+        s += "){" + '\n' + body.toString() + "}";
+        return s;
     }
 
     @Override

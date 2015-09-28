@@ -44,7 +44,7 @@ public class AssignStmt extends Statement {
 	
 	@Override
 	public String toString() {
-		return location + " " + operator + " " + expr;
+		return location.toString() + " " + operator.toString() + " " + expr.toString();
 		
 	}
 

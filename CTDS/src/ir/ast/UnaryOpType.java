@@ -21,4 +21,19 @@ public enum UnaryOpType {
         return null;
     }
 
+    public boolean isMinus() {
+        if (this == UnaryOpType.MINUS) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean isNot() {
+        if (this == UnaryOpType.NOT) {
+            return true;
+        }
+
+        return false;
+    }
 }

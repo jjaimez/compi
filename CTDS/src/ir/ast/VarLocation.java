@@ -3,7 +3,6 @@
  * Proyecto: CompiladorCTDS
  * Definicion 
  */
-
 package ir.ast;
 
 import ir.ASTVisitor;
@@ -41,6 +40,13 @@ public class VarLocation extends Location {
 
     @Override
     public String toString() {
+        if (exp != null) {
+            return id + " " + exp.toString();
+
+        }
+        if (location != null) {
+            return id + " " + location.toString();
+        }
         return id;
     }
 

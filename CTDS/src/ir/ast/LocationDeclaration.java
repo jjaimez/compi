@@ -7,8 +7,8 @@ package ir.ast;
 
 import ir.ASTVisitor;
 
+public class LocationDeclaration extends AST {
 
-public class LocationDeclaration extends AST{
     private String id;
     private IntLiteral size;
 
@@ -36,15 +36,18 @@ public class LocationDeclaration extends AST{
     public void setSize(IntLiteral size) {
         this.size = size;
     }
-    
-    
-    
-     @Override
+
+    @Override
+    public String toString() {
+        if (size != null) {
+            return id + "[" + size.toString() + "]";
+        } else {
+            return id;
+        }
+    }
+
+    @Override
     public <T> T accept(ASTVisitor<T> v) {
         return v.visit(this);
     }
-    
-    
-    
-    
 }

@@ -12,7 +12,8 @@ import java.util.LinkedList;
  *
  * @author jacinto
  */
-public class Program extends AST{
+public class Program extends AST {
+
     private LinkedList<ClassDeclaration> classDeclarations;
 
     public Program(LinkedList<ClassDeclaration> classDeclarations) {
@@ -25,10 +26,20 @@ public class Program extends AST{
 
     public void setClassDeclarations(LinkedList<ClassDeclaration> classDeclarations) {
         this.classDeclarations = classDeclarations;
-    }   
-    
-    
-     @Override
+    }
+
+    @Override
+    public String toString() {
+        String s = "";
+        if (classDeclarations != null) {
+            for (ClassDeclaration c : classDeclarations) {
+                s += c.toString() + '\n';
+            }
+        }
+        return s;
+    }
+
+    @Override
     public <T> T accept(ASTVisitor<T> v) {
         return v.visit(this);
     }

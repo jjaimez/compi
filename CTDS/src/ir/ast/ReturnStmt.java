@@ -32,7 +32,7 @@ public class ReturnStmt extends Statement {
 			return "return";
 		}
 		else {
-			return "return " + expression;
+			return "return " + expression.toString();
 		}
 	}
 
