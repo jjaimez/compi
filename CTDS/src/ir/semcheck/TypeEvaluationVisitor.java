@@ -1,25 +1,41 @@
 package ir.semcheck;
 
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * Visitor que busca errorres semanticos
+ */
 import java.util.List;
 
 import ir.ASTVisitor;
 import ir.ast.*;
-//import error.Error; // define class error
+import java.util.LinkedList;
+import error.Error;
 
 // type checker, concrete visitor 
 public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 
-    private List<Error> errors;
+    private LinkedList<Error> errors;
+
+    public TypeEvaluationVisitor() {
+        this.errors = new LinkedList<Error>();
+    }
 
     private void addError(AST a, String desc) {
-        //errors.add(new Error(a.getLineNumber(), a.getColumnNumber(), desc));
+        errors.add(new Error(a.getLineNumber(), a.getColumnNumber(), desc));
     }
 
     public List<Error> getErrors() {
         return errors;
     }
 
-    public void setErrors(List<Error> errors) {
+    public void showErrors() {
+        for (Error e : errors) {
+            e.show();
+        }
+    }
+
+    public void setErrors(LinkedList<Error> errors) {
         this.errors = errors;
     }
 
@@ -85,7 +101,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
     }
 
     @Override
-    public Type visit(VarLocation loc) {
+    public Type visit(VarLocation loc) { //ACA NECESITAMOS LA TABLA DE SIMBOLOS
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
@@ -266,17 +282,30 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
     }
 
     @Override
-    public Type visit(Parameter p) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Type visit(Parameter p) { // FIJARSE SI EL ID ES DEL MISMO TIPO?
+        if (p.getType().isUndefined() || p.getType().isVoid()) {
+            addError(p, "el parametro no tiene tipo");
+            return Type.UNDEFINED;
+        }
+        return Type.VOID;
     }
 
     @Override
     public Type visit(Method m) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (m.getType().isUndefined()) {
+            addError(m, "la declaracion del metodo no tiene tipo");
+            return Type.UNDEFINED;
+        }
+        for (Parameter p : m.getParameters()) {
+            m.accept(this);
+        }
+        m.getBody().accept(this);
+        return Type.VOID;
+
     }
 
     @Override
-    public Type visit(FieldDeclaration fd) { // Tambien hay q revisar los de adentro?
+    public Type visit(FieldDeclaration fd) { // Tambien hay q revisar los de adentro!!
         if (fd.getType().isUndefined() || fd.getType().isVoid()) {
             addError(fd, "la declaracion no tiene tipo");
         }
@@ -314,7 +343,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
     }
 
     @Override
-    public Type visit(LocationDeclaration ld) {
+    public Type visit(LocationDeclaration ld) { //CON TABLA DE SIMOBLOS TMB
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
