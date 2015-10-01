@@ -64,7 +64,12 @@ public class Method extends Expression {
     public void setExpr(Expression expr) {
         this.expr = expr;
     }
-
+    
+    @Override
+    public Type getType(){
+        return this.type;
+    }
+    
     @Override
     public String toString() {
         String s = type.toString() + " " + id + "(";
@@ -73,7 +78,12 @@ public class Method extends Expression {
                 s += p.toString();
             }
         }
-        s += "){" + '\n' + body.toString() + "}";
+        if(body.toString() != "extern"){
+            s += "){" + '\n' + body.toString() + "}";
+        }
+        else{
+            s+= ") "+ body.toString()+ ";";
+        }
         return s;
     }
 

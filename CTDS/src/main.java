@@ -1,5 +1,6 @@
 
 import ir.semcheck.PrintVisitor;
+import ir.semcheck.TypeEvaluationVisitor;
 import parser.parser;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -16,7 +17,8 @@ public class main {
             PrintVisitor pv = new PrintVisitor();
             pv.visit(p.getAST());
             System.out.println("--------------------------");
-
+            TypeEvaluationVisitor tev = new TypeEvaluationVisitor();
+            tev.visit(p.getAST());
         }
         /*  System.out.println("<<<<<<<<<< Comienzan los test negativos >>>>>>>>>>");
          for(int i =1; i< 14; i++){

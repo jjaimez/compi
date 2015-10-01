@@ -1,8 +1,9 @@
 class Program {
 	void main() {
-	 	id = id.id.id();
-		id = id.id.id(exp);
-		id = id.id.id(exp,exp2,5-4);
-		id.id = id.id();
+                int id1;
+                id1 = id2.id3.id4();
+		id5 = i6.i7.i8(exp);
+		id9 = id10.id11.id12(exp,exp2,5-4);
+		id13.id14 = id15.id16();
 	}
 }

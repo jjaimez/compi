@@ -84,7 +84,6 @@ non terminal Expression expr;
 non terminal Statement statement;
 non terminal Body body;
 non terminal Block block ;
-non terminal BinOpType operations;
 
 /* Precedences */
 precedence left OR;
@@ -195,24 +194,25 @@ expr_sequence ::= expr:e {: LinkedList<Expression> l = new LinkedList<Expression
 expr ::= location:loc {: RESULT =loc ; :}
             | method_call:mc {: RESULT = mc ; :}
             | literal:l {: RESULT =l ; :} 
-            | expr:e operations:op expr:e2 {: RESULT = new BinOpExpr(e,op,e2) ; :} 
+            | expr:e PLUS expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.PLUS,e2) ; :}
+            | expr:e MINUS expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.MINUS,e2) ; :}
+            | expr:e TIMES expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.TIMES,e2) ; :}
+            | expr:e MOD expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.MOD,e2) ; :}
+            | expr:e DIVIDE expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.DIVIDE,e2) ; :}
+            | expr:e LT expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.LT,e2) ; :}
+            | expr:e GT expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.GT,e2) ; :}
+            | expr:e LTEQ expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.LTEQ,e2) ; :}
+            | expr:e GTEQ expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.GTEQ,e2) ; :}
+            | expr:e EQEQ expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.EQEQ,e2) ; :}
+            | expr:e NOTEQ expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.NOTEQ,e2) ; :}
+            | expr:e AND expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.AND,e2) ; :}
+            | expr:e OR expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.OR,e2) ; :}
+
             | MINUS expr:e {: RESULT = new UnaryOpExpr(UnaryOpType.MINUS,e) ; :}  %prec UMINUS 
             | NOT expr:e {: RESULT = new UnaryOpExpr(UnaryOpType.NOT,e) ; :}  %prec UMINUS
             | LPAREN expr:e RPAREN {: RESULT = e; :};
 
-operations ::= PLUS {: RESULT = BinOpType.PLUS; :}
-            | MINUS {: RESULT = BinOpType.MINUS; :}
-            | TIMES {: RESULT = BinOpType.TIMES; :}
-            | MOD {: RESULT = BinOpType.MOD; :}
-            | DIVIDE {: RESULT = BinOpType.DIVIDE; :}
-            | LT {: RESULT = BinOpType.LT; :}
-            | GT {: RESULT = BinOpType.GT; :}
-            | LTEQ {: RESULT = BinOpType.LTEQ; :}
-            | GTEQ {: RESULT = BinOpType.GTEQ; :}
-            | EQEQ {: RESULT = BinOpType.EQEQ; :}
-            | NOTEQ {: RESULT = BinOpType.NOTEQ; :}
-            | AND {: RESULT = BinOpType.AND; :}
-            | OR {: RESULT = BinOpType.OR; :}; 
+
     
 literal ::= int_literal:il {: RESULT = il ; :}
             | float_literal:fl {: RESULT = fl ; :}

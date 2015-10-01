@@ -16,7 +16,8 @@ class Program {
 		y = (y + y) / y;
 		y = y % y;
 		y = y * y;
-	
+                y = y + y * y;
+                y = y + y / y;
 
 		b = b == b;
 		b = b != b;

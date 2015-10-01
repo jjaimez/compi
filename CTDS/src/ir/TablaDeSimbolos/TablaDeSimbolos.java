@@ -45,9 +45,8 @@ public class TablaDeSimbolos {
     public AST search(String id) {
         for (int i = 0; i < pila.size(); i++) {
             HashMap<String, AST> a = pila.get(i);
-            AST d = a.get(id);
-            if (d != null) {
-                return d;
+            if (a.containsKey(id)) {
+                return a.get(id);
             }
         }
         return null;

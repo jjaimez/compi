@@ -23,7 +23,7 @@ public class UnaryOpExpr extends Expression {
 
     @Override
     public String toString() {
-        return operator.toString() + " " + operand.toString();
+        return "("+operator.toString() + " " + operand.toString()+")";
     }
 
     public void setOperator(UnaryOpType operator) {

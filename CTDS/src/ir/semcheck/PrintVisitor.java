@@ -152,6 +152,7 @@ public class PrintVisitor implements ASTVisitor<String> {
 
     @Override
     public String visit(VarLocation loc) {
+        System.out.println("1231231");
         return loc.toString();
     }
 

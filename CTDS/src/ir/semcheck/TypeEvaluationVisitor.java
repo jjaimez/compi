@@ -93,6 +93,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
     @Override
     public Type visit(IntLiteral lit) {
         if (lit.getType().isInt()) {
+                        lit.setType(Type.INT);
             return Type.INT;
         } else {
             addError(lit, "Tipo invalido, se esperaba un entero");
@@ -102,7 +103,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 
     @Override
     public Type visit(VarLocation loc) { //ACA NECESITAMOS LA TABLA DE SIMBOLOS
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return Type.INT;
     }
 
     @Override
@@ -164,6 +165,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
     @Override
     public Type visit(BoolLiteral lit) {
         if (lit.getType().isBool()) {
+            lit.setType(Type.BOOL);
             return Type.BOOL;
         } else {
             addError(lit, "Tipo invalido, se esperaba un valor logico");
@@ -174,6 +176,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
     @Override
     public Type visit(FloatLiteral lit) {
         if (lit.getType().isFloat()) {
+            lit.setType(Type.FLOAT);
             return Type.FLOAT;
         } else {
             addError(lit, "Tipo invalido, se esperaba un real");
@@ -296,8 +299,10 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
             addError(m, "la declaracion del metodo no tiene tipo");
             return Type.UNDEFINED;
         }
-        for (Parameter p : m.getParameters()) {
-            m.accept(this);
+        if (m.getParameters() != null) {
+            for (Parameter p : m.getParameters()) {
+                m.accept(this);
+            }
         }
         m.getBody().accept(this);
         return Type.VOID;
@@ -314,11 +319,15 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 
     @Override
     public Type visit(Declaration d) {
-        for (FieldDeclaration f : d.getFieldDecl()) {
-            f.accept(this);
+        if (d.getFieldDecl() != null) {
+            for (FieldDeclaration f : d.getFieldDecl()) {
+                f.accept(this);
+            }
         }
-        for (Method f : d.getMethodDecl()) {
-            f.accept(this);
+        if (d.getMethodDecl() != null) {
+            for (Method f : d.getMethodDecl()) {
+                f.accept(this);
+            }
         }
         return Type.VOID;
     }
