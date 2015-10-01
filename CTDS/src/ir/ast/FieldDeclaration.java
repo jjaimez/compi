@@ -6,16 +6,18 @@
 package ir.ast;
 
 import ir.ASTVisitor;
+import java.util.LinkedList;
 import java.util.List;
 
 public class FieldDeclaration extends AST {
 
     private Type type;
-    private List<LocationDeclaration> l;
+    private List<LocationDeclaration> l = new LinkedList<LocationDeclaration>();
 
     public FieldDeclaration(Type type, List<LocationDeclaration> l) {
         this.type = type;
-        this.l = l;
+        if (l!=null)
+            this.l= l;
     }
 
     public Type getType() {

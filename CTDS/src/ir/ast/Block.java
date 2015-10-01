@@ -11,9 +11,9 @@ import java.util.LinkedList;
 
 public class Block extends Statement {
 
-    private List<Statement> statements;
+    private List<Statement> statements = new LinkedList<Statement>();
     private int blockId;
-    private LinkedList<FieldDeclaration> fd;
+    private LinkedList<FieldDeclaration> fd = new LinkedList<FieldDeclaration>();
 
     public Block() {
     }
@@ -33,7 +33,8 @@ public class Block extends Statement {
 
     public Block(List<Statement> statements, LinkedList<FieldDeclaration> fd) {
         this.statements = statements;
-        this.fd = fd;
+        if (fd != null)
+            this.fd = fd;
     }
 
     public Block(LinkedList<FieldDeclaration> fd) {

@@ -14,10 +14,11 @@ import java.util.LinkedList;
  */
 public class Program extends AST {
 
-    private LinkedList<ClassDeclaration> classDeclarations;
+    private LinkedList<ClassDeclaration> classDeclarations = new LinkedList<ClassDeclaration>();
 
     public Program(LinkedList<ClassDeclaration> classDeclarations) {
-        this.classDeclarations = classDeclarations;
+        if (classDeclarations!=null)
+            this.classDeclarations = classDeclarations;
     }
 
     public LinkedList<ClassDeclaration> getClassDeclarations() {

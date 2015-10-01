@@ -14,12 +14,14 @@ import java.util.LinkedList;
  */
 public class Declaration extends AST {
 
-    private LinkedList<FieldDeclaration> fieldDecl;
-    private LinkedList<Method> methodDecl;
+    private LinkedList<FieldDeclaration> fieldDecl = new LinkedList<FieldDeclaration>();
+    private LinkedList<Method> methodDecl = new LinkedList<Method> ();
 
     public Declaration(LinkedList<FieldDeclaration> fieldDecl, LinkedList<Method> methodDecl) {
-        this.fieldDecl = fieldDecl;
-        this.methodDecl = methodDecl;
+        if (fieldDecl != null)
+                this.fieldDecl = fieldDecl;
+        if (methodDecl != null) 
+            this.methodDecl = methodDecl;
     }
 
     public LinkedList<FieldDeclaration> getFieldDecl() {

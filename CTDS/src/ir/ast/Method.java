@@ -6,13 +6,14 @@
 package ir.ast;
 
 import ir.ASTVisitor;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Method extends Expression {
 
     private Type type;
     private String id;
-    private List<Parameter> parameters;
+    private List<Parameter> parameters = new LinkedList<Parameter>();
     private Body body;
 
     public Method(String id) {
@@ -23,7 +24,8 @@ public class Method extends Expression {
     public Method(Type type, String id, List<Parameter> parameters, Body body) {
         this.type = type;
         this.id = id;
-        this.parameters = parameters;
+        if (parameters!=null)
+            this.parameters = parameters;
         this.body = body;
     }
 

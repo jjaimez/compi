@@ -6,12 +6,13 @@
 package ir.ast;
 
 import ir.ASTVisitor;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MethodCall extends Expression {
 
     private String id;
-    private List<Expression> expressions;
+    private List<Expression> expressions = new LinkedList<Expression>();
     private MethodCall mc;
 
     public MethodCall(String id) {
@@ -21,7 +22,8 @@ public class MethodCall extends Expression {
 
     public MethodCall(String id, List<Expression> expressions) {
         this.id = id;
-        this.expressions = expressions;
+        if (expressions!=null)
+            this.expressions = expressions;
     }
 
     public MethodCall(String id, MethodCall mc) {
