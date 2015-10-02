@@ -1,9 +1,14 @@
 
+import ir.TablaDeSimbolos.Atributo;
+import ir.TablaDeSimbolos.Clase;
+import ir.TablaDeSimbolos.Metodo;
 import ir.semcheck.PrintVisitor;
 import ir.semcheck.TypeEvaluationVisitor;
 import parser.parser;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.HashMap;
+import java.util.LinkedList;
 
 public class main {
 
@@ -19,7 +24,18 @@ public class main {
             System.out.println("--------------------------");
             TypeEvaluationVisitor tev = new TypeEvaluationVisitor();
             tev.visit(p.getAST());
-        }
+            HashMap<String,Clase> c=tev.getTablaSimbolos().getClases();
+                LinkedList<Atributo> atr=c.get("Program").getAtributos();
+                for(Atributo a : atr){
+                    System.out.println(a.getTipo()+" "+a.getNombre());
+                }
+                LinkedList<Metodo> met=c.get("Program").getMetodos();
+                for(Metodo m : met){
+                    System.out.println(m.getTipoReturn().toString()+" "+m.getNombre());
+                    
+                }
+            }
+        
         /*  System.out.println("<<<<<<<<<< Comienzan los test negativos >>>>>>>>>>");
          for(int i =1; i< 14; i++){
          System.out.println("test"+i+ ".ctds" );

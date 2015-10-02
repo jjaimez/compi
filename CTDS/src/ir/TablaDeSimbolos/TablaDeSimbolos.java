@@ -5,80 +5,51 @@ package ir.TablaDeSimbolos;
  * Proyecto: CompiladorCTDS
  * Pila para guardar los ambientes de cada bloque del programa.
  */
-
 import ir.ast.AST;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 public class TablaDeSimbolos {
 
-    private LinkedList<HashMap<String, AST>> pila;
-    private int cantidad;
+    private HashMap<String, Clase> clases;
+    private LinkedList<Bloque> pilaBloque;
 
     public TablaDeSimbolos() {
-        pila = new LinkedList();
-        cantidad = 0;
+        clases = new HashMap<>();
+        pilaBloque = new LinkedList();
     }
 
-    public void push(HashMap<String, AST> ambiente) {
-        pila.addFirst(ambiente);
-        cantidad++;
+    public void pushClase(String nombre, Clase clase) {
+        clases.put(nombre, clase);
     }
 
-    public HashMap<String, AST> top() {
-        return pila.getFirst();
+    public boolean existeClase(String nombre){
+        return clases.containsKey(nombre);
     }
 
-    public void pop() {
-        pila.removeFirst();
-        cantidad--;
+    public HashMap<String, Clase> getClases() {
+        return clases;
     }
 
-    public HashMap<String, AST> getFirst() {
-        return pila.getLast(); 
+
+    public void pushBloque(Bloque ambiente) {
+        pilaBloque.addFirst(ambiente);
     }
 
-    public boolean isEmpty() {
-        return cantidad == 0;
+    public Bloque topBloque() {
+        return pilaBloque.getFirst();
     }
 
-    public AST search(String id) {
-        for (int i = 0; i < pila.size(); i++) {
-            HashMap<String, AST> a = pila.get(i);
-            if (a.containsKey(id)) {
-                return a.get(id);
-            }
-        }
-        return null;
-
+    public void popBloque() {
+        pilaBloque.removeFirst();
     }
 
-    public LinkedList<HashMap<String, AST>> getPila() {
-        return pila;
+    public Bloque getFirstBloque() {
+        return pilaBloque.getLast();
     }
 
-    public void setPila(LinkedList<HashMap<String, AST>> pila) {
-        this.pila = pila;
+    public boolean isEmptyBloque() {
+        return pilaBloque.size() == 0;
     }
 
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    @Override
-    public TablaDeSimbolos clone() {
-        TablaDeSimbolos t = new TablaDeSimbolos();
-        t.cantidad = cantidad;
-        LinkedList<HashMap<String, AST>> l = new LinkedList();
-        for (HashMap<String, AST> a : pila) {
-            HashMap<String, AST> am = (HashMap<String, AST>) a.clone();
-            l.add(am);
-        }
-        t.setPila(l);
-        return t;
-    }
 }
