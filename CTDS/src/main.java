@@ -13,7 +13,7 @@ import java.util.LinkedList;
 public class main {
 
     public static void main(String[] args) throws Exception, RuntimeException {
-        for (int i = 1; i < 22; i++) {
+        for (int i = 1; i < 2; i++) {
             System.out.println("test" + i + ".ctds");
             BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/test/test" + i + ".ctds"));
             Lexer lex = new Lexer(br);
@@ -24,18 +24,20 @@ public class main {
             System.out.println("--------------------------");
             TypeEvaluationVisitor tev = new TypeEvaluationVisitor();
             tev.visit(p.getAST());
-            HashMap<String,Clase> c=tev.getTablaSimbolos().getClases();
-                LinkedList<Atributo> atr=c.get("Program").getAtributos();
-                for(Atributo a : atr){
-                    System.out.println(a.getTipo()+" "+a.getNombre());
-                }
-                LinkedList<Metodo> met=c.get("Program").getMetodos();
-                for(Metodo m : met){
-                    System.out.println(m.getTipoReturn().toString()+" "+m.getNombre());
-                    
+            HashMap<String, Clase> c = tev.getTablaSimbolos().getClases();
+            LinkedList<Atributo> atr = c.get("Program").getAtributos();
+            if (atr != null) {
+                for (Atributo a : atr) {
+                    System.out.println(a.getTipo() + " " + a.getNombre());
                 }
             }
-        
+                LinkedList<Metodo> met=c.get("Program").getMetodos();
+            for(Metodo m : met){
+                System.out.println(m.getTipoReturn().toString()+" "+m.getNombre());
+
+             }
+        }
+
         /*  System.out.println("<<<<<<<<<< Comienzan los test negativos >>>>>>>>>>");
          for(int i =1; i< 14; i++){
          System.out.println("test"+i+ ".ctds" );

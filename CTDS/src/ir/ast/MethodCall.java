@@ -42,6 +42,10 @@ public class MethodCall extends Expression {
      public List<Expression> getExpressions() {
         return expressions;
     }
+
+    public String getId() {
+        return id;
+    }
     
 
     @Override

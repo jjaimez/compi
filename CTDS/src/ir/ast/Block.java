@@ -76,6 +76,10 @@ public class Block extends Statement {
         return rtn;
     }
 
+    public LinkedList<FieldDeclaration> getFd() {
+        return fd;
+    }
+
     @Override
     public <T> T accept(ASTVisitor<T> v) {
         return v.visit(this);

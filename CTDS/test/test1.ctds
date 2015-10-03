@@ -1,9 +1,19 @@
 class Program {
-	void main() {
+
+        int metodo(int param, float param2){
+            return 2;
+        }
+
+
+        void main() {
                 int id1;
-                id1 = id2.id3.id4();
-		id5 = i6.i7.i8(exp);
-		id9 = id10.id11.id12(exp,exp2,5-4);
-		id13.id14 = id15.id16();
+                float id5;
+                int id9;
+                id1 = metodo(id9,id5);
+                if(id1==id9){
+                    int id19;
+                    id19=5;
+                }
+                id1=10;
 	}
 }
