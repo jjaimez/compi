@@ -12,11 +12,15 @@ public class LocationDeclaration extends AST {
     private String id;
     private IntLiteral size;
 
-    public LocationDeclaration(String id) {
+    public LocationDeclaration(String id, int line, int col) {
+        this.setLineNumber(line + 1);
+        this.setColumnNumber(col + 1);
         this.id = id;
     }
 
-    public LocationDeclaration(String id, IntLiteral size) {
+    public LocationDeclaration(String id, IntLiteral size, int line, int col) {
+        this.setLineNumber(line + 1);
+        this.setColumnNumber(col + 1);
         this.id = id;
         this.size = size;
     }

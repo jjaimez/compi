@@ -50,8 +50,8 @@ terminal    SEMI, COMMA, LPAREN, RPAREN, LKEY, RKEY, LBRACKET, RBRACKET, DOT;
 /*PALABRAS RESERVADAS*/
 terminal    TYPE_BOOLEAN, BREAK, CLASS, CONTINUE, ELSE, IF, FOR, WHILE, TYPE_FLOAT, TYPE_INT, RETURN, EXTERN;
 terminal  VOID;
-terminal Boolean TRUE;
-terminal Boolean FALSE;
+terminal String TRUE;
+terminal String FALSE;
 /*IDENTIFICADORES*/
 terminal	String IDENTIFIER;
 
@@ -122,8 +122,8 @@ id_def ::= location_decl:ld {: LinkedList<LocationDeclaration> l = new LinkedLis
 				RESULT = l; :};
 
 
-location_decl ::= id:i {:RESULT = new LocationDeclaration(i); :}
-            | id:i LBRACKET int_literal:il RBRACKET {:RESULT = new LocationDeclaration(i,il); :};
+location_decl ::= id:i {:RESULT = new LocationDeclaration(i,ileft,iright); :}
+            | id:i LBRACKET int_literal:il RBRACKET {:RESULT = new LocationDeclaration(i,il,ileft,iright); :};
     
 
 method_decl ::= method:m {: LinkedList<Method> l = new LinkedList<Method>() ;
@@ -159,7 +159,7 @@ statement_decl ::= statement:s {: LinkedList<Statement> l = new LinkedList<State
 		| statement_decl:sd statement:s {: sd.add(s);
 						RESULT = sd ; :};
 
-statement ::= location:loc assign_op:op expr:e SEMI  {:RESULT =  new AssignStmt(loc,op,e);:}
+statement ::= location:loc assign_op:op expr:e SEMI  {:RESULT =  new AssignStmt(loc,op,e,locleft,locright);:}
             | method_call:m SEMI {:RESULT = new MethodCallStmt(m);:}
             | IF LPAREN expr:cond RPAREN statement:ifBl ELSE statement:elseBl {:RESULT = new IfStmt(cond,ifBl,elseBl);:}
             | IF LPAREN expr:cond RPAREN statement:ifBl {:RESULT = new IfStmt(cond,ifBl);:}
@@ -177,13 +177,13 @@ assign_op ::= EQ {: RESULT = AssignOpType.ASSIGN;:}
             | PLUSEQ  {: RESULT = AssignOpType.INCREMENT;:}
             | MINUSEQ  {: RESULT = AssignOpType.DECREMENT;:};
 
-method_call ::= id:i LPAREN RPAREN  {:RESULT = new MethodCall(i);:}                                      
-            | id:i LPAREN expr_sequence:exp RPAREN  {:RESULT = new MethodCall(i,exp);:}  
-            | id:i DOT method_call:mc  {:RESULT = new MethodCall(i,mc);:} ; 
+method_call ::= id:i LPAREN RPAREN  {:RESULT = new MethodCall(i,ileft,iright);:}                                      
+            | id:i LPAREN expr_sequence:exp RPAREN  {:RESULT = new MethodCall(i,exp,ileft,iright);:}  
+            | id:i DOT method_call:mc  {:RESULT = new MethodCall(i,mc,ileft,iright);:} ; 
 
-location ::= id:i {:RESULT = new VarLocation(i);:}
-            |id:i DOT location:l {:RESULT = new VarLocation(i,l);:}
-            |id:i LBRACKET expr:exp RBRACKET {:RESULT = new VarLocation(i,exp);:};
+location ::= id:i {:RESULT = new VarLocation(i,ileft,iright);:}
+            |id:i DOT location:l {:RESULT = new VarLocation(i,l,ileft,iright);:}
+            |id:i LBRACKET expr:exp RBRACKET {:RESULT = new VarLocation(i,exp,ileft,iright);:};
 
 expr_sequence ::= expr:e {: LinkedList<Expression> l = new LinkedList<Expression>() ;
 			l.add(e);
@@ -194,22 +194,22 @@ expr_sequence ::= expr:e {: LinkedList<Expression> l = new LinkedList<Expression
 expr ::= location:loc {: RESULT =loc ; :}
             | method_call:mc {: RESULT = mc ; :}
             | literal:l {: RESULT =l ; :} 
-            | expr:e PLUS expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.PLUS,e2) ; :}
-            | expr:e MINUS expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.MINUS,e2) ; :}
-            | expr:e TIMES expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.TIMES,e2) ; :}
-            | expr:e MOD expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.MOD,e2) ; :}
-            | expr:e DIVIDE expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.DIVIDE,e2) ; :}
-            | expr:e LT expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.LT,e2) ; :}
-            | expr:e GT expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.GT,e2) ; :}
-            | expr:e LTEQ expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.LTEQ,e2) ; :}
-            | expr:e GTEQ expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.GTEQ,e2) ; :}
-            | expr:e EQEQ expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.EQEQ,e2) ; :}
-            | expr:e NOTEQ expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.NOTEQ,e2) ; :}
-            | expr:e AND expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.AND,e2) ; :}
-            | expr:e OR expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.OR,e2) ; :}
+            | expr:e PLUS expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.PLUS,e2,eleft,eright) ; :}
+            | expr:e MINUS expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.MINUS,e2,eleft,eright) ; :}
+            | expr:e TIMES expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.TIMES,e2,eleft,eright) ; :}
+            | expr:e MOD expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.MOD,e2,eleft,eright) ; :}
+            | expr:e DIVIDE expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.DIVIDE,e2,eleft,eright) ; :}
+            | expr:e LT expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.LT,e2,eleft,eright) ; :}
+            | expr:e GT expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.GT,e2,eleft,eright) ; :}
+            | expr:e LTEQ expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.LTEQ,e2,eleft,eright) ; :}
+            | expr:e GTEQ expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.GTEQ,e2,eleft,eright) ; :}
+            | expr:e EQEQ expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.EQEQ,e2,eleft,eright) ; :}
+            | expr:e NOTEQ expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.NOTEQ,e2,eleft,eright) ; :}
+            | expr:e AND expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.AND,e2,eleft,eright) ; :}
+            | expr:e OR expr:e2 {: RESULT = new BinOpExpr(e,BinOpType.OR,e2,eleft,eright) ; :}
 
-            | MINUS expr:e {: RESULT = new UnaryOpExpr(UnaryOpType.MINUS,e) ; :}  %prec UMINUS 
-            | NOT expr:e {: RESULT = new UnaryOpExpr(UnaryOpType.NOT,e) ; :}  %prec UMINUS
+            | MINUS expr:e {: RESULT = new UnaryOpExpr(UnaryOpType.MINUS,e,eleft,eright) ; :}  %prec UMINUS 
+            | NOT expr:e {: RESULT = new UnaryOpExpr(UnaryOpType.NOT,e,eleft,eright) ; :}  %prec UMINUS
             | LPAREN expr:e RPAREN {: RESULT = e; :};
 
 
@@ -220,9 +220,9 @@ literal ::= int_literal:il {: RESULT = il ; :}
     
 id ::= IDENTIFIER:i {: RESULT = i ;:};
 
-int_literal ::= INT_LITERAL:n {: RESULT = new IntLiteral(n) ;:};
+int_literal ::= INT_LITERAL:n {: RESULT = new IntLiteral(n,nleft,nright) ;:};
 
-bool_literal ::= TRUE {: RESULT = new BoolLiteral(true) ;:} 
-            | FALSE {: RESULT = new BoolLiteral(false) ;:} ;
+bool_literal ::= TRUE:t {: RESULT = new BoolLiteral(t,tleft,tright) ;:} 
+	| FALSE:f {: RESULT = new BoolLiteral(f,fleft,fright) ;:} ;
 
-float_literal ::= FLOAT_LITERAL:f {: RESULT = new FloatLiteral(f);:} ;
+float_literal ::= FLOAT_LITERAL:f {: RESULT = new FloatLiteral(f,fleft,fright);:} ;

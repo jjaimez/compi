@@ -13,18 +13,24 @@ public class VarLocation extends Location {
     private Expression exp;
     private VarLocation location;
 
-    public VarLocation(String id) {
+    public VarLocation(String id, int line, int col) {
+        this.setLineNumber(line + 1);
+        this.setColumnNumber(col + 1);
         this.id = id;
         this.blockId = -1;
     }
 
-    public VarLocation(String id, Expression exp) {
+    public VarLocation(String id, Expression exp, int line, int col) {
+        this.setLineNumber(line + 1);
+        this.setColumnNumber(col + 1);
         this.id = id;
         this.blockId = -1;
         this.exp = exp;
     }
 
-    public VarLocation(String id, VarLocation loc) {
+    public VarLocation(String id, VarLocation loc, int line, int col) {
+        this.setLineNumber(line + 1);
+        this.setColumnNumber(col + 1);
         this.id = id;
         this.blockId = -1;
         location = loc;

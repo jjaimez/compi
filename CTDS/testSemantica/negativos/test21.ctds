@@ -1,0 +1,14 @@
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * test: Las expresiones (expr) iniciales de un for deben ser de tipo int.
+ */
+
+class main {
+
+        void main() {
+        	int j;
+        	j = 0;
+        	for (j = true;j < 2; j = j+1){
+        	}
+}

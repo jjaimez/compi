@@ -3,20 +3,20 @@
  * Proyecto: CompiladorCTDS
  * Representacion numero flotante
  */
-
 package ir.ast;
 
 import ir.ASTVisitor;
-
 
 public class FloatLiteral extends Literal {
 
     private Float value;
 
-    public FloatLiteral(Float value) {
+    public FloatLiteral(Float value, int line, int col) {
+        this.setLineNumber(line+1);
+        this.setColumnNumber(col+1);
         this.value = value;
     }
-    
+
     @Override
     public Type getType() {
         return Type.FLOAT;
@@ -40,7 +40,4 @@ public class FloatLiteral extends Literal {
         return value.toString();
     }
 
-    
-    
-    
 }

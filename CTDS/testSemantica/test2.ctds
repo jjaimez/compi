@@ -1,0 +1,28 @@
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * test: Ningun identificador es usado antes de ser declarado.
+ */
+
+
+ class program {
+        boolean id2;
+
+        void p() {
+                int id1;
+		}
+}
+
+
+class program2 {
+        void a() {¿
+                int id1;
+	}
+}
+
+
+class main {
+        void main() {
+                int id1;
+	}
+}

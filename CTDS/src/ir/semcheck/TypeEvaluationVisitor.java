@@ -10,13 +10,11 @@ import java.util.List;
 import ir.ASTVisitor;
 import ir.ast.*;
 import java.util.LinkedList;
-import error.Error;
 import ir.TablaDeSimbolos.Atributo;
 import ir.TablaDeSimbolos.Bloque;
 import ir.TablaDeSimbolos.Clase;
 import ir.TablaDeSimbolos.Metodo;
 import ir.TablaDeSimbolos.TablaDeSimbolos;
-import java.util.HashMap;
 
 // type checker, concrete visitor 
 public class TypeEvaluationVisitor implements ASTVisitor<Type> {
@@ -30,18 +28,8 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 
     }
 
-    private void addError(AST a, String desc) {
-        errors.add(new Error(a.getLineNumber(), a.getColumnNumber(), desc));
-    }
-
-    public List<Error> getErrors() {
+     public List<Error> getErrors() {
         return errors;
-    }
-
-    public void showErrors() {
-        for (Error e : errors) {
-            e.show();
-        }
     }
 
     public void setErrors(LinkedList<Error> errors) {
@@ -57,7 +45,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
     @Override
     public Type visit(IfStmt stmt) {
         if(!stmt.getCondition().accept(this).isBool()){
-            System.err.println("Condicion del if no es booleana");
+            System.err.println("Condicion del if no es booleana, linea: "+stmt.getCondition().getLineNumber()+" columna: "+stmt.getCondition().getColumnNumber());
             System.exit(1);
         }else{
             stmt.getIfBlock().accept(this);
@@ -77,7 +65,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
     public Type visit(VarLocation loc) {
         Atributo var= tablaSimbolos.getAtributo(loc.getId());
         if(var==null){
-            System.err.println("variable '"+loc.getId()+"' no definida");
+            System.err.println("variable '"+loc.getId()+"' no definida, linea: "+loc.getLineNumber()+" columna: "+loc.getColumnNumber());
             System.exit(1);
         }else
             return var.getTipo();
@@ -91,11 +79,11 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
         if (loc != null) {
             Type typeStmt = stmt.getExpression().accept(this);
             if (loc.getTipo() != typeStmt) {
-                System.err.println("error de tipos");
+                System.err.println("error de tipos, linea: "+stmt.getExpression().getLineNumber()+" columna: "+stmt.getExpression().getColumnNumber());
                 System.exit(1);
             }
         } else {
-            System.err.println("variable no definida");
+            System.err.println("variable no definida, linea: "+stmt.getLocation().getLineNumber()+" columna: "+stmt.getLocation().getColumnNumber());
             System.exit(1);
         }
         return Type.VOID;
@@ -108,7 +96,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
         Type typeRight= expr.getRightOperand().accept(this);
 
         if(typeLeft != typeRight){
-            System.err.println("error de tipos, no se puede hacer "+typeLeft.toString()+expr.getOperator().toString()+typeRight.toString());
+            System.err.println("error de tipos, no se puede hacer "+typeLeft.toString()+expr.getOperator().toString()+typeRight.toString()+", linea: "+expr.getLineNumber()+" columna: "+expr.getColumnNumber());
             System.exit(1);
         }
         BinOpType op= expr.getOperator();
@@ -151,7 +139,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
                     }
                     tablaSimbolos.setVariableBloque(atributo);
                 } else {
-                    System.out.println("Error, ya existe una variable en el bloque corriente'"+ld.getId()+"'");
+                    System.out.println("Error, ya existe una variable en el bloque corriente'"+ld.getId()+"'"+", linea: "+ld.getLineNumber()+" columna: "+ld.getColumnNumber());
                     System.exit(1);
                 }
             }
@@ -175,7 +163,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
         if(expr.getOperator()== UnaryOpType.MINUS){
             //el tipo de la expresión debe ser si o si float o int
             if(!typeExpr.isFloat() && !typeExpr.isInt() ){
-                    System.out.println("no se puede aplicar '-' a una expresión de tipo "+typeExpr.toString());
+                    System.out.println("no se puede aplicar '-' a una expresión de tipo "+typeExpr.toString()+", linea: "+expr.getLineNumber()+" columna: "+expr.getColumnNumber());
                     System.exit(1);
             }
             else
@@ -183,7 +171,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
         }else{
             //el tipo debe ser booleano
             if(!typeExpr.isBool()){
-                    System.out.println("no se puede aplicar '!' a una expresión de tipo "+typeExpr.toString());
+                    System.out.println("no se puede aplicar '!' a una expresión de tipo "+typeExpr.toString()+", linea: "+expr.getLineNumber()+" columna: "+expr.getColumnNumber());
                     System.exit(1);
             }else
                 return Type.BOOL;
@@ -213,12 +201,12 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
     public Type visit(MethodCall stmt) {
         Metodo met= tablaSimbolos.getMetodo(tablaSimbolos.getUltimaClase(), stmt.getId());
         if(met.getParametros().size()!= stmt.getExpressions().size()){
-            System.err.println("Error en la cantidad de parametros en la llamada del metodo "+stmt.getId());
+            System.err.println("Error en la cantidad de parametros en la llamada del metodo "+stmt.getId()+", linea: "+stmt.getLineNumber());
             System.exit(1);
         }
         for(int i=0;i<stmt.getExpressions().size();i++){
             if(stmt.getExpressions().get(i).accept(this)!=met.getParametros().get(i).getType()){
-            System.err.println("Error de tipo de parametros en la llamada del metodo "+stmt.getId());
+            System.err.println("Error de tipo de parametros en la llamada del metodo "+stmt.getId()+", linea: "+stmt.getLineNumber());
             System.exit(1);
             }
         }

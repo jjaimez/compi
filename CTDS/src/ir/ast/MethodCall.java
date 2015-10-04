@@ -15,18 +15,24 @@ public class MethodCall extends Expression {
     private List<Expression> expressions = new LinkedList<Expression>();
     private MethodCall mc;
 
-    public MethodCall(String id) {
+    public MethodCall(String id, int line, int col) {
+        this.setLineNumber(line + 1);
+        this.setColumnNumber(col + 1);
         this.id = id;
 
     }
 
-    public MethodCall(String id, List<Expression> expressions) {
+    public MethodCall(String id, List<Expression> expressions, int line, int col) {
+        this.setLineNumber(line + 1);
+        this.setColumnNumber(col + 1);
         this.id = id;
         if (expressions!=null)
             this.expressions = expressions;
     }
 
-    public MethodCall(String id, MethodCall mc) {
+    public MethodCall(String id, MethodCall mc, int line, int col) {
+        this.setLineNumber(line + 1);
+        this.setColumnNumber(col + 1);
         this.id = id;
         this.mc = mc;
     }

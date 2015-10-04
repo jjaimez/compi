@@ -1,0 +1,12 @@
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * test: Todo programa contiene la definicion de una clase y un metodo en la misma clase llamado main.
+Este metodo no tiene parametros. Notar que la ejecucion comienza con el metodo main.
+ */
+
+class Program {
+	int method(){
+		return 1;
+	}
+}
