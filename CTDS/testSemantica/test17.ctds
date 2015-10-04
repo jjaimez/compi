@@ -8,7 +8,11 @@ class main {
 
         void main() {
                 float id1;
-                boolean id2;
+                id1 = 1.3;
+                float id2;
+                id2 = 1.3;
                 id1 = id1 / id2;
+                id1 = id1 + id2;
+                id1 = id1 * id2;
 	}
 }

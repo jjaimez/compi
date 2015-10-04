@@ -6,7 +6,19 @@ Este metodo no tiene parametros. Notar que la ejecucion comienza con el metodo m
  */
 
 class main {
-	void method(){
+	boolean method(){
+		return true;
+	}
+
+	boolean method2(){
+		return true == false;
+	}
+
+	void method3(){
 		return;
+	}
+
+	 void main() {
+        int id1;
 	}
 }

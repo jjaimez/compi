@@ -1,13 +1,14 @@
 /*
  * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
  * Proyecto: CompiladorCTDS
- * test: En toda locacion de la forma id[expr], id debe ser una variable arreglo (array).
+ * test: Las expresiones (expr) finales de un for deben ser de tipo int.
  */
 
 class main {
 
         void main() {
-                int id1;
-                id1[1] = id1[2];
-	}
+        	int j;
+        	j = 0;
+        	for (j = 1;j < 2; j = j+1){
+        	}
 }

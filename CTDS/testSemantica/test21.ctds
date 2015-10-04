@@ -9,6 +9,6 @@ class main {
         void main() {
         	int j;
         	j = 0;
-        	for (j = true;j < 2; j = j+1){
+        	for (j = 1;j < 2; j = j+1){
         	}
 }

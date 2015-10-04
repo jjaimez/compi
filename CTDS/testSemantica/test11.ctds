@@ -1,12 +1,15 @@
 /*
  * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
  * Proyecto: CompiladorCTDS
- * test: Un id usado como una location debe estar declarado como un parametro o como una variable local o global.
+ * test: La expr en una sentencia if debe ser boolean.
  */
 
 class main {
 
         void main() {
-                id1 = 31;
+                int id1;
+                if (false == true){
+                	id1 = 1;
+                } 
 	}
 }

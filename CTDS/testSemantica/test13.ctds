@@ -1,13 +1,15 @@
 /*
  * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
  * Proyecto: CompiladorCTDS
- * test: En toda locacion de la forma id[expr], el tipo de expr debe ser int.
+ * test: Las sentencias break solo pueden encontrarse en el cuerpo de un ciclo.
  */
 
 class main {
 
         void main() {
-                int id1[5];
-                id1[1] = id1[1.3];
+
+        	while (true){
+                break;
+        	}
 	}
 }

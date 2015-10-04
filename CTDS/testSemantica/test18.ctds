@@ -8,7 +8,14 @@ class main {
 
         void main() {
                 int id1;
-                boolean id2;
+                int id2;
+                id1 = 0;
+                id2 = 0;
                 id2 = id2 == id1;
+                boolean i1;
+                boolean i2;
+                i1 = false;
+                i2 = false;
+                i2 = i2 == i1;
 	}
 }

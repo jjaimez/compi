@@ -1,15 +1,14 @@
 /*
  * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
  * Proyecto: CompiladorCTDS
- * test: La expr en una sentencia if debe ser boolean.
+ * test: Las sentencias continue solo pueden encontrarse en el cuerpo de un ciclo.
  */
 
 class main {
 
         void main() {
-                int id1;
-                if (id1+1){
-                	id1 = 1;
-                } 
+        	while (true){
+                continue;
+        	}
 	}
 }

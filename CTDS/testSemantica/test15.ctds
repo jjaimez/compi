@@ -8,7 +8,7 @@ class main {
 
         void main() {
                 int id1;
-                while (id1+1){
+                while (!(false == true)){
                 	id1 = 1;
                 } 
 	}

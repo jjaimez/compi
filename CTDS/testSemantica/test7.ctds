@@ -12,6 +12,7 @@ class main {
 
         void main() {
                 int id1;
-                id1 = metodo();
+                id1 = 1;
+                id1 = metodo(id1);
 	}
 }
