@@ -1,7 +1,12 @@
-class Program {
+class Number{
+    int id1;
 
-        int metodo(int param, float param2){
-            return 2;
+}
+
+class Main {
+
+        int metodo(int param, float param2) {
+            return 5;
         }
 
 
@@ -13,7 +18,16 @@ class Program {
                 if(id1==id9){
                     int id19;
                     id19=5;
+                }else{
+                id5+=10.0;
                 }
                 id1=10;
+                for id1=5, id1+7!=5{
+                    id9=10;
+                }
+                while(id9<5){
+                    id1=10;
+                }
+                return;
 	}
 }

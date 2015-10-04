@@ -28,7 +28,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 
     }
 
-     public List<Error> getErrors() {
+    public List<Error> getErrors() {
         return errors;
     }
 
@@ -38,19 +38,23 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 
     @Override
     public Type visit(ReturnStmt stmt) {
+        if (stmt.getExpression() == null) {
+            return Type.VOID;
+        }
         return stmt.getExpression().getType();
 
     }
 
     @Override
     public Type visit(IfStmt stmt) {
-        if(!stmt.getCondition().accept(this).isBool()){
-            System.err.println("Condicion del if no es booleana, linea: "+stmt.getCondition().getLineNumber()+" columna: "+stmt.getCondition().getColumnNumber());
+        if (!stmt.getCondition().accept(this).isBool()) {
+            System.err.println("Condicion del if no es booleana, linea: " + stmt.getCondition().getLineNumber() + " columna: " + stmt.getCondition().getColumnNumber());
             System.exit(1);
-        }else{
+        } else {
             stmt.getIfBlock().accept(this);
-            if(stmt.getElseBlock()!=null)
+            if (stmt.getElseBlock() != null) {
                 stmt.getElseBlock().accept(this);
+            }
         }
         return Type.VOID;
 
@@ -63,12 +67,13 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 
     @Override
     public Type visit(VarLocation loc) {
-        Atributo var= tablaSimbolos.getAtributo(loc.getId());
-        if(var==null){
-            System.err.println("variable '"+loc.getId()+"' no definida, linea: "+loc.getLineNumber()+" columna: "+loc.getColumnNumber());
+        Atributo var = tablaSimbolos.getAtributo(loc.getId());
+        if (var == null) {
+            System.err.println("variable '" + loc.getId() + "' no definida, linea: " + loc.getLineNumber() + " columna: " + loc.getColumnNumber());
             System.exit(1);
-        }else
+        } else {
             return var.getTipo();
+        }
         return Type.VOID;
 
     }
@@ -79,11 +84,11 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
         if (loc != null) {
             Type typeStmt = stmt.getExpression().accept(this);
             if (loc.getTipo() != typeStmt) {
-                System.err.println("error de tipos, linea: "+stmt.getExpression().getLineNumber()+" columna: "+stmt.getExpression().getColumnNumber());
+                System.err.println("error de tipos, linea: " + stmt.getExpression().getLineNumber() + " columna: " + stmt.getExpression().getColumnNumber());
                 System.exit(1);
             }
         } else {
-            System.err.println("variable no definida, linea: "+stmt.getLocation().getLineNumber()+" columna: "+stmt.getLocation().getColumnNumber());
+            System.err.println("variable no definida, linea: " + stmt.getLocation().getLineNumber() + " columna: " + stmt.getLocation().getColumnNumber());
             System.exit(1);
         }
         return Type.VOID;
@@ -93,19 +98,18 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
     @Override
     public Type visit(BinOpExpr expr) {
         Type typeLeft = expr.getLeftOperand().accept(this);
-        Type typeRight= expr.getRightOperand().accept(this);
+        Type typeRight = expr.getRightOperand().accept(this);
 
-        if(typeLeft != typeRight){
-            System.err.println("error de tipos, no se puede hacer "+typeLeft.toString()+expr.getOperator().toString()+typeRight.toString()+", linea: "+expr.getLineNumber()+" columna: "+expr.getColumnNumber());
+        if (typeLeft != typeRight) {
+            System.err.println("error de tipos, no se puede hacer " + typeLeft.toString() + expr.getOperator().toString() + typeRight.toString() + ", linea: " + expr.getLineNumber() + " columna: " + expr.getColumnNumber());
             System.exit(1);
         }
-        BinOpType op= expr.getOperator();
+        BinOpType op = expr.getOperator();
         //CORROBORO QUE SI SON OPERACIONES RELACIONALES O LOGICAS LOS OPERANDOS SEAN LOGICOS Y QUE RETORNE ALGO LOGICO
-        if(op.isConditional() || op.isEquational() || op.isRelational() ){
+        if (op.isConditional() || op.isEquational() || op.isRelational()) {
             expr.setType(Type.BOOL);
             return Type.BOOL;
-        }
-        else{// si es aritmetico retorno el tipo de algun operando
+        } else {// si es aritmetico retorno el tipo de algun operando
             expr.setType(typeLeft);
             return typeLeft;
         }
@@ -139,16 +143,16 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
                     }
                     tablaSimbolos.setVariableBloque(atributo);
                 } else {
-                    System.out.println("Error, ya existe una variable en el bloque corriente'"+ld.getId()+"'"+", linea: "+ld.getLineNumber()+" columna: "+ld.getColumnNumber());
+                    System.out.println("Error, ya existe una variable en el bloque corriente'" + ld.getId() + "'" + ", linea: " + ld.getLineNumber() + " columna: " + ld.getColumnNumber());
                     System.exit(1);
                 }
             }
         }
         Type lastType = Type.VOID; //utizo esto para retornar el tipo, en caso de no ser de retorno es void
         for (Statement s : bl.getStatements()) {
-            if(lastType!=Type.VOID){
-                    System.out.println("No se puede tener sentencias despues de un return");
-                    System.exit(1);
+            if (lastType != Type.VOID) {
+                System.out.println("No se puede tener sentencias despues de un return");
+                System.exit(1);
             }
             lastType = s.accept(this);
         }
@@ -160,21 +164,22 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
     @Override
     public Type visit(UnaryOpExpr expr) {
         Type typeExpr = expr.getOperand().accept(this);
-        if(expr.getOperator()== UnaryOpType.MINUS){
+        if (expr.getOperator() == UnaryOpType.MINUS) {
             //el tipo de la expresión debe ser si o si float o int
-            if(!typeExpr.isFloat() && !typeExpr.isInt() ){
-                    System.out.println("no se puede aplicar '-' a una expresión de tipo "+typeExpr.toString()+", linea: "+expr.getLineNumber()+" columna: "+expr.getColumnNumber());
-                    System.exit(1);
-            }
-            else
+            if (!typeExpr.isFloat() && !typeExpr.isInt()) {
+                System.out.println("no se puede aplicar '-' a una expresión de tipo " + typeExpr.toString() + ", linea: " + expr.getLineNumber() + " columna: " + expr.getColumnNumber());
+                System.exit(1);
+            } else {
                 return typeExpr;
-        }else{
+            }
+        } else {
             //el tipo debe ser booleano
-            if(!typeExpr.isBool()){
-                    System.out.println("no se puede aplicar '!' a una expresión de tipo "+typeExpr.toString()+", linea: "+expr.getLineNumber()+" columna: "+expr.getColumnNumber());
-                    System.exit(1);
-            }else
+            if (!typeExpr.isBool()) {
+                System.out.println("no se puede aplicar '!' a una expresión de tipo " + typeExpr.toString() + ", linea: " + expr.getLineNumber() + " columna: " + expr.getColumnNumber());
+                System.exit(1);
+            } else {
                 return Type.BOOL;
+            }
         }
         return null;
     }
@@ -193,21 +198,28 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 
     @Override
     public Type visit(WhileStmt stmt) {
-        return null;
+        Type t = stmt.getExpr().accept(this);
+        if (!t.isBool()) {
+            System.err.println("El tipo de la expresion debe ser bool. linea: " + stmt.getExpr().getLineNumber() + " columna: " + stmt.getExpr().getColumnNumber());
+            System.exit(1);
+        } else {
+            stmt.getBlock().accept(this);
+        }
+        return Type.VOID;
 
     }
 
     @Override
     public Type visit(MethodCall stmt) {
-        Metodo met= tablaSimbolos.getMetodo(tablaSimbolos.getUltimaClase(), stmt.getId());
-        if(met.getParametros().size()!= stmt.getExpressions().size()){
-            System.err.println("Error en la cantidad de parametros en la llamada del metodo "+stmt.getId()+", linea: "+stmt.getLineNumber());
+        Metodo met = tablaSimbolos.getMetodo(tablaSimbolos.getUltimaClase(), stmt.getId());
+        if (met.getParametros().size() != stmt.getExpressions().size()) {
+            System.err.println("Error en la cantidad de parametros en la llamada del metodo " + stmt.getId() + ", linea: " + stmt.getLineNumber());
             System.exit(1);
         }
-        for(int i=0;i<stmt.getExpressions().size();i++){
-            if(stmt.getExpressions().get(i).accept(this)!=met.getParametros().get(i).getType()){
-            System.err.println("Error de tipo de parametros en la llamada del metodo "+stmt.getId()+", linea: "+stmt.getLineNumber());
-            System.exit(1);
+        for (int i = 0; i < stmt.getExpressions().size(); i++) {
+            if (stmt.getExpressions().get(i).accept(this) != met.getParametros().get(i).getType()) {
+                System.err.println("Error de tipo de parametros en la llamada del metodo " + stmt.getId() + ", linea: " + stmt.getLineNumber());
+                System.exit(1);
             }
         }
 
@@ -228,13 +240,21 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 
     @Override
     public Type visit(ForStmt stmt) {
-        return null;
+        stmt.getExpr().accept(this);
+        Type t = stmt.getExpr2().accept(this);
+        if (!t.isBool()) {
+            System.err.println("El tipo de la expresion debe ser bool. linea: " + stmt.getExpr2().getLineNumber() + " columna: " + stmt.getExpr2().getColumnNumber());
+            System.exit(1);
+        } else {
+            stmt.getStatement().accept(this);
+        }
+        return Type.VOID;
 
     }
 
     @Override
     public Type visit(Parameter p) {
-        return null;
+        return Type.VOID;
 
     }
 
@@ -242,9 +262,9 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
     public Type visit(Method m) {
         Bloque bloque = new Bloque();
         tablaSimbolos.pushBloque(bloque);
-        Type ret= m.getBody().accept(this);
-        if(m.getType()!= ret){
-            System.err.println("Error de tipo, el tipo de retorno del metodo es "+m.getType() +" y el tipo retornado es "+ret);
+        Type ret = m.getBody().accept(this);
+        if (m.getType() != ret) {
+            System.err.println("Error de tipo, el tipo de retorno del metodo es " + m.getType() + " y el tipo retornado es " + ret);
             System.exit(1);
         }
         tablaSimbolos.popBloque();
@@ -254,7 +274,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 
     @Override
     public Type visit(FieldDeclaration fd) {
-        return null;
+        return Type.VOID;
 
     }
 
@@ -297,22 +317,39 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
             System.out.println("Error, no hay clases definidas en el programa");
             System.exit(1);
         } else {
+            boolean containsMetMain = false;
             for (ClassDeclaration cd : p.getClassDeclarations()) {
                 cd.accept(this);
             }
 
+        }
+        //analizo que exista una clase "Main" y que tenga un metodo main
+        if (tablaSimbolos.existeClase("Main")) {
+            Metodo met = tablaSimbolos.getMetodo("Main", "main");
+            if (!met.getParametros().isEmpty()) {
+                System.err.println("error. El metodo main no debe contener parametros");
+                System.exit(1);
+            } else {
+                if (!met.getTipoReturn().isVoid()) {
+                    System.err.println("error. el metodo main debe retornar void");
+                    System.exit(1);
+                }
+            }
+        }else{
+            System.err.println("El programa debe contener una clase main");
+            System.exit(1);
         }
         return null;
     }
 
     @Override
     public Type visit(MethodCallStmt stmt) {
-        return null;
+        return Type.VOID;
     }
 
     @Override
-    public Type visit(LocationDeclaration ld) { 
-        return null;
+    public Type visit(LocationDeclaration ld) {
+        return Type.VOID;
     }
 
     public TablaDeSimbolos getTablaSimbolos() {

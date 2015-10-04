@@ -25,13 +25,13 @@ public class main {
             TypeEvaluationVisitor tev = new TypeEvaluationVisitor();
             tev.visit(p.getAST());
             HashMap<String, Clase> c = tev.getTablaSimbolos().getClases();
-            LinkedList<Atributo> atr = c.get("Program").getAtributos();
+            LinkedList<Atributo> atr = c.get("Main").getAtributos();
             if (atr != null) {
                 for (Atributo a : atr) {
                     System.out.println(a.getTipo() + " " + a.getNombre());
                 }
             }
-                LinkedList<Metodo> met=c.get("Program").getMetodos();
+                LinkedList<Metodo> met=c.get("Main").getMetodos();
             for(Metodo m : met){
                 System.out.println(m.getTipoReturn().toString()+" "+m.getNombre());
 
