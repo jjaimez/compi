@@ -42,7 +42,7 @@ public class main {
          bcv.visit(p.getAST());
          }*/
 
-        /*for (int i = 1; i < 22; i++) {
+        for (int i = 1; i < 22; i++) {
             System.out.println("test" + i + ".ctds");
             BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/test/test" + i + ".ctds"));
             Lexer lex = new Lexer(br);
@@ -53,11 +53,11 @@ public class main {
             BreakContinueVisitor bcv = new BreakContinueVisitor();
             bcv.visit(p.getAST());
             System.out.println("--------------------------");
-        }*/
+        }
 
         
          System.out.println("<<<<<<<<<< Comienzan los test negativos >>>>>>>>>>");
-         for (int i = 35; i < 55; i++) {
+         for (int i = 35; i < 36; i++) {
          System.out.println("test" + i + ".ctds");
          BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/test/negativos/test" + i + ".ctds"));
          Lexer lex = new Lexer(br);

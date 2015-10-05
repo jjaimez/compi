@@ -105,7 +105,7 @@ public class TablaDeSimbolos {
     }
 
     public Atributo getVariableBloque(String id){
-        for(int i=0; i< pilaBloque.size(); i++){
+        for(int i=1; i< pilaBloque.size(); i++){//arranco de de 1 para evitar rev
             Atributo atr=pilaBloque.get(i).getAtributo(id);
             if(atr!=null){
                 return atr;

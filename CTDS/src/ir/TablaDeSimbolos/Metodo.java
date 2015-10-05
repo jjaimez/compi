@@ -7,6 +7,7 @@ package ir.TablaDeSimbolos;
 
 import ir.ast.Parameter;
 import ir.ast.Type;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
 public class Metodo {
     private String nombre;
     private Type tipoReturn;
-    private List<Parameter> parametros;
+    private List<Parameter> parametros = new LinkedList<>();
 
     public Metodo(String nombre, Type tipoReturn, List<Parameter> parametros) {
         this.nombre = nombre;

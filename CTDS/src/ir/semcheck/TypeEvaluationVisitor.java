@@ -68,7 +68,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
     @Override
     public Type visit(VarLocation loc) {
         Atributo var = tablaSimbolos.getAtributo(loc.getId());
-        if (var == null) {// HAY QUE MIRAR LOS OTROS AMBIENTES
+        if (var == null) {
             System.err.println("variable '" + loc.getId() + "' no definida, linea: " + loc.getLineNumber() + " columna: " + loc.getColumnNumber());
             System.exit(1);
         }
@@ -95,6 +95,16 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
             Type typeStmt = stmt.getExpression().accept(this);
             if (loc.getTipo() != typeStmt) {
                 System.err.println("error de tipos, linea: " + stmt.getExpression().getLineNumber() + " columna: " + stmt.getExpression().getColumnNumber());
+                System.exit(1);
+            }
+            //si es += o -= y la variable no es float o int se rompe
+            if (!loc.getTipo().isFloat() && !loc.getTipo().isInt() && (stmt.getOperator().isDecrement() || stmt.getOperator().isIncrement())) {
+                System.err.println("No se puede aplicar " + stmt.getOperator() + " a una variable de tipo " + loc.getTipo() + ". linea: " + stmt.getExpression().getLineNumber() + " columna: " + stmt.getExpression().getColumnNumber());
+                System.exit(1);
+            }
+            //si la variable definida NO es un arreglo pero en la location si lo usa como arreglo se rompe
+            if(loc.getTamanio()==0 && stmt.getLocation().getExpr()!=null){
+                System.err.println("La variable "+loc.getNombre()+" No es un arreglo. linea: " + stmt.getLocation().getLineNumber() + " columna: " + stmt.getLocation().getColumnNumber());
                 System.exit(1);
             }
         } else {
@@ -250,8 +260,13 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 
     @Override
     public Type visit(ForStmt stmt) {
-        stmt.getExpr().accept(this);
+        Type typeExpInit = stmt.getExpr().accept(this);
         Type t = stmt.getExpr2().accept(this);
+        //las expresion de inicio debe ser entero unicamente
+        if (!typeExpInit.isInt()) {
+            System.err.println("El tipo de la expresion de inicio debe ser int linea: " + stmt.getExpr().getLineNumber() + " columna: " + stmt.getExpr().getColumnNumber());
+            System.exit(1);
+        }
         if (!t.isBool()) {
             System.err.println("El tipo de la expresion debe ser bool. linea: " + stmt.getExpr2().getLineNumber() + " columna: " + stmt.getExpr2().getColumnNumber());
             System.exit(1);
@@ -289,8 +304,8 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
                 System.err.println("Error de tipo, el tipo de retorno del metodo es " + m.getType() + " y el tipo retornado es " + ret);
                 System.exit(1);
             }
-            tablaSimbolos.popBloque();
         }
+        tablaSimbolos.popBloque();
         return null;
     }
 
@@ -311,6 +326,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
                 } else {
                     atributo = new Atributo(null, fd.getType(), ld.getId(), ld.getSize().getValue());
                 }
+                tablaSimbolos.setVariableBloque(atributo);
                 tablaSimbolos.insertAtrClase(tablaSimbolos.getUltimaClase(), atributo);
             }
         }
@@ -327,9 +343,11 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
     public Type visit(ClassDeclaration cd) {
         Clase c = new Clase();
         tablaSimbolos.pushClase(cd.getId(), c);
+        tablaSimbolos.pushBloque(new Bloque());
         if (cd.getDeclarations() != null) {
             cd.getDeclarations().accept(this);
         }
+        tablaSimbolos.popBloque();
         return null;
     }
 
@@ -351,6 +369,10 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
         //analizo que exista una clase "Main" y que tenga un metodo main
         if (tablaSimbolos.existeClase("Main")) {
             Metodo met = tablaSimbolos.getMetodo("Main", "main");
+            if(met== null){
+                System.err.println("error. La clase debe contener un metodo main");
+                System.exit(1);
+            }
             if (!met.getParametros().isEmpty()) {
                 System.err.println("error. El metodo main no debe contener parametros");
                 System.exit(1);

@@ -18,6 +18,7 @@ public class VarLocation extends Location {
         this.setColumnNumber(col + 1);
         this.id = id;
         this.blockId = -1;
+        super.expr = exp;
     }
 
     public VarLocation(String id, Expression exp, int line, int col) {
@@ -26,6 +27,8 @@ public class VarLocation extends Location {
         this.id = id;
         this.blockId = -1;
         this.exp = exp;
+        super.expr = exp;
+
     }
 
     public VarLocation(String id, VarLocation loc, int line, int col) {
@@ -34,6 +37,8 @@ public class VarLocation extends Location {
         this.id = id;
         this.blockId = -1;
         location = loc;
+                super.expr = exp;
+
     }
 
     public int getBlockId() {
@@ -64,8 +69,6 @@ public class VarLocation extends Location {
         this.exp = exp;
     }
 
-    
-    
     @Override
     public <T> T accept(ASTVisitor<T> v) {
         return v.visit(this);
