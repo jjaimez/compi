@@ -7,10 +7,8 @@
 class main {
 
         void main() {
+                int id1;
                 boolean id2;
-                id2 = false;
-                id2 = !id2;
-                id2 = false && true;
-                id2 = false || id2;
+                id2 = id1 || id2;
 	}
 }

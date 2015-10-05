@@ -1,11 +1,16 @@
 /*
  * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
  * Proyecto: CompiladorCTDS
- * test: El int literal en la declaracion de un arreglo debe ser mayor a cero (es la longitud del arreglo).
+ * test: Ningun identificador es usado antes de ser declarado.
  */
 
 class main {
+
+		void metodo(){
+			id2 = 1;
+		}
+
         void main() {
-        int id1[0];
+                int id1;
 	}
 }

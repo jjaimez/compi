@@ -56,6 +56,16 @@ public class VarLocation extends Location {
         return id;
     }
 
+    public Expression getExp() {
+        return exp;
+    }
+
+    public void setExp(Expression exp) {
+        this.exp = exp;
+    }
+
+    
+    
     @Override
     public <T> T accept(ASTVisitor<T> v) {
         return v.visit(this);

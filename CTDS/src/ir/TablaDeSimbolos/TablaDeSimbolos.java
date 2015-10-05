@@ -8,6 +8,7 @@ package ir.TablaDeSimbolos;
 import ir.ast.AST;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 public class TablaDeSimbolos {
 
@@ -121,6 +122,18 @@ public class TablaDeSimbolos {
         public Atributo setVariableBloque(Atributo atr){
             Bloque b= pilaBloque.getLast();
             b.setAtributo(atr);
+            pilaBloque.set(pilaBloque.size()-1, b);
+        return null;
+    }
+        
+            /**
+     * agrega una variable al bloque corriente
+     * @param id
+     * @return 
+     */
+        public Atributo setVariablesBloque(LinkedList<Atributo> atr){
+            Bloque b= pilaBloque.getLast();
+            b.setAtributos(atr);
             pilaBloque.set(pilaBloque.size()-1, b);
         return null;
     }

@@ -2,6 +2,7 @@
 import ir.TablaDeSimbolos.Atributo;
 import ir.TablaDeSimbolos.Clase;
 import ir.TablaDeSimbolos.Metodo;
+import ir.semcheck.BreakContinueVisitor;
 import ir.semcheck.PrintVisitor;
 import ir.semcheck.TypeEvaluationVisitor;
 import parser.parser;
@@ -36,6 +37,9 @@ public class main {
                 System.out.println(m.getTipoReturn().toString()+" "+m.getNombre());
 
              }
+            
+            BreakContinueVisitor bcv = new BreakContinueVisitor();
+            bcv.visit(p.getAST());
         }
 
         /*  System.out.println("<<<<<<<<<< Comienzan los test negativos >>>>>>>>>>");

@@ -5,27 +5,14 @@
 Este metodo no tiene parametros. Notar que la ejecucion comienza con el metodo main.
  */
 
-
-
- class program {
-        boolean id2;
-
-        void p() {
-                int id1;
-		}
-}
-
-
-
 class main {
-        void main() {
-                int id1;
+	void main(){
+		int d3d;
 	}
 }
 
-
-class program2 {
-        void a() {¿
-                int id1;
+class main {
+	void main(){
+		int d3d;
 	}
 }

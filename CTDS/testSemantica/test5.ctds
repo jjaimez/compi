@@ -8,6 +8,11 @@ class main {
 	
 		int id1;
 		
+		void metodo(int id2){
+			id2 = 2;
+		}
+
+
         void main() {
                 id1 = 31;
 	}

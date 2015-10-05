@@ -8,12 +8,7 @@ class main {
 
         void main() {
                 int id1;
-                int id2;
-                boolean idb;
-                idb = id1 > id2;
-                idb = id1 < id2;
-                idb = id1 <= id2;
-                idb = id1 >= id2;
-
+                boolean id2;
+                id1 = id1 / id2;
 	}
 }

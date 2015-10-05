@@ -1,11 +1,12 @@
 /*
  * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
  * Proyecto: CompiladorCTDS
- * test: Ningun identificador es usado antes de ser declarado.
+ * test: Todo programa contiene la definicion de una clase y un metodo en la misma clase llamado main. | Ningun identificador es declarado dos veces en un mismo bloque
  */
 
 
  class program {
+        
         boolean id2;
 
         void p() {

@@ -7,7 +7,6 @@ package ir.TablaDeSimbolos;
 
 import ir.ast.Parameter;
 import ir.ast.Type;
-import java.util.LinkedList;
 import java.util.List;
 
 /**

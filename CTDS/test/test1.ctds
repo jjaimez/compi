@@ -5,28 +5,27 @@ class Number{
 
 class Main {
 
-        int metodo(int param, float param2) {
-            return 5;
+        int metodo(int param, float param2){
+            return param;
         }
 
 
         void main() {
-                int id1;
+                int id1[5];
                 float id5;
                 int id9;
-                id1 = metodo(id9,id5);
-                if(id1==id9){
+                id1[1] = metodo(id9,id5);
+                if(id1[2]==id9){
                     int id19;
                     id19=5;
                 }else{
                 id5+=10.0;
                 }
-                id1=10;
-                for id1=5, id1+7!=5{
-                    id9=10;
+                for id=5, id1[15]+7!=5{
+                    break;
                 }
                 while(id9<5){
-                    id1=10;
+                    continue;
                 }
                 return;
 	}

@@ -28,6 +28,7 @@ public class Atributo {
         this.valor = valor;
         this.tipo = tipo;
         this.nombre = nombre;
+        this.tamanio=0;
     }
 
     public Object getValor() {
@@ -52,6 +53,10 @@ public class Atributo {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public Integer getTamanio() {
+        return tamanio;
     }
  
    

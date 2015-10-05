@@ -4,11 +4,14 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/jacinto/compi/CTDS/src/ir/semcheck/TypeEvaluationVisitor.java</file>
+            <file>file:/home/jacinto/compi/CTDS/src/ir/semcheck/PrintVisitor.java</file>
             <file>file:/home/jacinto/compi/CTDS/src/parser/CTDS.cup</file>
-            <file>file:/home/jacinto/compi/CTDS/src/ir/ast/MethodCall.java</file>
+            <file>file:/home/jacinto/compi/CTDS/src/ir/ast/VarLocation.java</file>
+            <file>file:/home/jacinto/compi/CTDS/src/ir/TablaDeSimbolos/Metodo.java</file>
+            <file>file:/home/jacinto/compi/CTDS/test/test1.ctds</file>
             <file>file:/home/jacinto/compi/CTDS/src/ir/ast/Method.java</file>
             <file>file:/home/jacinto/compi/CTDS/src/main.java</file>
-            <file>file:/home/jacinto/compi/CTDS/src/ir/ast/Location.java</file>
+            <file>file:/home/jacinto/compi/CTDS/src/ir/TablaDeSimbolos/TablaDeSimbolos.java</file>
         </group>
     </open-files>
 </project-private>
