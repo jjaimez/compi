@@ -1,0 +1,12 @@
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * test: Las sentencias break solo pueden encontrarse en el cuerpo de un ciclo.
+ */
+
+class Main {
+
+        void main() {
+                break;
+	}
+}

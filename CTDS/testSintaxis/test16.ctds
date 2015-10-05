@@ -1,0 +1,8 @@
+class Program {
+	void main() {
+		int FOR;
+		int WHILEFOR;
+		int whilefor;
+		int I_dentifcador;		
+  }
+}

@@ -1,4 +1,13 @@
-class Program {
-    class Program {
-    }
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * test: Ningun identificador es declarado dos veces en un mismo bloque
+ */
+
+class Main {
+
+        void main() {
+                int id1;
+                int id1;
+	}
 }

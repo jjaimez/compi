@@ -64,9 +64,9 @@ public class BreakContinueVisitor implements ASTVisitor<String> {
         for (Method m : d.getMethodDecl()) {
             String g = m.accept(this);
             if (g.equals("BREAK") || g.equals("CONTINUE")) {
-            System.err.println("Errore en el metodo "+ m.getId()+": La sentencia " + g + " debe estar dentro de un ciclo");
-            System.exit(1);
-        }
+                System.err.println("Errore en el metodo " + m.getId() + ": La sentencia " + g + " debe estar dentro de un ciclo");
+                System.exit(1);
+            }
         }
         return "";
     }
@@ -103,9 +103,11 @@ public class BreakContinueVisitor implements ASTVisitor<String> {
         if (!g.equals("")) {
             return g;
         }
-        String g2 = stmt.getElseBlock().accept(this);
-        if (!g2.equals("")) {
-            return g2;
+        if (stmt.getElseBlock() != null) {
+            String g2 = stmt.getElseBlock().accept(this);
+            if (!g2.equals("")) {
+                return g2;
+            }
         }
         return "";
     }

@@ -15,13 +15,14 @@ public class Atributo {
     private Object valor;
     private Type tipo;
     private String nombre;
-    private Integer tamanio;
+    private Integer tamanio = 0;
 
     public Atributo(Object valor, Type tipo, String nombre,Integer tamanio) {
         this.valor = valor;
         this.tipo = tipo;
         this.nombre = nombre;
-        this.tamanio = tamanio;
+        if (tamanio != null)
+            this.tamanio = tamanio;
     }
 
     public Atributo(Object valor, Type tipo, String nombre) {

@@ -1,0 +1,13 @@
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * test: La location y la expr en una asignacion incremental o decremental, location += expr o location -= expr, deben ser de tipo int o float.
+ */
+
+class Main {
+
+        void main() {
+                boolean id2;
+                id2 += id2;
+	}
+}

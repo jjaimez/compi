@@ -1,0 +1,19 @@
+class Program {
+	
+	void main() {
+		int y;
+		boolean b;		
+
+
+		if (false){
+			int j;
+		}
+		else{
+			int e;
+		}
+
+		if (b || b && b || b == b){
+			int f;
+		}
+	}
+}

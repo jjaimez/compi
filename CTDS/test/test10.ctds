@@ -1,7 +1,14 @@
-class Program {
-  
- 
-  void main() {
-    int e;   
-  }
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * test: En toda locacion de la forma id[expr], el tipo de expr debe ser int.
+ */
+
+class Main {
+
+        void main() {
+                int id1[5];
+                id1[1] = 1;
+                id1[1] = id1[1*1];
+	}
 }

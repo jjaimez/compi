@@ -1,3 +1,14 @@
-class Program {
-	int read_int() extern;
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * test: Las expresiones (expr) finales de un for deben ser de tipo int.
+ */
+
+class Main {
+    void main() {
+        int j;
+        j = 0;
+        for j = 1,j < 2 {
+        }
+    }
 }

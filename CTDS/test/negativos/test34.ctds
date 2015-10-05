@@ -1,0 +1,14 @@
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * test: Los operandos de arit_op deben ser de tipo int
+*/
+
+class Main {
+
+        void main() {
+                int id1;
+                boolean id2;
+                id1 = id1 / id2;
+	}
+}

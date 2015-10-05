@@ -1,7 +1,12 @@
-class Program {
-	void main() {
-            while (y = y){
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * test: Un id usado como una location debe estar declarado como un parametro o como una variable local o global.
+ */
 
-            }
-  }
+class Main {
+
+        void main() {
+                id1 = 31;
+	}
 }

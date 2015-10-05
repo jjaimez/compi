@@ -1,4 +1,22 @@
-class Program {
-	void main() {		
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * test: Los operandos de eq_op deben tener el mismo tipo (int, float o boolean).
+ */
+
+class Main {
+
+        void main() {
+                int id1;
+                int id2;
+                boolean i2;
+                float f;
+                float f2;
+                id1 = 0;
+                id2 = 0;
+                f = 1.3;
+                f2 = 3.3;               
+                i2 = false;
+                i2 = (f != f2) == (id1 == id2);
 	}
 }

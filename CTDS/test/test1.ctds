@@ -1,32 +1,21 @@
-class Number{
-    int id1;
-
-}
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * test: Ningun identificador es declarado dos veces en un mismo bloque
+ */
 
 class Main {
+    int id1;
+    
+    void metodo(){
+	int id1;
+    }
 
-        int metodo(int param, float param2){
-            return param;
-        }
+    void metodo2(int id1){
+        int id3;
+    }
 
-
-        void main() {
-                int id1[5];
-                float id5;
-                int id9;
-                id1[1] = metodo(id9,id5);
-                if(id1[2]==id9){
-                    int id19;
-                    id19=5;
-                }else{
-                id5+=10.0;
-                }
-                for id=5, id1[15]+7!=5{
-                    break;
-                }
-                while(id9<5){
-                    continue;
-                }
-                return;
-	}
+    void main() {
+        int id3;
+    }
 }

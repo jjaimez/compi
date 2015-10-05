@@ -1,6 +1,13 @@
-class Program {
-	void main() {
-           if (break){
-            }
-  }
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * test: En toda locacion de la forma id[expr], id debe ser una variable arreglo (array).
+ */
+
+class Main {
+
+        void main() {
+                int id1;
+                id1[1] = id1[2];
+	}
 }

@@ -1,5 +1,17 @@
-class Program {
-	void main() {
-		float y[l];
-  }
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * test: Si la invocacion a un metodo es usada como una expresion, el metodo debe retornar un resultado.
+ */
+
+class Main {
+
+		void metodo(){
+			int j;
+		}
+
+        void main() {
+                int id1;
+                id1 = metodo();
+	}
 }

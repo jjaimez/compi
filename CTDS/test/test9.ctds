@@ -1,34 +1,16 @@
-class Program {
-	
-	void main() {
-		int y;
-		boolean b;
-		float s;
-		s = 91.1;
-		b = true;
-		b = false;
-		b = false && b;
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * test: En toda locacion de la forma id[expr], id debe ser una variable arreglo (array).
+ */
 
-		f = y/y;
-		y = y+y;
-		y = y - y;
-		y = y + y - y;
-		y = (y + y) / y;
-		y = y % y;
-		y = y * y;
-                y = y + y * y;
-                y = y + y / y;
+class Main {
 
-		b = b == b;
-		b = b != b;
-		b = y > y;
-		b = y >= y;
-		b = y <= y;
-		b = y < y;
 
-    b = b && b;
-    b = b || b;
-    b = b || (b && b) && ((y + y  == y) );
-
+        void main() {
+                int id1[4];
+                id1[1] = 4;
+                id1[2] = 4;
+                id1[1] = id1[2];
 	}
 }

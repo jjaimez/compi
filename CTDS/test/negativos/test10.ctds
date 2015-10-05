@@ -1,5 +1,17 @@
-class Program {
-	void main() {
-		float y[];
-  }
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * test: Una sentencia return solo tiene asociada una expresion si el metodo retorna un valor, si le metodo no retorna un valor (es un metodo void) entonces la sentencia return no puede tener asociada ninguna expresion.
+ */
+
+class Main {
+
+		void metodo(){
+			int j;
+			return j;
+		}
+
+        void main() {
+                int id1;
+	}
 }

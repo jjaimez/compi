@@ -1,25 +1,15 @@
-class Program {
-	int inc(int x) {
-		return x;
-	}
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * test: La expr en una sentencia while debe ser boolean.
+ */
 
-	int inc2() {
-		return 3;
-	}
+class Main {
 
-	void inc(int x) {
-		return;
-	}
-
-	int inc(int x) {
-	}
-
-
-	void main() {
-		if (true)
-			break;
-			;
-			continue;
-		return 0;
+        void main() {
+                int id1;
+                while (!(false == true)){
+                	id1 = 1;
+                } 
 	}
 }

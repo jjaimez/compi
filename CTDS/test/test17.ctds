@@ -1,19 +1,20 @@
-class Program {
-	
-	void main() {
-		int y;
-		boolean b;		
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * test: Los operandos de rel_op deben ser de tipo float
+*/
 
+class Main {
 
-		if (false){
-			int j;
-		}
-		else{
-			int e;
-		}
-
-		if (b || b && b || b == b){
-			int f;
-		}
+        void main() {
+                float id1;
+                float id2;
+                boolean idb;
+                id1 = 1.3;                
+                id2 = 1.3;
+                idb = id1 > id2;
+                idb = id1 < id2;
+                idb = id1 <= id2;
+                idb = id1 >= id2;
 	}
 }

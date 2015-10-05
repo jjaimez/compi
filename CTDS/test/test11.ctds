@@ -1,9 +1,15 @@
-class Program {
-	int inc(int x) {
-		return x + 1;
-	}
-	void main() {
-		int y;
-		y = inc(y);		
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * test: La expr en una sentencia if debe ser boolean.
+ */
+
+class Main {
+
+        void main() {
+                int id1;
+                if (false == true){
+                	id1 = 1;
+                } 
 	}
 }

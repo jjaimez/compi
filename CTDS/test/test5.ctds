@@ -1,5 +1,18 @@
-class Program {
-	int method() {
-		int int1;
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * test: Un id usado como una location debe estar declarado como un parametro o como una variable local o global.
+ */
+
+class Main {
+	
+	int id1;
+		
+        void metodo(int id2){
+            id2 = 2;
+	}
+
+        void main() {
+                id1 = 31;
 	}
 }

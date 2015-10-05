@@ -68,7 +68,10 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
     @Override
     public Type visit(VarLocation loc) {
         Atributo var = tablaSimbolos.getAtributo(loc.getId());
-
+        if (var == null) {// HAY QUE MIRAR LOS OTROS AMBIENTES
+            System.err.println("variable '" + loc.getId() + "' no definida, linea: " + loc.getLineNumber() + " columna: " + loc.getColumnNumber());
+            System.exit(1);
+        }
         if (var.getTamanio() > 0) {
             if (loc.getExp() != null) {
                 Type t = loc.getExp().accept(this);
@@ -81,14 +84,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
                 System.exit(1);
             }
         }
-        if (var == null) {
-            System.err.println("variable '" + loc.getId() + "' no definida, linea: " + loc.getLineNumber() + " columna: " + loc.getColumnNumber());
-            System.exit(1);
-        } else {
-            return var.getTipo();
-        }
-        return Type.VOID;
-
+        return var.getTipo();
     }
 
     @Override
@@ -339,15 +335,18 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 
     @Override
     public Type visit(Program p) {
-        if (p.getClassDeclarations() == null || p.getClassDeclarations().size() == 0) {
+        if (p.getClassDeclarations() == null) {
             System.err.println("Error, no hay clases definidas en el programa");
             System.exit(1);
         } else {
-            boolean containsMetMain = false;
-            for (ClassDeclaration cd : p.getClassDeclarations()) {
-                cd.accept(this);
-            }
+            if (p.getClassDeclarations().size() == 0) {
 
+            } else {
+                boolean containsMetMain = false;
+                for (ClassDeclaration cd : p.getClassDeclarations()) {
+                    cd.accept(this);
+                }
+            }
         }
         //analizo que exista una clase "Main" y que tenga un metodo main
         if (tablaSimbolos.existeClase("Main")) {

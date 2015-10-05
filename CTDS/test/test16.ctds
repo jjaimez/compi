@@ -1,8 +1,19 @@
-class Program {
-	void main() {
-		int FOR;
-		int WHILEFOR;
-		int whilefor;
-		int I_dentifcador;		
-  }
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * test: Los operandos de arit_op deben ser de tipo int
+*/
+
+class Main {
+
+        void main() {
+                int id1;
+                int id2;
+                boolean idb;
+                idb = id1 > id2;
+                idb = id1 < id2;
+                idb = id1 <= id2;
+                idb = id1 >= id2;
+
+	}
 }
