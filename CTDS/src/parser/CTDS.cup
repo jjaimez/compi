@@ -225,4 +225,4 @@ int_literal ::= INT_LITERAL:n {: RESULT = new IntLiteral(n,nleft,nright) ;:};
 bool_literal ::= TRUE:t {: RESULT = new BoolLiteral(t,tleft,tright) ;:} 
 	| FALSE:f {: RESULT = new BoolLiteral(f,fleft,fright) ;:} ;
 
-float_literal ::= FLOAT_LITERAL:f {: RESULT = new FloatLiteral(f,fleft,fright);:} ;
+float_literal ::= FLOAT_LITERAL:f {:RESULT = new FloatLiteral(f,fleft,fright);:} ;

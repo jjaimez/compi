@@ -10,6 +10,8 @@ class Main {
                 int id1;
                 int id2;
                 boolean idb;
+                id1=1;
+                id2=2;
                 idb = id1 > id2;
                 idb = id1 < id2;
                 idb = id1 <= id2;

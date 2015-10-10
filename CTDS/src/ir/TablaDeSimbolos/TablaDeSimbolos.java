@@ -78,6 +78,8 @@ public class TablaDeSimbolos {
         }
         return null;
     }
+    
+
 
     public Metodo getMetodo(String nombreClase,String nombreMetodo){
         Clase c= clases.get(nombreClase);
@@ -137,4 +139,6 @@ public class TablaDeSimbolos {
             pilaBloque.set(pilaBloque.size()-1, b);
         return null;
     }
+        
+        
 }

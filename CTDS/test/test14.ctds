@@ -8,7 +8,7 @@ class Main {
 
         void main() {
         	while (true){
-                continue;
+                break;
         	}
 	}
 }

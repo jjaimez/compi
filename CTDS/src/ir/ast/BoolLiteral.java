@@ -14,7 +14,7 @@ public class BoolLiteral extends Literal {
     public BoolLiteral(String val, int line, int col) {
         this.setLineNumber(line+1);
         this.setColumnNumber(col+1);
-        value = val.equals("TRUE");
+        value = val.equals("true");
         type = Type.BOOL;
     }
     
@@ -25,6 +25,10 @@ public class BoolLiteral extends Literal {
     
     public void setValue(boolean value) {
         this.value = value;
+    }
+
+    public boolean getValue() {
+        return value;
     }
     
     @Override
