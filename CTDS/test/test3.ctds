@@ -1,31 +1,24 @@
 /*
  * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
  * Proyecto: CompiladorCTDS
- * test: Todo programa contiene la definicion de una clase y un metodo en la misma clase llamado main.
-Este metodo no tiene parametros. Notar que la ejecucion comienza con el metodo main.
- */
-
-
-
- class program {
-        boolean id2;
-
-        void p() {
-                int id1;
-		}
-}
-
-
+ * test: rel_op int 
+*/
 
 class Main {
+
+                boolean b;
+                boolean b2;
+                boolean b3;
+                boolean b4;
+
         void main() {
                 int id1;
-	}
-}
-
-
-class program2 {
-        void a() {
-                int id1;
-	}
+                int id2;
+                id1=1;
+                id2=2;
+                b = id1 > id2; // flase
+                b2 = id1 < id2; // true
+                b3 = id1 <= id2; // true
+                b4 = id1 >= id2; // false       
+        }
 }

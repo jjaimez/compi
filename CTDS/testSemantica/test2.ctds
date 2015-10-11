@@ -1,0 +1,29 @@
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * test: Todo programa contiene la definicion de una clase y un metodo en la misma clase llamado main. | Ningun identificador es declarado dos veces en un mismo bloque
+ */
+
+
+ class program {
+        
+        boolean id2;
+
+        void p() {
+                int id1;
+		}
+}
+
+
+class program2 {
+        void a() {
+                int id1;
+	}
+}
+
+
+class Main {
+        void main() {
+                int id1;
+	}
+}

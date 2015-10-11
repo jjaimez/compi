@@ -116,7 +116,7 @@ public class InterpreterVisitor implements ASTVisitor<Object> {
                 //esto borrar despues
                 for (Atributo a : tablaSimbolos.getBloque().getAtributos()) {
                     if (a.getNombre() != null && a.getValor() != null) {
-                        System.out.println("Atributo" + a.getNombre() + " Valor: " + a.getValor().toString());
+                        System.out.println("Atributo " + a.getNombre() + " Valor: " + a.getValor().toString());
                     }
                 }
             }
@@ -285,7 +285,7 @@ public class InterpreterVisitor implements ASTVisitor<Object> {
         LinkedList<Object> listO = new LinkedList<Object>();
         Atributo loc = tablaSimbolos.getAtributo(stmt.getId());
         loc.setValor(stmt.getExpr().accept(this));
-        while ((int) loc.getValor() == (int) stmt.getExpr().accept(this)) {
+        while ((boolean) stmt.getExpr2().accept(this)) {
             if (stmt.getStatement() != null) {
                 Object o = stmt.getStatement().accept(this);
                 listO.add(o);
@@ -341,7 +341,7 @@ public class InterpreterVisitor implements ASTVisitor<Object> {
                     return (float) expr.getLeftOperand().accept(this) / (float) expr.getRightOperand().accept(this);
                 }
             case MOD:
-                return (int) expr.getLeftOperand().accept(this) / (int) expr.getRightOperand().accept(this);
+                return (int) expr.getLeftOperand().accept(this) % (int) expr.getRightOperand().accept(this);
             case LT:
                 if (expr.getLeftOperand().accept(this).getClass().equals(Integer.class)) {
                     return (int) expr.getLeftOperand().accept(this) < (int) expr.getRightOperand().accept(this);

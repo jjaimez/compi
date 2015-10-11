@@ -1,18 +1,17 @@
 /*
  * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
  * Proyecto: CompiladorCTDS
- * test: Un id usado como una location debe estar declarado como un parametro o como una variable local o global.
+ * test: Los operandos de cond_op y el operando de la negacion (!)
  */
 
 class Main {
-	
-	int id1;
-		
-        void metodo(int id2){
-            id2 = 2;
-	}
+		boolean b,b1,b2,b3;
 
         void main() {
-                id1 = 31;
+                
+                b = false; //false
+                b1 = !b; // true
+                b2 = false && true; // false
+                b3 =  false || b; // false
 	}
 }

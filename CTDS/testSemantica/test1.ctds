@@ -1,0 +1,21 @@
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * test: Ningun identificador es declarado dos veces en un mismo bloque
+ */
+
+class Main {
+    int id1;
+    
+    void metodo(){
+	int id1;
+    }
+
+    void metodo2(int id1){
+        int id3;
+    }
+
+    void main() {
+        int id3;
+    }
+}
