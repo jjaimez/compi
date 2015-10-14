@@ -43,7 +43,7 @@ public class main {
          bcv.visit(p.getAST());
          }*/
 
-        for (int i = 1; i < 6; i++) {
+        for (int i = 1; i <= 4; i++) {
             System.out.println("test" + i + ".ctds");
             BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/test/test" + i + ".ctds"));
             Lexer lex = new Lexer(br);

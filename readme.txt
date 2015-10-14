@@ -14,3 +14,9 @@ En src/ir se encuentra todo lo que respecta al arbol ast.
 en test/ se encuentran los test.
 en testSintaxis se encuentran los test de la primer entrega.
 en testSemantica se encuentran los test de la segunda entrega.
+
+
+Los test positivos pueden fallar porque:
+	Siempre debe existir una clase Main (con M mayuscula).
+	El metodo main de la clase main retorna void. (void main(){}).
+	La segunda exptresion del for debe ser booleana (for i = 4, i == 10).

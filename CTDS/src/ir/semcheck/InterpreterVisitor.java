@@ -156,23 +156,27 @@ public class InterpreterVisitor implements ASTVisitor<Object> {
     @Override
     public Object visit(AssignStmt stmt) {
         Atributo loc = tablaSimbolos.getAtributo(stmt.getLocation().getId());
+        int i = 0;
+        if (stmt.getLocation().getExpr() != null){
+            i = (int)stmt.getLocation().getExpr().accept(this);
+        }
         switch (stmt.getOperator()) {
             case INCREMENT:
                 if (stmt.getExpression().accept(this).getClass().equals(Integer.class)) {
-                    loc.setValor((int) loc.getValor() + (int) stmt.getExpression().accept(this));
+                    loc.setValorInPos((int) loc.getValorInPos(i) + (int) stmt.getExpression().accept(this),i);
                 } else {
-                    loc.setValor((float) loc.getValor() + (float) stmt.getExpression().accept(this));
+                    loc.setValorInPos((float) loc.getValorInPos(i) + (float) stmt.getExpression().accept(this),i);
                 }
                 break;
             case DECREMENT:
                 if (stmt.getExpression().accept(this).getClass().equals(Integer.class)) {
-                    loc.setValor((int) loc.getValor() - (int) stmt.getExpression().accept(this));
+                    loc.setValorInPos((int) loc.getValorInPos(i) - (int) stmt.getExpression().accept(this),i);
                 } else {
-                    loc.setValor((float) loc.getValor() - (float) stmt.getExpression().accept(this));
+                    loc.setValorInPos((float) loc.getValorInPos(i) - (float) stmt.getExpression().accept(this),i);
                 }
                 break;
             case ASSIGN:
-                loc.setValor(stmt.getExpression().accept(this));
+                loc.setValorInPos(stmt.getExpression().accept(this),i);
                 break;
         }
         return null;
@@ -426,7 +430,10 @@ public class InterpreterVisitor implements ASTVisitor<Object> {
 
     @Override
     public Object visit(VarLocation loc) {
-        Object t = tablaSimbolos.getAtributo(loc.getId()).getValor();
+        if (loc.getExp() != null){
+            int i = (int)loc.getExp().accept(this);
+            return tablaSimbolos.getAtributo(loc.getId()).getValorInPos(i);
+        }        
         return tablaSimbolos.getAtributo(loc.getId()).getValor();
     }
 

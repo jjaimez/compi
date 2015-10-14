@@ -23,68 +23,73 @@ public class TablaDeSimbolos {
     }
 
     public void pushClase(String nombre, Clase clase) {
-        if(clases.containsKey(nombre)){
-            System.err.println("ya existe la clase '"+nombre+"'");
+        if (clases.containsKey(nombre)) {
+            System.err.println("ya existe la clase '" + nombre + "'");
             System.exit(1);
         }
         clases.put(nombre, clase);
         ultimaClase = nombre;
     }
 
-    public boolean existeClase(String nombre){
+    public boolean existeClase(String nombre) {
         return clases.containsKey(nombre);
     }
 
     public HashMap<String, Clase> getClases() {
         return clases;
     }
-    
+
     /**
      * Inserta un atributo a una clase
-     * @param atr 
+     *
+     * @param atr
      */
-    public void insertAtrClase(String nombreClase,Atributo atr){
-       if(existeClase(nombreClase)){
-           Clase c=clases.get(nombreClase);
-           c.setAtributo(atr);
-           clases.replace(nombreClase, c);
-       }else{
-           System.out.println("error, no existe la clase '"+nombreClase+"'");
-           System.exit(1);
-       } 
+    public void insertAtrClase(String nombreClase, Atributo atr) {
+        if (existeClase(nombreClase)) {
+            Clase c = clases.get(nombreClase);
+            c.setAtributo(atr);
+            clases.replace(nombreClase, c);
+        } else {
+            System.out.println("error, no existe la clase '" + nombreClase + "'");
+            System.exit(1);
+        }
     }
-    
-        /**
+
+    /**
      * Inserta un atributo a una clase
-     * @param atr 
+     *
+     * @param atr
      */
-    public void insertMetClase(String nombreClase,Metodo met){
-       if(existeClase(nombreClase)){
-           Clase c=clases.get(nombreClase);
-           c.setMetodo(met);
-           clases.replace(nombreClase, c);
-       }else{
-           System.out.println("error, no existe la clase '"+nombreClase+"'");
-           System.exit(1);
-       }
+    public void insertMetClase(String nombreClase, Metodo met) {
+        if (existeClase(nombreClase)) {
+            Clase c = clases.get(nombreClase);
+            c.setMetodo(met);
+            clases.replace(nombreClase, c);
+        } else {
+            System.out.println("error, no existe la clase '" + nombreClase + "'");
+            System.exit(1);
+        }
     }
-    
-    public Atributo getAtributo(String id){
-        for(int i=0;  i<pilaBloque.size();i++){
-            Atributo atr =pilaBloque.get(i).getAtributo(id);
-            if(atr!=null){
+
+    public Atributo getAtributo(String id) {
+        for (int i = 0; i < pilaBloque.size(); i++) {
+            Atributo atr = pilaBloque.get(i).getAtributo(id);
+            if (atr != null) {
                 return atr;
             }
         }
         return null;
     }
-    
 
+    public Atributo getAtributoSameBlock(String id) {
+        return pilaBloque.getLast().getAtributo(id);
+    }
 
-    public Metodo getMetodo(String nombreClase,String nombreMetodo){
-        Clase c= clases.get(nombreClase);
+    public Metodo getMetodo(String nombreClase, String nombreMetodo) {
+        Clase c = clases.get(nombreClase);
         return c.getMetodo(nombreMetodo);
     }
+
     public void pushBloque(Bloque ambiente) {
         pilaBloque.add(ambiente);
     }
@@ -97,7 +102,6 @@ public class TablaDeSimbolos {
         pilaBloque.removeLast();
     }
 
-
     public boolean isEmptyBloque() {
         return pilaBloque.size() == 0;
     }
@@ -106,39 +110,40 @@ public class TablaDeSimbolos {
         return ultimaClase;
     }
 
-    public Atributo getVariableBloque(String id){
-        for(int i=1; i< pilaBloque.size(); i++){//arranco de de 1 para evitar rev
-            Atributo atr=pilaBloque.get(i).getAtributo(id);
-            if(atr!=null){
+    public Atributo getVariableBloque(String id) {
+        for (int i = 1; i < pilaBloque.size(); i++) {//arranco de de 1 para evitar rev
+            Atributo atr = pilaBloque.get(i).getAtributo(id);
+            if (atr != null) {
                 return atr;
             }
         }
         return null;
     }
-    
+
     /**
      * agrega una variable al bloque corriente
+     *
      * @param id
-     * @return 
+     * @return
      */
-        public Atributo setVariableBloque(Atributo atr){
-            Bloque b= pilaBloque.getLast();
-            b.setAtributo(atr);
-            pilaBloque.set(pilaBloque.size()-1, b);
+    public Atributo setVariableBloque(Atributo atr) {
+        Bloque b = pilaBloque.getLast();
+        b.setAtributo(atr);
+        pilaBloque.set(pilaBloque.size() - 1, b);
         return null;
     }
-        
-            /**
+
+    /**
      * agrega una variable al bloque corriente
+     *
      * @param id
-     * @return 
+     * @return
      */
-        public Atributo setVariablesBloque(LinkedList<Atributo> atr){
-            Bloque b= pilaBloque.getLast();
-            b.setAtributos(atr);
-            pilaBloque.set(pilaBloque.size()-1, b);
+    public Atributo setVariablesBloque(LinkedList<Atributo> atr) {
+        Bloque b = pilaBloque.getLast();
+        b.setAtributos(atr);
+        pilaBloque.set(pilaBloque.size() - 1, b);
         return null;
     }
-        
-        
+
 }

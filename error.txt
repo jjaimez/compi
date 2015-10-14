@@ -1,0 +1,18 @@
+En la carpeta /test semanticos que no tendrian que fallar, hay 4 test que tendrian que ser postivos pero ahora no pasan.
+Tambien hay que hacer que se pueda compilar a mano.
+
+
+Empeze la solucion del siguiente error:
+
+En cada boloque se puede re definir una variable, ejemplo:
+ int metodo(){
+ 	int j;
+ 	if (true){
+ 		int j;
+ 	} else {
+ 		int j;
+ 	}
+ }  // ESTO TIENE QUE SER VALIDO.
+
+para esto implemente una funcion getAtributoSameBlock(String id) en TablaDeSimbolos que retorna el atributo con nombre id del bloque corriente, si no existe retorna null; No hice mas nada.
+

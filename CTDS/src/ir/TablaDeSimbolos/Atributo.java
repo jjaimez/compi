@@ -12,32 +12,46 @@ import ir.ast.Type;
  * @author nico
  */
 public class Atributo {
-    private Object valor;
+
+    private Object valor[] = new Object[100];
     private Type tipo;
     private String nombre;
     private Integer tamanio = 0;
 
-    public Atributo(Object valor, Type tipo, String nombre,Integer tamanio) {
-        this.valor = valor;
+    public Atributo(Object valor, Type tipo, String nombre, Integer tamanio) {
         this.tipo = tipo;
         this.nombre = nombre;
-        if (tamanio != null)
+        if (tamanio != null) 
             this.tamanio = tamanio;
+        this.valor[0] = valor;
     }
 
-    public Atributo(Object valor, Type tipo, String nombre) {
-        this.valor = valor;
+    public Atributo(Object valor, Type tipo, String nombre) {     
+        this.valor[0] = valor;
         this.tipo = tipo;
         this.nombre = nombre;
-        this.tamanio=0;
+        this.tamanio = 0;
     }
 
     public Object getValor() {
-        return valor;
+        return valor[0];
+    }
+    
+    public Object getValorInPos(int pos) {
+        if (pos >= 0){
+            return valor[pos];
+        }
+        return null;
+    }
+
+    public void setValorInPos(Object valor, int pos) {
+        if (pos >= 0) {
+            this.valor[pos] = valor;
+        }
     }
 
     public void setValor(Object valor) {
-        this.valor = valor;
+        this.valor[0] = valor;
     }
 
     public Type getTipo() {
@@ -59,7 +73,5 @@ public class Atributo {
     public Integer getTamanio() {
         return tamanio;
     }
- 
-   
-    
+
 }
