@@ -155,7 +155,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
             for (LocationDeclaration ld : fd.getL()) {
                 //creo un atributo
                 Atributo atributo;
-                if (tablaSimbolos.getVariableBloque(ld.getId()) == null) {
+                if (tablaSimbolos.getAtributoSameBlock(ld.getId()) == null) {
                     if (ld.getSize() == null) {
                         atributo = new Atributo(null, fd.getType(), ld.getId());
                     } else {
