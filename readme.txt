@@ -2,8 +2,13 @@ Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
 Proyecto: CompiladorCTDS
 
 
-1) Abrir el proyecto CTDS con neatbeans
-2) Correr main.java para ejecutar los test.
+-ubicarse en la carpeta source y correr el siguiente código para compilar :
+
+:~CTDS$ javac -d class -cp src:libs/java-cup-11a.jar src/main.java 
+
+luego ejecutar el programa : 
+
+:~CTDS$ java -cp libs/java-cup-11a.jar:class/ main
 
 
 En src/parser se encuentra los archivos jflex y cup, para compilar el cup ejecutar CompilarCup.java.
