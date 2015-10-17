@@ -1,4 +1,11 @@
 
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * Main del compilador
+ */
+
+
 import ir.TablaDeSimbolos.Atributo;
 import ir.TablaDeSimbolos.Clase;
 import ir.TablaDeSimbolos.Metodo;
@@ -43,9 +50,8 @@ public class main {
          bcv.visit(p.getAST());
          }*/
 
-        for (int i = 1; i <= 5; i++) {
-            System.out.println("test" + i + ".ctds");
-            BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/test/test" + i + ".ctds"));
+       
+            BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + args[0]));
             Lexer lex = new Lexer(br);
             parser p = new parser(lex);
             p.parse();
@@ -55,8 +61,8 @@ public class main {
             bcv.visit(p.getAST());
             InterpreterVisitor iv= new InterpreterVisitor();
             iv.visit(p.getAST());
-            System.out.println("--------------------------");
-        }
+            System.out.println("------------- OK -------------");
+       
 
         
 //         System.out.println("<<<<<<<<<< Comienzan los test negativos >>>>>>>>>>");
