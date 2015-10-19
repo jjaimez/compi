@@ -21,6 +21,10 @@ public class VarLocation extends Location {
         super.expr = exp;
     }
 
+    public VarLocation(String id) {
+        this.id = id;
+    }
+
     public VarLocation(String id, Expression exp, int line, int col) {
         this.setLineNumber(line + 1);
         this.setColumnNumber(col + 1);
@@ -37,7 +41,7 @@ public class VarLocation extends Location {
         this.id = id;
         this.blockId = -1;
         location = loc;
-                super.expr = exp;
+        super.expr = exp;
 
     }
 

@@ -5,10 +5,8 @@ package ir.TablaDeSimbolos;
  * Proyecto: CompiladorCTDS
  * Pila para guardar los ambientes de cada bloque del programa.
  */
-import ir.ast.AST;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 
 public class TablaDeSimbolos {
 
