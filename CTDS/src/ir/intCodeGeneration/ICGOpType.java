@@ -23,5 +23,11 @@ public enum ICGOpType {
     GTEQ,
     NOTEQ,
     EQEQ,
-    RET;
+    RET,
+    CMP,
+    JNE, //jumpo not equals
+    JE,
+    JMP,
+    LBL,
+    INC;
 }

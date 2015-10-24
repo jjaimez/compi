@@ -50,6 +50,6 @@ public class Pair<T1,T2> {
 	}
 	
 	public String toString(){
-		return "("+ x +","+ y + ")"; 
+		return "("+ x.toString() +","+ y.toString() + ")"; 
 	}
 }

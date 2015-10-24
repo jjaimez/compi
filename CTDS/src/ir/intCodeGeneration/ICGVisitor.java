@@ -133,21 +133,43 @@ public class ICGVisitor implements ASTVisitor<Expression> {
 
     @Override
     public Expression visit(IfStmt stmt) {
+        Expression cond = stmt.getCondition().accept(this);
+        int labelIf = labelId++;
+        code.add(new Command(ICGOpType.CMP, "1", cond, null));
+        code.add(new Command(ICGOpType.JNE, new Pair(labelIf, ".LEIF"), null, null));
+        if (stmt.getIfBlock() != null) {
+            stmt.getIfBlock().accept(this);
+        }
+        code.add(new Command(ICGOpType.LBL, new Pair(labelIf, ".LEIF"), null, null));
+        if (stmt.getElseBlock() != null) {
+            stmt.getElseBlock().accept(this);
+        }
         return null;
     }
 
     @Override
     public Expression visit(BreakStmt stmt) {
+        code.add(new Command(ICGOpType.JMP, new Pair(iterLabels.peek().snd(), ".EI"), null, null));
         return null;
     }
 
     @Override
     public Expression visit(ContinueStmt stmt) {
+        code.add(new Command(ICGOpType.JMP, new Pair(iterLabels.peek().fst(), ".BI"), null, null));
         return null;
     }
 
     @Override
     public Expression visit(WhileStmt stmt) {
+        iterLabels.push(new Pair<>(++labelId, labelId));
+        code.add(new Command(ICGOpType.LBL, new Pair(iterLabels.peek().fst(), ".BI"), null, null));
+        Expression cond = stmt.getExpr().accept(this);
+        code.add(new Command(ICGOpType.CMP, "1", cond, null));
+        code.add(new Command(ICGOpType.JNE, new Pair(iterLabels.peek().snd(), ".LEIF"), null, null));
+        stmt.getBlock().accept(this);
+        code.add(new Command(ICGOpType.JMP, new Pair(iterLabels.peek().fst(), ".BI"), null, null));
+        code.add(new Command(ICGOpType.LBL, new Pair(iterLabels.peek().snd(), ".EI"), null, null));
+        iterLabels.pop();
         return null;
     }
 
@@ -163,6 +185,21 @@ public class ICGVisitor implements ASTVisitor<Expression> {
 
     @Override
     public Expression visit(ForStmt stmt) {
+        iterLabels.push(new Pair<>(++labelId, labelId));
+        Expression varFrom = stmt.getExpr().accept(this);
+        code.add(new Command(ICGOpType.LBL, new Pair(iterLabels.peek().fst(), ".BI"), null, null));
+        Expression to = stmt.getExpr2().accept(this);
+        ++commId;
+        int id = commId;
+        code.add(new Command(ICGOpType.CMP, "1", to, null));
+        code.add(new Command(ICGOpType.JNE, new Pair(iterLabels.peek().snd(), ".EI"), null, null));
+        if (stmt.getStatement() != null) {
+            stmt.getStatement().accept(this);
+        }
+        code.add(new Command(ICGOpType.INC, varFrom.getReference(), null, null));
+        code.add(new Command(ICGOpType.JMP, new Pair(iterLabels.peek().fst(), ".BI"), null, null));
+        code.add(new Command(ICGOpType.LBL, new Pair(iterLabels.peek().snd(), ".EI"), null, null));
+        iterLabels.pop(); 
         return null;
     }
 
