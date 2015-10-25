@@ -1,0 +1,24 @@
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * test: rel_op float
+*/
+
+class Main {
+			boolean b;
+			boolean b2;
+			boolean b3;
+			boolean b4;
+
+				void main() {
+					float id1;
+					float id2;
+					boolean idb;
+					id1 = 1.3;                
+					id2 = 2.35;
+					b = id1 > id2; // flase
+					b2 = id1 < id2; // true
+					b3 = id1 <= id2; // true
+					b4 = id1 >= id2; // false   
+	}
+}

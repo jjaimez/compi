@@ -1,5 +1,5 @@
 /*
-/*
+ /*
  * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
  * Proyecto: CompiladorCTDS
  * Definicion de instrucciones de codigo intermedio
@@ -7,17 +7,18 @@
 package ir.intCodeGeneration;
 
 public enum ICGOpType {
+
     STR, //ASSIGN
     ADD,
     SUB,
     MUL,
     DIV,
-    MOD,   
+    MOD,
     MIN, //minus -
     AND,
-    OR,   
-    NOT,   
-    LT, 
+    OR,
+    NOT,
+    LT,
     LTEQ,
     GT,
     GTEQ,
@@ -29,5 +30,9 @@ public enum ICGOpType {
     JE,
     JMP,
     LBL,
-    INC;
+    INC,
+    CALL,
+    DEF,
+    GDEF,
+    PARAM;
 }

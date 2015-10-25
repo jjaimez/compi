@@ -50,8 +50,11 @@ public class ICGVisitor implements ASTVisitor<Expression> {
     private int cantMetodos;
 
     public ICGVisitor() {
-        code = new LinkedList();
-        iterLabels = new Stack();
+        code = new LinkedList<Command>();
+        iterLabels = new Stack<Pair<Integer, Integer>>();
+        commId = 0;
+        labelId = 0;
+        cantMetodos = 0;
     }
 
     public int getCantMetodos() {
@@ -64,11 +67,20 @@ public class ICGVisitor implements ASTVisitor<Expression> {
 
     @Override
     public Expression visit(Parameter p) {
+        code.add(new Command(ICGOpType.PARAM, p.getId(), null, null));
         return null;
     }
 
     @Override
     public Expression visit(Method m) {
+        ++labelId;
+        code.add(new Command(ICGOpType.LBL, new Pair(labelId, m.getId()), null, null));
+        if (m.getParameters() != null) {
+            for (Parameter p : m.getParameters()) {
+                p.accept(this);
+            }
+        }
+        m.getBody().accept(this);
         return null;
     }
 
@@ -79,11 +91,19 @@ public class ICGVisitor implements ASTVisitor<Expression> {
 
     @Override
     public Expression visit(FieldDeclaration fd) {
+        for (LocationDeclaration ld : fd.getL()) {
+            code.add(new Command(ICGOpType.DEF, fd.getType(), ld.getId(), null));
+        }
         return null;
     }
 
     @Override
     public Expression visit(Declaration d) {
+        for (FieldDeclaration fd : d.getFieldDecl()) {
+            for (LocationDeclaration ld : fd.getL()) {
+                code.add(new Command(ICGOpType.GDEF, fd.getType(), ld.getId(), null));
+            }
+        }
         for (Method m : d.getMethodDecl()) {
             m.accept(this);
         }
@@ -98,7 +118,9 @@ public class ICGVisitor implements ASTVisitor<Expression> {
 
     @Override
     public Expression visit(Program p) {
-        p.accept(this);
+        for (ClassDeclaration cd : p.getClassDeclarations()) {
+            cd.accept(this);
+        }
         return null;
     }
 
@@ -134,16 +156,19 @@ public class ICGVisitor implements ASTVisitor<Expression> {
     @Override
     public Expression visit(IfStmt stmt) {
         Expression cond = stmt.getCondition().accept(this);
-        int labelIf = labelId++;
+        int labelIf = ++labelId;
+        ++labelId;
         code.add(new Command(ICGOpType.CMP, "1", cond, null));
-        code.add(new Command(ICGOpType.JNE, new Pair(labelIf, ".LEIF"), null, null));
+        code.add(new Command(ICGOpType.JNE, new Pair(labelIf, ".LIF"), null, null));
         if (stmt.getIfBlock() != null) {
             stmt.getIfBlock().accept(this);
+            code.add(new Command(ICGOpType.JMP, new Pair(labelId, ".LEIF"), null, null));
         }
-        code.add(new Command(ICGOpType.LBL, new Pair(labelIf, ".LEIF"), null, null));
+        code.add(new Command(ICGOpType.LBL, new Pair(labelIf, ".LIF"), null, null));
         if (stmt.getElseBlock() != null) {
             stmt.getElseBlock().accept(this);
         }
+        code.add(new Command(ICGOpType.LBL, new Pair(labelId, ".LEIF"), null, null));
         return null;
     }
 
@@ -161,11 +186,12 @@ public class ICGVisitor implements ASTVisitor<Expression> {
 
     @Override
     public Expression visit(WhileStmt stmt) {
-        iterLabels.push(new Pair<>(++labelId, labelId));
+        int lbl = ++labelId;
+        iterLabels.push(new Pair<>(lbl, ++labelId));
         code.add(new Command(ICGOpType.LBL, new Pair(iterLabels.peek().fst(), ".BI"), null, null));
         Expression cond = stmt.getExpr().accept(this);
         code.add(new Command(ICGOpType.CMP, "1", cond, null));
-        code.add(new Command(ICGOpType.JNE, new Pair(iterLabels.peek().snd(), ".LEIF"), null, null));
+        code.add(new Command(ICGOpType.JNE, new Pair(iterLabels.peek().snd(), ".EI"), null, null));
         stmt.getBlock().accept(this);
         code.add(new Command(ICGOpType.JMP, new Pair(iterLabels.peek().fst(), ".BI"), null, null));
         code.add(new Command(ICGOpType.LBL, new Pair(iterLabels.peek().snd(), ".EI"), null, null));
@@ -175,7 +201,18 @@ public class ICGVisitor implements ASTVisitor<Expression> {
 
     @Override
     public Expression visit(MethodCall stmt) {
-        return null;
+        LinkedList<Expression> list = (LinkedList) stmt.getExpressions();
+        for (int i = 0; i < list.size(); i++) {
+            Expression e = list.get(i).accept(this);
+            list.set(i, e);
+        }
+        stmt.setExpressions(list);
+        ++commId;
+        int id = commId;
+        VarLocation var = new VarLocation("t" + id);
+        Atributo a = new Atributo(null, stmt.getType(), "t" + id);
+        code.add(new Command(ICGOpType.CALL, stmt, var, null));
+        return var;
     }
 
     @Override
@@ -185,8 +222,9 @@ public class ICGVisitor implements ASTVisitor<Expression> {
 
     @Override
     public Expression visit(ForStmt stmt) {
-        iterLabels.push(new Pair<>(++labelId, labelId));
-        Expression varFrom = stmt.getExpr().accept(this);
+        int lbl = ++labelId;
+        iterLabels.push(new Pair<>(lbl, ++labelId));
+        code.add(new Command(ICGOpType.STR, stmt.getId(), stmt.getExpr().accept(this), null));
         code.add(new Command(ICGOpType.LBL, new Pair(iterLabels.peek().fst(), ".BI"), null, null));
         Expression to = stmt.getExpr2().accept(this);
         ++commId;
@@ -196,15 +234,16 @@ public class ICGVisitor implements ASTVisitor<Expression> {
         if (stmt.getStatement() != null) {
             stmt.getStatement().accept(this);
         }
-        code.add(new Command(ICGOpType.INC, varFrom.getReference(), null, null));
+        code.add(new Command(ICGOpType.INC, stmt.getId(), null, null));
         code.add(new Command(ICGOpType.JMP, new Pair(iterLabels.peek().fst(), ".BI"), null, null));
         code.add(new Command(ICGOpType.LBL, new Pair(iterLabels.peek().snd(), ".EI"), null, null));
-        iterLabels.pop(); 
+        iterLabels.pop();
         return null;
     }
 
     @Override
     public Expression visit(MethodCallStmt stmt) {
+        stmt.getM().accept(this);
         return null;
     }
 
@@ -302,6 +341,9 @@ public class ICGVisitor implements ASTVisitor<Expression> {
 
     @Override
     public Expression visit(Block bl) {
+        for (FieldDeclaration fd : bl.getFd()) {
+            fd.accept(this);
+        }
         if (bl.getStatements() != null) {
             for (Statement s : bl.getStatements()) {
                 s.accept(this);

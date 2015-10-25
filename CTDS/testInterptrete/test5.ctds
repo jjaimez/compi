@@ -1,0 +1,17 @@
+/*
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * test: Los operandos de cond_op y el operando de la negacion (!)
+ */
+
+class Main {
+		boolean b,b1,b2,b3;
+
+        void main() {
+                
+                b = false; //false
+                b1 = !b; // true
+                b2 = false && true; // false
+                b3 =  false || b; // false
+	}
+}

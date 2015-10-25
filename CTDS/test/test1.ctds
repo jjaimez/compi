@@ -5,37 +5,14 @@
  */
 
 class Main {
-    int id1;
-    void metodo(){
-	   int id1;
-    }
-
-    int metodo2(int id1){
-        return id1 + 1;
-    }
-
-    boolean method3(){
-        return true == false;
-    }
+      
+    int met(int m){
+    return m;
+    }   
 
     void main() {
-        int id3;        
-        id1 = 5;
-        id3 = 5;
-        id3 = metodo2(id3); //6
-        id1 = id3 * id1 + 3; //33
-        if (method3()){
-            id1 += 1; 
-        } else {
-             id1 -= 1; //32
-        }
-        for id3 = 1, id3 == 3 {
-            id1 += 5 % 5; // 32
-        } 
-        while (true){
-            id1 += 5*5 + 3*3  - 6; // 60
-            break;
-        }
-
+        int id3;
+        id3 = 3;
+        id3 = met(id3 + 4);
     }
 }
