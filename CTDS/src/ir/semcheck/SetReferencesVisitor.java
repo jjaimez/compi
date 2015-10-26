@@ -144,7 +144,9 @@ public class SetReferencesVisitor implements ASTVisitor<Object> {
 
     @Override
     public Object visit(ReturnStmt stmt) {
-        stmt.getExpression().accept(this);
+        if(stmt.getExpression()!=null){
+            stmt.getExpression().accept(this);
+        }
         return null;
     }
 

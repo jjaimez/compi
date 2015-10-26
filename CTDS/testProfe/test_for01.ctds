@@ -1,0 +1,31 @@
+class Main{
+
+int A[5] ;
+float B [56];
+boolean C[10];
+
+int pruArreglos(int b, int c ){
+        int i;
+        A[0] = 2; 
+
+        for i = 5 , i<10 { //semanticamente correcto, aunq ese ciclo no terminaria
+               A[i] = i + 2;
+        }
+
+        
+        return A[1];
+ 
+                
+}
+
+void printf(int f)extern;
+
+void main(){
+
+    printf(pruArreglos(4,8 ));
+    
+    return;
+    
+}
+
+}

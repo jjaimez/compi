@@ -3,10 +3,11 @@ Proyecto: CompiladorCTDS
 
 
 
+------------------COMPILACION MANUAL-------------
 
 -ubicarse en la carpeta CTDS y correr el siguiente código para compilar (Si falla, crear una carpeta class en CTDS): 
 
-:~CTDS$ javac -d class -cp src:libs/java-cup-11a.jar src/main.java     
+:~CTDS$ javac -d class -cp src:libs/java-cup-11a.jar src/ctds.java     
 
 luego ejecutar el programa : 
 
@@ -16,6 +17,13 @@ luego ejecutar el programa :
 			 java -cp libs/java-cup-11a.jar:class/ main /testSemantica/test20.ctds
 
 
+------------------COMPILACION CON SCRIPTS-------------
+
+-ubicarse en la carpeta CTDS
+-compilar el proyecto con ./scriptCompilar.sh
+-correr el compilador con ./ctds.sh NOMBRE_ARCHIVO.ctds
+
+-------------------------------------------------------
 
 En src/parser se encuentra los archivos jflex y cup, para compilar el cup ejecutar CompilarCup.java.
 En src/ir se encuentra todo lo que respecta al arbol ast.
