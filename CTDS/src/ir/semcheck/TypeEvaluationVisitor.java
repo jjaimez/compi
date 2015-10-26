@@ -38,10 +38,10 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
 
     @Override
     public Type visit(ReturnStmt stmt) {
-        if (stmt.getExpression() == null) {
-            return Type.VOID;
+        if (stmt.getExpression() != null) {
+            return stmt.getExpression().accept(this);
         }
-        return stmt.getExpression().accept(this);
+        return Type.VOID;
 
     }
 
@@ -103,8 +103,8 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
                 System.exit(1);
             }
             //si la variable definida NO es un arreglo pero en la location si lo usa como arreglo se rompe
-            if(loc.getTamanio()==0 && stmt.getLocation().getExpr()!=null){
-                System.err.println("La variable "+loc.getNombre()+" No es un arreglo. linea: " + stmt.getLocation().getLineNumber() + " columna: " + stmt.getLocation().getColumnNumber());
+            if (loc.getTamanio() == 0 && stmt.getLocation().getExpr() != null) {
+                System.err.println("La variable " + loc.getNombre() + " No es un arreglo. linea: " + stmt.getLocation().getLineNumber() + " columna: " + stmt.getLocation().getColumnNumber());
                 System.exit(1);
             }
         } else {
@@ -369,7 +369,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
         //analizo que exista una clase "Main" y que tenga un metodo main
         if (tablaSimbolos.existeClase("Main")) {
             Metodo met = tablaSimbolos.getMetodo("Main", "main");
-            if(met== null){
+            if (met == null) {
                 System.err.println("error. La clase debe contener un metodo main");
                 System.exit(1);
             }

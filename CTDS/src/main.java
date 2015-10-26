@@ -7,6 +7,8 @@
 import ir.TablaDeSimbolos.Atributo;
 import ir.TablaDeSimbolos.Clase;
 import ir.TablaDeSimbolos.Metodo;
+import ir.ast.AST;
+import ir.ast.Program;
 import ir.intCodeGeneration.Command;
 import ir.intCodeGeneration.ICGVisitor;
 import ir.semcheck.BreakContinueVisitor;
@@ -29,15 +31,19 @@ public class main {
         Lexer lex = new Lexer(br);
         parser p = new parser(lex);
         p.parse();
-          //  TypeEvaluationVisitor tev = new TypeEvaluationVisitor();
-        //tev.visit(p.getAST());
-        //BreakContinueVisitor bcv = new BreakContinueVisitor();
-        //bcv.visit(p.getAST());
+        Program prog = p.getAST();
+        
+        TypeEvaluationVisitor tev = new TypeEvaluationVisitor();
+        tev.visit(prog);
+        BreakContinueVisitor bcv = new BreakContinueVisitor();
+        bcv.visit(prog);
 
         SetReferencesVisitor srv = new SetReferencesVisitor();
-        srv.visit(p.getAST());
+        srv.visit(prog);
+        
         ICGVisitor icgv = new ICGVisitor();
-        icgv.visit(p.getAST());
+        icgv.visit(prog);
+        
         for (Command c : icgv.getCode()) {
             System.out.println(c.toString());
         }

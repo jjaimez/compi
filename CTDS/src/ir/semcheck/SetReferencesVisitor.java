@@ -46,6 +46,12 @@ public class SetReferencesVisitor implements ASTVisitor<Object> {
 
     private TablaDeSimbolos tablaSimbolos;
 
+    public SetReferencesVisitor() {
+        this.tablaSimbolos = new TablaDeSimbolos();
+    }
+    
+    
+    
     @Override
     public Object visit(Parameter p) {
         Atributo atributo;
@@ -106,6 +112,7 @@ public class SetReferencesVisitor implements ASTVisitor<Object> {
     @Override
     public Object visit(ClassDeclaration cd) {
         Clase c = new Clase();
+
         cd.setReference(c);
         tablaSimbolos.pushClase(cd.getId(), c);
         tablaSimbolos.pushBloque(new Bloque());
@@ -118,7 +125,7 @@ public class SetReferencesVisitor implements ASTVisitor<Object> {
 
     @Override
     public Object visit(Program p) {
-        if (p.getClassDeclarations() == null) {
+        if (p.getClassDeclarations() != null) {
             for (ClassDeclaration cd : p.getClassDeclarations()) {
                 cd.accept(this);
             }
@@ -248,8 +255,9 @@ public class SetReferencesVisitor implements ASTVisitor<Object> {
                     } else {
                         atributo = new Atributo(null, fd.getType(), ld.getId(), ld.getSize().getValue());
                     }
-                    ld.setReference(atributo);
                     tablaSimbolos.setVariableBloque(atributo);
+                    ld.setReference(atributo);             
+                    
                 }
             }
         }

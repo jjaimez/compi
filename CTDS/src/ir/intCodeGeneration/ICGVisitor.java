@@ -47,18 +47,14 @@ public class ICGVisitor implements ASTVisitor<Expression> {
     private int commId;
     private int labelId;
     private Stack<Pair<Integer, Integer>> iterLabels;
-    private int cantMetodos;
+    private int offsetStack;
 
     public ICGVisitor() {
         code = new LinkedList<Command>();
         iterLabels = new Stack<Pair<Integer, Integer>>();
+        offsetStack = 0;
         commId = 0;
         labelId = 0;
-        cantMetodos = 0;
-    }
-
-    public int getCantMetodos() {
-        return cantMetodos;
     }
 
     public LinkedList<Command> getCode() {
@@ -67,13 +63,14 @@ public class ICGVisitor implements ASTVisitor<Expression> {
 
     @Override
     public Expression visit(Parameter p) {
-        code.add(new Command(ICGOpType.PARAM, p.getId(), null, null));
+        code.add(new Command(ICGOpType.PARAM, p, null, null));
         return null;
     }
 
     @Override
     public Expression visit(Method m) {
         ++labelId;
+        offsetStack = 0;
         code.add(new Command(ICGOpType.LBL, new Pair(labelId, m.getId()), null, null));
         if (m.getParameters() != null) {
             for (Parameter p : m.getParameters()) {
@@ -81,6 +78,9 @@ public class ICGVisitor implements ASTVisitor<Expression> {
             }
         }
         m.getBody().accept(this);
+        if (!code.getLast().getOp().equals(ICGOpType.RET)) {
+            code.add(new Command(ICGOpType.RET, null, null, null));
+        }
         return null;
     }
 
@@ -92,7 +92,14 @@ public class ICGVisitor implements ASTVisitor<Expression> {
     @Override
     public Expression visit(FieldDeclaration fd) {
         for (LocationDeclaration ld : fd.getL()) {
-            code.add(new Command(ICGOpType.DEF, fd.getType(), ld.getId(), null));
+            Integer tam = ((Atributo) ld.getReference()).getTamanio();
+            if (tam != null && tam > 0) {
+                offsetStack -= 4 * tam;
+                ((Atributo) ld.getReference()).setOffset(offsetStack);
+            }
+            offsetStack -= 4;
+            ((Atributo) ld.getReference()).setOffset(offsetStack);
+            code.add(new Command(ICGOpType.DEF, fd.getType(), ld, null));
         }
         return null;
     }
@@ -101,7 +108,7 @@ public class ICGVisitor implements ASTVisitor<Expression> {
     public Expression visit(Declaration d) {
         for (FieldDeclaration fd : d.getFieldDecl()) {
             for (LocationDeclaration ld : fd.getL()) {
-                code.add(new Command(ICGOpType.GDEF, fd.getType(), ld.getId(), null));
+                code.add(new Command(ICGOpType.GDEF, fd.getType(), ld, null));
             }
         }
         for (Method m : d.getMethodDecl()) {
@@ -156,19 +163,19 @@ public class ICGVisitor implements ASTVisitor<Expression> {
     @Override
     public Expression visit(IfStmt stmt) {
         Expression cond = stmt.getCondition().accept(this);
-        int labelIf = ++labelId;
-        ++labelId;
+        int lbl = ++labelId;
+        int lbl2 = ++labelId;
         code.add(new Command(ICGOpType.CMP, "1", cond, null));
-        code.add(new Command(ICGOpType.JNE, new Pair(labelIf, ".LIF"), null, null));
+        code.add(new Command(ICGOpType.JNE, new Pair(lbl, ".LIF"), null, null));
         if (stmt.getIfBlock() != null) {
             stmt.getIfBlock().accept(this);
-            code.add(new Command(ICGOpType.JMP, new Pair(labelId, ".LEIF"), null, null));
+            code.add(new Command(ICGOpType.JMP, new Pair(lbl2, ".LEIF"), null, null));
         }
-        code.add(new Command(ICGOpType.LBL, new Pair(labelIf, ".LIF"), null, null));
+        code.add(new Command(ICGOpType.LBL, new Pair(lbl, ".LIF"), null, null));
         if (stmt.getElseBlock() != null) {
             stmt.getElseBlock().accept(this);
         }
-        code.add(new Command(ICGOpType.LBL, new Pair(labelId, ".LEIF"), null, null));
+        code.add(new Command(ICGOpType.LBL, new Pair(lbl2, ".LEIF"), null, null));
         return null;
     }
 
@@ -211,6 +218,8 @@ public class ICGVisitor implements ASTVisitor<Expression> {
         int id = commId;
         VarLocation var = new VarLocation("t" + id);
         Atributo a = new Atributo(null, stmt.getType(), "t" + id);
+        offsetStack -= 4;
+        a.setOffset(offsetStack);
         code.add(new Command(ICGOpType.CALL, stmt, var, null));
         return var;
     }
@@ -227,8 +236,6 @@ public class ICGVisitor implements ASTVisitor<Expression> {
         code.add(new Command(ICGOpType.STR, stmt.getId(), stmt.getExpr().accept(this), null));
         code.add(new Command(ICGOpType.LBL, new Pair(iterLabels.peek().fst(), ".BI"), null, null));
         Expression to = stmt.getExpr2().accept(this);
-        ++commId;
-        int id = commId;
         code.add(new Command(ICGOpType.CMP, "1", to, null));
         code.add(new Command(ICGOpType.JNE, new Pair(iterLabels.peek().snd(), ".EI"), null, null));
         if (stmt.getStatement() != null) {
@@ -257,6 +264,8 @@ public class ICGVisitor implements ASTVisitor<Expression> {
         VarLocation var = new VarLocation("t" + id);
         Atributo a = new Atributo(null, expr.getType(), "t" + id);
         var.setReference(a);
+        offsetStack -= 4;
+        a.setOffset(offsetStack);
         switch (op) {
             case MINUS:
                 code.add(new Command(ICGOpType.SUB, left, right, var));
@@ -308,6 +317,8 @@ public class ICGVisitor implements ASTVisitor<Expression> {
         Expression e = expr.getOperand().accept(this);
         VarLocation var = new VarLocation("t" + id);
         Atributo a = new Atributo(null, expr.getType(), "t" + id);
+        offsetStack -= 4;
+        a.setOffset(offsetStack);
         var.setReference(a);
         switch (expr.getOperator()) {
             case NOT:
@@ -336,6 +347,9 @@ public class ICGVisitor implements ASTVisitor<Expression> {
 
     @Override
     public Expression visit(VarLocation loc) {
+        if (loc.getExp() != null) {
+            loc.setExp(loc.getExp().accept(this));
+        }
         return loc;
     }
 

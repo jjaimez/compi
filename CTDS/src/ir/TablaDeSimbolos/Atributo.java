@@ -16,7 +16,8 @@ public class Atributo {
     private Object valor[] = new Object[100];
     private Type tipo;
     private String nombre;
-    private Integer tamanio = 0;
+    private int tamanio = 0;
+    private int offset = 0;
 
     public Atributo(Object valor, Type tipo, String nombre, Integer tamanio) {
         this.tipo = tipo;
@@ -73,5 +74,15 @@ public class Atributo {
     public Integer getTamanio() {
         return tamanio;
     }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
+    
+    
 
 }
