@@ -62,22 +62,22 @@ public class AssemblyCode {
                     str(c);
                     break;
                 case MUL:
-                    //mul(c);
+                    mul(c);
                     break;
                 case DIV:
-                    //div(c);
+                    div(c);
                     break;
                 case MOD:
-                    //mod(c);
+                    mod(c);
                     break;
                 case MIN:
                     min(c);
                     break;
                 case AND:
-                    //and(c);
+                    and(c);
                     break;
                 case OR:
-                    //or(c);
+                    or(c);
                     break;
                 case NOT:
                     not(c);
@@ -101,7 +101,7 @@ public class AssemblyCode {
                     eqeq(c);
                     break;
                 case RET:
-                    //ret(c);
+                    ret(c);
                     break;
                 case CMP:
                     cmp(c);
@@ -272,10 +272,7 @@ public class AssemblyCode {
      * @return
      */
     private String calculateOffset(Atributo atr) {
-        if (atr.esGlobal()){
-            return "0";
-        }
-        if (atr.getOffset() == 0) {//tenemos que ver si lo hacemos con 0 o como para ver las globales
+        if (atr.esGlobal()) {
             return atr.getNombre();
         }
         if (atr.getTamanio() == 0) {// NO es un arreglo
@@ -295,7 +292,7 @@ public class AssemblyCode {
         String offset = calculateOffset((Atributo) res.getReference());
         if ((c.getP2() instanceof VarLocation)) {
             VarLocation loc = (VarLocation) c.getP2();
-            if ( loc.getReference() == null){
+            if (loc.getReference() == null) {
                 System.out.println("ES NULO PIBE");
             }
             codeAssembly.add("      movl " + calculateOffset((Atributo) loc.getReference()) + ", %eax");
@@ -450,8 +447,8 @@ public class AssemblyCode {
     }
 
     /**
-     * <= para dos operandos 
-     * @param c
+     * <= para dos operandos @param c
+     *
      *
      *
      */
@@ -470,8 +467,8 @@ public class AssemblyCode {
     }
 
     /**
-     * < para dos operandos 
-     * @param c
+     * < para dos operandos @param c
+     *
      *
      *
      */
@@ -488,4 +485,243 @@ public class AssemblyCode {
         codeAssembly.add("      movl " + " %eax, " + calculateOffset((Atributo) res.getReference()));
     }
 
+    /**
+     * CASOS DEL CODIGO INTERMEDIO MUL VAR VAR T1 MUL 1 VAR T1 MUL VAR 1 T1 MUL
+     * 1 1 T1
+     *
+     * @param c
+     */
+    public void mul(Command c) {
+        //caso en que el primero es una varariable y la segunda un literal, ej x*1
+        if ((c.getP1() instanceof VarLocation) && (c.getP2() instanceof Literal)) {
+            Atributo atr1 = (Atributo) ((VarLocation) c.getP1()).getReference();
+            Atributo result = (Atributo) ((VarLocation) c.getP3()).getReference();
+            if (c.getP2() instanceof IntLiteral) {
+                codeAssembly.add("  movl " + calculateOffset(atr1) + ", %eax");
+                codeAssembly.add("  imull $" + c.getP2().toString() + ", %eax");
+                codeAssembly.add("  movl " + " %eax, " + calculateOffset(result));
+            }
+        }
+        //caso 1*x
+        if ((c.getP2() instanceof VarLocation) && (c.getP1() instanceof Literal)) {
+            Atributo atr2 = (Atributo) ((VarLocation) c.getP2()).getReference();
+            Atributo result = (Atributo) ((VarLocation) c.getP3()).getReference();
+            if (c.getP1() instanceof IntLiteral) {
+                codeAssembly.add("  movl " + calculateOffset(atr2) + ", %eax");
+                codeAssembly.add("  imull $" + c.getP1().toString() + ", %eax");
+                codeAssembly.add("  movl " + " %eax, " + calculateOffset(result));
+            }
+        }
+        //caso 1*1
+        if ((c.getP1() instanceof Literal) && (c.getP2() instanceof Literal)) {
+            if (c.getP2() instanceof IntLiteral) {//si el primero es un int, el segundo tambien
+                Atributo result = (Atributo) ((VarLocation) c.getP3()).getReference();
+                codeAssembly.add("  movl $" + c.getP1().toString() + ", %eax");
+                codeAssembly.add("  imull $" + c.getP2().toString() + ", %eax");
+                codeAssembly.add("  movl " + " %eax, " + calculateOffset(result));
+            }
+            //caso x*x
+            if ((c.getP1() instanceof VarLocation) && (c.getP2() instanceof VarLocation)) {
+                Atributo atr1 = (Atributo) ((VarLocation) c.getP1()).getReference();
+                Atributo atr2 = (Atributo) ((VarLocation) c.getP2()).getReference();
+                Atributo result = (Atributo) ((VarLocation) c.getP3()).getReference();
+                if (atr1.getTipo().isInt()) {
+                    codeAssembly.add("  movl " + calculateOffset(atr1) + ", %eax");
+                    codeAssembly.add("  movl " + calculateOffset(atr2) + ", %edx");
+                    codeAssembly.add("  imull %edx, %eax");
+                    codeAssembly.add("  movl " + " %eax, " + calculateOffset(result));
+                }
+            }
+        }
+    }
+
+    public void div(Command c) {
+        //caso en que el primero es una varariable y la segunda un literal, ej x*1
+        if ((c.getP1() instanceof VarLocation) && (c.getP2() instanceof Literal)) {
+            Atributo atr1 = (Atributo) ((VarLocation) c.getP1()).getReference();
+            Atributo result = (Atributo) ((VarLocation) c.getP3()).getReference();
+            if (c.getP2() instanceof IntLiteral) {
+                //the DIV BX instruction divides the 32-bit value in DX:AX by BX
+                codeAssembly.add("  movl $0, %edx");// muevo un 0 a edx
+                codeAssembly.add("  movl " + calculateOffset(atr1) + ", %eax"); //muevo el valor de la variable a eax 
+                codeAssembly.add("  movl $" + c.getP2().toString() + ", %ecx"); //muevo el literal a ecx
+                codeAssembly.add("  cltd"); //converts signed long to signed double long
+                codeAssembly.add("  idivl %ecx"); //divide the contents of EDX:EAX by the contents of ECX
+                codeAssembly.add("  movl " + " %eax, " + calculateOffset(result)); //el cociente esta en eax
+            }
+        }
+        //caso 1*x
+        if ((c.getP2() instanceof VarLocation) && (c.getP1() instanceof Literal)) {
+            Atributo atr2 = (Atributo) ((VarLocation) c.getP2()).getReference();
+            Atributo result = (Atributo) ((VarLocation) c.getP3()).getReference();
+            if (c.getP1() instanceof IntLiteral) {
+                codeAssembly.add("  movl $0, %edx");// muevo un 0 a edx
+                codeAssembly.add("  movl " + calculateOffset(atr2) + ", %eax"); //muevo el valor de la variable a eax 
+                codeAssembly.add("  movl $" + c.getP1().toString() + ", %ecx"); //muevo el literal a ecx
+                codeAssembly.add("  cltd"); //converts signed long to signed double long
+                codeAssembly.add("  idivl %ecx"); //divide the contents of EDX:EAX by the contents of ECX
+                codeAssembly.add("  movl " + " %eax, " + calculateOffset(result)); //el cociente esta en eax
+            }
+        }
+        //caso 1*1
+        if ((c.getP1() instanceof Literal) && (c.getP2() instanceof Literal)) {
+            if (c.getP2() instanceof IntLiteral) {//si el primero es un int, el segundo tambien
+                Atributo result = (Atributo) ((VarLocation) c.getP3()).getReference();
+                codeAssembly.add("  movl $0, %edx");// muevo un 0 a edx
+                codeAssembly.add("  movl " + c.getP1().toString() + ", %eax"); //muevo el valor de la variable a eax 
+                codeAssembly.add("  movl $" + c.getP2().toString() + ", %ecx"); //muevo el literal a ecx
+                codeAssembly.add("  cltd"); //converts signed long to signed double long
+                codeAssembly.add("  idivl %ecx"); //divide the contents of EDX:EAX by the contents of ECX
+                codeAssembly.add("  movl " + " %eax, " + calculateOffset(result)); //el cociente esta en eax
+            }
+            //caso x*x
+            if ((c.getP1() instanceof VarLocation) && (c.getP2() instanceof VarLocation)) {
+                Atributo atr1 = (Atributo) ((VarLocation) c.getP1()).getReference();
+                Atributo atr2 = (Atributo) ((VarLocation) c.getP2()).getReference();
+                Atributo result = (Atributo) ((VarLocation) c.getP3()).getReference();
+                if (atr1.getTipo().isInt()) {
+                    codeAssembly.add("  movl $0, %edx");// muevo un 0 a edx
+                    codeAssembly.add("  movl " + calculateOffset(atr1) + ", %eax"); //muevo el valor de la variable a eax 
+                    codeAssembly.add("  movl $" + calculateOffset(atr2) + ", %ecx"); //muevo el literal a ecx
+                    codeAssembly.add("  cltd"); //converts signed long to signed double long
+                    codeAssembly.add("  idivl %ecx"); //divide the contents of EDX:EAX by the contents of ECX
+                    codeAssembly.add("  movl " + " %eax, " + calculateOffset(result)); //el cociente esta en eax
+                }
+            }
+        }
+    }
+
+    public void mod(Command c) {
+        //es igual que la division pero el resto se guarda en EDX. EDX:EAX = resto:cociente
+        //caso en que el primero es una varariable y la segunda un literal, ej x mod 1
+        if ((c.getP1() instanceof VarLocation) && (c.getP2() instanceof Literal)) {
+            Atributo atr1 = (Atributo) ((VarLocation) c.getP1()).getReference();
+            Atributo result = (Atributo) ((VarLocation) c.getP3()).getReference();
+            //the DIV BX instruction divides the 32-bit value in DX:AX by BX
+            codeAssembly.add("  movl $0, %edx");// muevo un 0 a edx
+            codeAssembly.add("  movl " + calculateOffset(atr1) + ", %eax"); //muevo el valor de la variable a eax 
+            codeAssembly.add("  movl $" + c.getP2().toString() + ", %ecx"); //muevo el literal a ecx
+            codeAssembly.add("  cltd"); //converts signed long to signed double long
+            codeAssembly.add("  idivl %ecx"); //divide the contents of EDX:EAX by the contents of ECX
+            codeAssembly.add("  movl " + " %edx, " + calculateOffset(result)); //el resto esta en eax
+
+        }
+        //caso 1 mod x
+        if ((c.getP2() instanceof VarLocation) && (c.getP1() instanceof Literal)) {
+            Atributo atr2 = (Atributo) ((VarLocation) c.getP2()).getReference();
+            Atributo result = (Atributo) ((VarLocation) c.getP3()).getReference();
+            codeAssembly.add("  movl $0, %edx");// muevo un 0 a edx
+            codeAssembly.add("  movl " + calculateOffset(atr2) + ", %eax"); //muevo el valor de la variable a eax 
+            codeAssembly.add("  movl $" + c.getP1().toString() + ", %ecx"); //muevo el literal a ecx
+            codeAssembly.add("  cltd"); //converts signed long to signed double long
+            codeAssembly.add("  idivl %ecx"); //divide the contents of EDX:EAX by the contents of ECX
+            codeAssembly.add("  movl " + " %edx, " + calculateOffset(result)); //el cociente esta en eax
+        }
+        //caso 1 mod 1
+        if ((c.getP1() instanceof Literal) && (c.getP2() instanceof Literal)) {
+            Atributo result = (Atributo) ((VarLocation) c.getP3()).getReference();
+            codeAssembly.add("  movl $0, %edx");// muevo un 0 a edx
+            codeAssembly.add("  movl " + c.getP1().toString() + ", %eax"); //muevo el valor de la variable a eax 
+            codeAssembly.add("  movl $" + c.getP2().toString() + ", %ecx"); //muevo el literal a ecx
+            codeAssembly.add("  cltd"); //converts signed long to signed double long
+            codeAssembly.add("  idivl %ecx"); //divide the contents of EDX:EAX by the contents of ECX
+            codeAssembly.add("  movl " + " %edx, " + calculateOffset(result)); //el cociente esta en eax
+        }
+        //caso x mod x
+        if ((c.getP1() instanceof VarLocation) && (c.getP2() instanceof VarLocation)) {
+            Atributo atr1 = (Atributo) ((VarLocation) c.getP1()).getReference();
+            Atributo atr2 = (Atributo) ((VarLocation) c.getP2()).getReference();
+            Atributo result = (Atributo) ((VarLocation) c.getP3()).getReference();
+            codeAssembly.add("  movl $0, %edx");// muevo un 0 a edx
+            codeAssembly.add("  movl " + calculateOffset(atr1) + ", %eax"); //muevo el valor de la variable a eax 
+            codeAssembly.add("  movl $" + calculateOffset(atr2) + ", %ecx"); //muevo el literal a ecx
+            codeAssembly.add("  cltd"); //converts signed long to signed double long
+            codeAssembly.add("  idivl %ecx"); //divide the contents of EDX:EAX by the contents of ECX
+            codeAssembly.add("  movl " + " %edx, " + calculateOffset(result)); //el cociente esta en eax
+        }
+    }
+
+    public void and(Command c) {
+        //caso en que el primero es una varariable y la segunda un literal, ej x AND 1
+        if ((c.getP1() instanceof VarLocation) && (c.getP2() instanceof Literal)) {
+            Atributo atr1 = (Atributo) ((VarLocation) c.getP1()).getReference();
+            Atributo result = (Atributo) ((VarLocation) c.getP3()).getReference();
+            codeAssembly.add("  movl " + calculateOffset(atr1) + ", %eax");
+            codeAssembly.add("  and $" + c.getP2().toString() + ", %eax");
+            codeAssembly.add("  movl " + " %eax, " + calculateOffset(result));
+        }
+        //caso 1 and x
+        if ((c.getP2() instanceof VarLocation) && (c.getP1() instanceof Literal)) {
+            Atributo atr2 = (Atributo) ((VarLocation) c.getP2()).getReference();
+            Atributo result = (Atributo) ((VarLocation) c.getP3()).getReference();
+            codeAssembly.add("  movl " + calculateOffset(atr2) + ", %eax");
+            codeAssembly.add("  and $" + c.getP1().toString() + ", %eax");
+            codeAssembly.add("  movl " + " %eax, " + calculateOffset(result));
+        }
+        //caso 1 and 1
+        if ((c.getP1() instanceof Literal) && (c.getP2() instanceof Literal)) {
+            Atributo result = (Atributo) ((VarLocation) c.getP3()).getReference();
+            codeAssembly.add("  movl " + c.getP1().toString() + ", %eax");
+            codeAssembly.add("  and $" + c.getP2().toString() + ", %eax");
+            codeAssembly.add("  movl " + " %eax, " + calculateOffset(result));
+        }
+        //caso x and x
+        if ((c.getP1() instanceof VarLocation) && (c.getP2() instanceof VarLocation)) {
+            Atributo atr1 = (Atributo) ((VarLocation) c.getP1()).getReference();
+            Atributo atr2 = (Atributo) ((VarLocation) c.getP2()).getReference();
+            Atributo result = (Atributo) ((VarLocation) c.getP3()).getReference();
+            codeAssembly.add("  movl " + calculateOffset(atr1) + ", %eax");
+            codeAssembly.add("  and $" + calculateOffset(atr2) + ", %eax");
+            codeAssembly.add("  movl " + " %eax, " + calculateOffset(result));
+        }
+    }
+
+    public void or(Command c) {
+        //caso en que el primero es una varariable y la segunda un literal, ej x or 1
+        if ((c.getP1() instanceof VarLocation) && (c.getP2() instanceof Literal)) {
+            Atributo atr1 = (Atributo) ((VarLocation) c.getP1()).getReference();
+            Atributo result = (Atributo) ((VarLocation) c.getP3()).getReference();
+            codeAssembly.add("  movl " + calculateOffset(atr1) + ", %eax");
+            codeAssembly.add("  or $" + c.getP2().toString() + ", %eax");
+            codeAssembly.add("  movl " + " %eax, " + calculateOffset(result));
+        }
+        //caso 1 or x
+        if ((c.getP2() instanceof VarLocation) && (c.getP1() instanceof Literal)) {
+            Atributo atr2 = (Atributo) ((VarLocation) c.getP2()).getReference();
+            Atributo result = (Atributo) ((VarLocation) c.getP3()).getReference();
+            codeAssembly.add("  movl " + calculateOffset(atr2) + ", %eax");
+            codeAssembly.add("  or $" + c.getP1().toString() + ", %eax");
+            codeAssembly.add("  movl " + " %eax, " + calculateOffset(result));
+        }
+        //caso 1 or 1
+        if ((c.getP1() instanceof Literal) && (c.getP2() instanceof Literal)) {
+            Atributo result = (Atributo) ((VarLocation) c.getP3()).getReference();
+            codeAssembly.add("  movl " + c.getP1().toString() + ", %eax");
+            codeAssembly.add("  or $" + c.getP2().toString() + ", %eax");
+            codeAssembly.add("  movl " + " %eax, " + calculateOffset(result));
+        }
+        //caso x or x
+        if ((c.getP1() instanceof VarLocation) && (c.getP2() instanceof VarLocation)) {
+            Atributo atr1 = (Atributo) ((VarLocation) c.getP1()).getReference();
+            Atributo atr2 = (Atributo) ((VarLocation) c.getP2()).getReference();
+            Atributo result = (Atributo) ((VarLocation) c.getP3()).getReference();
+            codeAssembly.add("  movl " + calculateOffset(atr1) + ", %eax");
+            codeAssembly.add("  or $" + calculateOffset(atr2) + ", %eax");
+            codeAssembly.add("  movl " + " %eax, " + calculateOffset(result));
+        }
+    }
+
+    public void ret(Command c) {
+        if (c.getP1() != null) {
+            if (c.getP1() instanceof VarLocation) {
+                codeAssembly.add("  movl " + calculateOffset((Atributo) ((VarLocation) c.getP1()).getReference()) + ", %eax");
+            }
+            if (c.getP1() instanceof IntLiteral) {
+                codeAssembly.add("  movl " + c.getP1().toString() + ", %eax");
+            }
+        }
+        codeAssembly.add("  leave");
+        codeAssembly.add("  ret");
+        codeAssembly.add("");
+    }
 }

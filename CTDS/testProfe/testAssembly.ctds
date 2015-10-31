@@ -5,7 +5,7 @@ class Main {
     int globalArray[5];
     
     int inc(int x) {
-        return 1 + global;
+        return global*1;
     }
 
     int get_int() extern;
@@ -20,5 +20,6 @@ class Main {
         } else {
             printInt(0);
         }
+        return;
     }
 }
