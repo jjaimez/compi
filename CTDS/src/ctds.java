@@ -7,6 +7,7 @@
 import ir.TablaDeSimbolos.Atributo;
 import ir.TablaDeSimbolos.Clase;
 import ir.TablaDeSimbolos.Metodo;
+import ir.assembly_code.AssemblyCode;
 import ir.ast.AST;
 import ir.ast.Program;
 import ir.intCodeGeneration.Command;
@@ -26,44 +27,45 @@ public class ctds {
 
     public static void main(String[] args) throws Exception, RuntimeException {
         // for (int i = 1; i < 2; i++) {
-//        System.out.println("test2.ctds");
-//        BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/testProfe/test_arreglos.ctds"));
-//        Lexer lex = new Lexer(br);
-//        parser p = new parser(lex);
-//        p.parse();
-//        Program prog = p.getAST();
-//        
-//        TypeEvaluationVisitor tev = new TypeEvaluationVisitor();
-//        tev.visit(prog);
-//        BreakContinueVisitor bcv = new BreakContinueVisitor();
-//        bcv.visit(prog);
-//
-//        SetReferencesVisitor srv = new SetReferencesVisitor();
-//        srv.visit(prog);
-//        
-//        ICGVisitor icgv = new ICGVisitor();
-//        icgv.visit(prog);
-//        
-//        for (Command c : icgv.getCode()) {
-//            System.out.println(c.toString());
-//        }
+        System.out.println("test2.ctds");
+        BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/testProfe/testAssembly.ctds"));
+        Lexer lex = new Lexer(br);
+        parser p = new parser(lex);
+        p.parse();
+        Program prog = p.getAST();
+        
+        TypeEvaluationVisitor tev = new TypeEvaluationVisitor();
+        tev.visit(prog);
+        BreakContinueVisitor bcv = new BreakContinueVisitor();
+        bcv.visit(prog);
+
+        SetReferencesVisitor srv = new SetReferencesVisitor();
+        srv.visit(prog);
+        
+        ICGVisitor icgv = new ICGVisitor();
+        icgv.visit(prog);
+        
+        for (Command c : icgv.getCode()) {
+            System.out.println(c.toString());
+        }
+        AssemblyCode genCode= new AssemblyCode(icgv.getCode(), p);
         // }
 
         
-         BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + args[0]));
-         Lexer lex = new Lexer(br);
-         parser p = new parser(lex);
-         p.parse();
-         Program prog = p.getAST();
-         TypeEvaluationVisitor tev = new TypeEvaluationVisitor();
-         tev.visit(prog);
-         BreakContinueVisitor bcv = new BreakContinueVisitor();
-         SetReferencesVisitor srv = new SetReferencesVisitor();
-         srv.visit(prog);
-         bcv.visit(prog);
-         ICGVisitor icgv = new ICGVisitor();
-         icgv.visit(prog);
-         System.out.println("------------- OK -------------");
+//         BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + args[0]));
+//         Lexer lex = new Lexer(br);
+//         parser p = new parser(lex);
+//         p.parse();
+//         Program prog = p.getAST();
+//         TypeEvaluationVisitor tev = new TypeEvaluationVisitor();
+//         tev.visit(prog);
+//         BreakContinueVisitor bcv = new BreakContinueVisitor();
+//         SetReferencesVisitor srv = new SetReferencesVisitor();
+//         srv.visit(prog);
+//         bcv.visit(prog);
+//         ICGVisitor icgv = new ICGVisitor();
+//         icgv.visit(prog);
+//         System.out.println("------------- OK -------------");
          
 //         System.out.println("<<<<<<<<<< Comienzan los test negativos >>>>>>>>>>");
 //         for (int i = 35; i < 36; i++) {
