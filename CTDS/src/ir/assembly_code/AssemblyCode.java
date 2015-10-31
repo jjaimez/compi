@@ -272,6 +272,9 @@ public class AssemblyCode {
      * @return
      */
     private String calculateOffset(Atributo atr) {
+        if (atr.esGlobal()){
+            return "0";
+        }
         if (atr.getOffset() == 0) {//tenemos que ver si lo hacemos con 0 o como para ver las globales
             return atr.getNombre();
         }
@@ -292,6 +295,9 @@ public class AssemblyCode {
         String offset = calculateOffset((Atributo) res.getReference());
         if ((c.getP2() instanceof VarLocation)) {
             VarLocation loc = (VarLocation) c.getP2();
+            if ( loc.getReference() == null){
+                System.out.println("ES NULO PIBE");
+            }
             codeAssembly.add("      movl " + calculateOffset((Atributo) loc.getReference()) + ", %eax");
             codeAssembly.add("      movl %eax, " + offset);
         }

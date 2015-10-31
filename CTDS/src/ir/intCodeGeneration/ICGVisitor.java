@@ -220,6 +220,7 @@ public class ICGVisitor implements ASTVisitor<Expression> {
         Atributo a = new Atributo(null, stmt.getType(), "t" + id);
         offsetStack -= 4;
         a.setOffset(offsetStack);
+        var.setReference(a);
         code.add(new Command(ICGOpType.CALL, stmt, var, null));
         return var;
     }
