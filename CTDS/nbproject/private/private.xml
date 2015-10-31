@@ -3,12 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/nico/Universidad/Cuarto%20año/Compiladores/compi/CTDS/src/parser/CTDS.jflex</file>
-            <file>file:/home/nico/Universidad/Cuarto%20año/Compiladores/compi/CTDS/src/ir/intCodeGeneration/Command.java</file>
-            <file>file:/home/nico/Universidad/Cuarto%20año/Compiladores/compi/CTDS/src/ir/assembly_code/AssemblyCode.java</file>
-            <file>file:/home/nico/Universidad/Cuarto%20año/Compiladores/compi/CTDS/src/ir/intCodeGeneration/ICGVisitor.java</file>
-            <file>file:/home/nico/Universidad/Cuarto%20año/Compiladores/compi/CTDS/src/ctds.java</file>
-            <file>file:/home/nico/Universidad/Cuarto%20año/Compiladores/compi/CTDS/src/ir/ast/LocationDeclaration.java</file>
+            <file>file:/home/jacinto/compi/CTDS/src/ir/intCodeGeneration/ICGOpType.java</file>
+            <file>file:/home/jacinto/compi/CTDS/src/ir/intCodeGeneration/ICGVisitor.java</file>
+            <file>file:/home/jacinto/compi/CTDS/src/ir/intCodeGeneration/Command.java</file>
+            <file>file:/home/jacinto/compi/CTDS/src/ir/assembly_code/AssemblyCode.java</file>
         </group>
     </open-files>
 </project-private>

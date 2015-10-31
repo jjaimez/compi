@@ -91,8 +91,10 @@ public class SetReferencesVisitor implements ASTVisitor<Object> {
                 Atributo atributo;
                 if (ld.getSize() == null) {
                     atributo = new Atributo(null, fd.getType(), ld.getId());
+                    atributo.setEsGlobal(true);
                 } else {
                     atributo = new Atributo(null, fd.getType(), ld.getId(), ld.getSize().getValue());
+                    atributo.setEsGlobal(true);
                 }
                 ld.setReference(atributo);
                 tablaSimbolos.setVariableBloque(atributo);

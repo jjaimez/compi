@@ -18,6 +18,7 @@ public class Atributo {
     private String nombre;
     private int tamanio = 0;
     private int offset = 0;
+    private boolean esGlobal = false;
 
     public Atributo(Object valor, Type tipo, String nombre, Integer tamanio) {
         this.tipo = tipo;
@@ -82,7 +83,14 @@ public class Atributo {
     public void setOffset(int offset) {
         this.offset = offset;
     }
-    
+
+    public boolean esGlobal() {
+        return esGlobal;
+    }
+
+    public void setEsGlobal(boolean esGlobal) {
+        this.esGlobal = esGlobal;
+    }    
     
 
 }
