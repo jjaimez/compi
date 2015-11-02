@@ -6,6 +6,7 @@
 package ir.ast;
 
 import ir.ASTVisitor;
+import ir.TablaDeSimbolos.Atributo;
 
 public class VarLocation extends Location {
 
@@ -56,7 +57,7 @@ public class VarLocation extends Location {
     @Override
     public String toString() {
         if (exp != null) {
-            return id + " " + exp.toString();
+            return id + " " + exp.toString() + ((Atributo)this.getReference()).getOffset();
 
         }
         if (location != null) {

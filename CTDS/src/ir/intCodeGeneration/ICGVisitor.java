@@ -39,6 +39,7 @@ import ir.ast.UnaryOpExpr;
 import ir.ast.VarLocation;
 import ir.ast.WhileStmt;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Stack;
 
 public class ICGVisitor implements ASTVisitor<Expression> {
@@ -48,6 +49,7 @@ public class ICGVisitor implements ASTVisitor<Expression> {
     private int labelId;
     private Stack<Pair<Integer, Integer>> iterLabels;
     private int offsetStack;
+    private int offsetFuncion = 0;
 
     public ICGVisitor() {
         code = new LinkedList<Command>();
@@ -63,6 +65,9 @@ public class ICGVisitor implements ASTVisitor<Expression> {
 
     @Override
     public Expression visit(Parameter p) {
+        Atributo a = (Atributo) p.getReference();
+        offsetFuncion += 4;
+        a.setOffset(offsetFuncion);
         code.add(new Command(ICGOpType.PARAM, p, null, null));
         return null;
     }
@@ -71,10 +76,12 @@ public class ICGVisitor implements ASTVisitor<Expression> {
     public Expression visit(Method m) {
         ++labelId;
         offsetStack = 0;
+        offsetFuncion = 0;
         code.add(new Command(ICGOpType.LBL, new Pair(labelId, m.getId()), null, null));
         if (m.getParameters() != null) {
-            for (Parameter p : m.getParameters()) {
-                p.accept(this);
+            List<Parameter> listP = m.getParameters();
+            for (int i = (listP.size()) - 1; i >= 0; i--) {
+                listP.get(i).accept(this);
             }
         }
         m.getBody().accept(this);
@@ -96,9 +103,11 @@ public class ICGVisitor implements ASTVisitor<Expression> {
             if (tam != null && tam > 0) {
                 offsetStack -= 4 * tam;
                 ((Atributo) ld.getReference()).setOffset(offsetStack);
+
+            } else {
+                offsetStack -= 4;
+                ((Atributo) ld.getReference()).setOffset(offsetStack);
             }
-            offsetStack -= 4;
-            ((Atributo) ld.getReference()).setOffset(offsetStack);
             code.add(new Command(ICGOpType.DEF, fd.getType(), ld, null));
         }
         return null;
