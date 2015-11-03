@@ -23,18 +23,57 @@ import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 public class ctds {
 
+    String name;
+    String extension = ".s";
+    boolean rename = false;
+
     public static void main(String[] args) throws Exception, RuntimeException {
-        ctds c= new ctds();
-        int i=0;
-        while(i<args.length-1){
+        ctds c = new ctds();
+        String path = System.getProperty("user.dir") + args[args.length - 1];
+        String[] aux = path.split("/");
+        c.name = aux[aux.length - 1].replace(".ctds", "");
+        int i = 0;
+        while (i < args.length - 1) {
             c.commandTerminal(args, i);
-            i+=2;
+            i += 2;
+        }
+
+        BufferedReader br = new BufferedReader(new FileReader(path));
+        Lexer lex = new Lexer(br);
+        parser p = new parser(lex);
+        p.parse();
+        Program prog = p.getAST();
+        c.typeEvaluator(prog);
+        LinkedList<Command> ic = c.compileICG(prog);
+        if (".s".equals(c.extension)) { //si estoy generando codigo assembly llamo al compilador de C
+            System.out.println("***Generando codigo assembly***");
+            LinkedList<String> codeAsm = c.genAseembly(ic, p);
+            c.writeFile(codeAsm);
+            String s = null;
+            Process process = Runtime.getRuntime().exec("gcc -o " + c.name + " -m32 " + c.name + c.extension);
+            BufferedReader stdInput = new BufferedReader(new InputStreamReader(
+                    process.getInputStream()));
+
+            BufferedReader stdError = new BufferedReader(new InputStreamReader(
+                    process.getErrorStream()));
+            // Leemos los errores si los hubiera
+            while ((s = stdError.readLine()) != null) {
+                System.out.println(s);
+            }
+        } else { // si no genero assembly, entones genero codigo intermedio
+            System.out.println("***Generando codigo intermedio***");
+            LinkedList commandString = new LinkedList();
+            for (Command com : ic) {
+                commandString.add(com.toString());
+            }
+            c.writeFile(commandString);
         }
         // for (int i = 1; i < 2; i++) {
 //        System.out.println("test2.ctds");
@@ -90,10 +129,8 @@ public class ctds {
      * @throws FileNotFoundException
      * @throws Exception
      */
-    private void writeFile(String path, String name, LinkedList<String> code) throws FileNotFoundException, Exception {
-
-
-        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(System.getProperty("user.dir") + "/" + name)));
+    private void writeFile(LinkedList<String> code) throws FileNotFoundException, Exception {
+        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(System.getProperty("user.dir") + "/" + name + extension)));
         for (String comm : code) {
             out.write(comm);
             out.write("\n");
@@ -137,21 +174,18 @@ public class ctds {
 
     private void commandTerminal(String[] args, int pos) throws Exception {
         String comm = args[pos];
-        String path = System.getProperty("user.dir") + args[args.length - 1];
-        BufferedReader br = new BufferedReader(new FileReader(path));
-        Lexer lex = new Lexer(br);
-        parser p = new parser(lex);
-        p.parse();
-        Program prog = p.getAST();
+
         switch (comm) {
             case "-o":
                 //aca va para escribir el ejecutable
-                typeEvaluator(prog);
-                LinkedList<Command> ic = compileICG(prog);
-                LinkedList<String> codeAsm = genAseembly(ic, p);
-                writeFile(path, args[pos+1], codeAsm);
+                name = args[pos + 1];
                 break;
             case "-target":
+                String target = args[pos + 1];
+                if (target.equals("assembly"));
+                extension = ".s";
+                if (target.equals("codeinter"));
+                extension = ".ci";
                 break;
             case "-opt":
                 break;
