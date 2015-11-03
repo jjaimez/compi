@@ -1,26 +1,18 @@
 class Main {
-    int global2;
-
     int global;
     
     int inc(int x) {
-    	int globalArray[10];
-        return globalArray[global+global]*1;
+        return x+1;
     }
 
-    int get_int() extern;
+    
 
     void printInt(int x) extern;
     
     void main() {
         int y;
-        global = 0;
-        y = inc(get_int());
-        if (y == 1) {
-            printInt(1);
-        } else {
-            printInt(0);
-        }
+        printInt(0);
+        y = inc(0);
         return;
     }
 }

@@ -32,16 +32,18 @@ public class AssemblyCode {
         this.commands = l;
         this.codeAssembly = new LinkedList();
         this.pars = pars;
-        System.out.println("\n\n\n *****GENERANDO CÓDIGO ASSEMBLY*****\n");
-        for (String s : generateAssembly()) {
-            System.out.println(s);
-        }
+       // System.out.println("\n\n\n *****GENERANDO CÓDIGO ASSEMBLY*****\n");
+       // for (String s : generateAssembly()) {
+       //     System.out.println(s);
+       // }
 
     }
 
     public LinkedList<String> generateAssembly() {
         Iterator<Command> it = commands.iterator();
         //recorro toda la lista de codigo intermedio
+        codeAssembly.add(".globl  main"); //con esto hago que reconozca el main globalmente
+        codeAssembly.add(".type main, @function");// asi se puede correr despues de compilar
         for (Command c : commands) {
             switch (c.getOp()) {
                 case GDEF://variables globales
@@ -109,13 +111,13 @@ public class AssemblyCode {
                     cmp(c);
                     break;
                 case JNE:
-                    codeAssembly.add("      jne " + c.getP1().toString());
+                    codeAssembly.add("      jne " + ((Pair)c.getP1()).snd());
                     break;
                 case JE:
-                    codeAssembly.add("      je " + c.getP1().toString());
+                    codeAssembly.add("      je " +  ((Pair)c.getP1()).snd());
                     break;
                 case JMP:
-                    codeAssembly.add(" jmp " + c.getP1().toString());
+                    codeAssembly.add(" jmp " +  ((Pair)c.getP1()).snd());
                     break;
                 case INC:
                     inc(c);
