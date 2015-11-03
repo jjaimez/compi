@@ -21,7 +21,10 @@ luego ejecutar el programa :
 
 -ubicarse en la carpeta CTDS
 -compilar el proyecto con ./scriptCompilar.sh
--correr el compilador con ./ctds.sh NOMBRE_ARCHIVO.ctds
+-correr el compilador con ./ctds.sh -o <salida> NOMBRE_ARCHIVO.ctds (RENOMBRA LA SALIDA)
+-correr el compilador con ./ctds.sh -target <etapa> NOMBRE_ARCHIVO.ctds (GENERA CODIGO PARA ESA ETAPA, etapa=[ci,assembly])
+
+Por default, genera codigo assembly y con el mismo nombre del archivo pasado.
 
 -------------------------------------------------------
 
