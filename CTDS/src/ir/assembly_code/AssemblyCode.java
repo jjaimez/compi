@@ -10,6 +10,8 @@ import ir.ast.Expression;
 import ir.ast.IntLiteral;
 import ir.ast.Literal;
 import ir.ast.LocationDeclaration;
+import ir.ast.Method;
+import ir.ast.MethodCall;
 import ir.ast.VarLocation;
 import ir.intCodeGeneration.Command;
 import java.util.Iterator;
@@ -33,9 +35,9 @@ public class AssemblyCode {
         this.codeAssembly = new LinkedList();
         this.pars = pars;
        // System.out.println("\n\n\n *****GENERANDO CÓDIGO ASSEMBLY*****\n");
-       // for (String s : generateAssembly()) {
-       //     System.out.println(s);
-       // }
+        // for (String s : generateAssembly()) {
+        //     System.out.println(s);
+        // }
 
     }
 
@@ -53,8 +55,6 @@ public class AssemblyCode {
                     lbl(c);
                     break;
                 case PARAM://apilar todo empezando por el ultimo y llamar con +4, +8
-                    //VER QUE HACEMOS ACAAAA
-
                     break;
                 case ADD:
                     add(c);
@@ -111,19 +111,22 @@ public class AssemblyCode {
                     cmp(c);
                     break;
                 case JNE:
-                    codeAssembly.add("      jne " + ((Pair)c.getP1()).snd());
+                    codeAssembly.add("      jne " + ((Pair) c.getP1()).snd());
                     break;
                 case JE:
-                    codeAssembly.add("      je " +  ((Pair)c.getP1()).snd());
+                    codeAssembly.add("      je " + ((Pair) c.getP1()).snd());
                     break;
                 case JMP:
-                    codeAssembly.add(" jmp " +  ((Pair)c.getP1()).snd());
+                    codeAssembly.add(" jmp " + ((Pair) c.getP1()).snd());
                     break;
                 case INC:
                     inc(c);
                     break;
                 case CALL:// guardar el valor en eax 
-                    //call(c);
+                    call(c);
+                    break;
+                case PLG:
+                    plg(c); //prologo
                     break;
             }
         }
@@ -290,7 +293,6 @@ public class AssemblyCode {
             } else {
                 return atr.getOffset() + "(%ebp,%edx,4)";
             }
-
         } else {
             if (atr.esGlobal()) {
                 return atr.getNombre();
@@ -309,11 +311,10 @@ public class AssemblyCode {
         String offset = calculateOffset(res);
         if ((c.getP2() instanceof VarLocation)) {
             VarLocation loc = (VarLocation) c.getP2();
-            if (loc.getReference() == null) {
-                System.out.println("ES NULO PIBE");
-            }
             codeAssembly.add("      movl " + calculateOffset(loc) + ", %eax");
             codeAssembly.add("      movl %eax, " + offset);
+        } else {
+            codeAssembly.add("      movl $" + c.getP2().toString() + "," + offset);
         }
     }
 
@@ -741,6 +742,34 @@ public class AssemblyCode {
         codeAssembly.add("  leave");
         codeAssembly.add("  ret");
         codeAssembly.add("");
+    }
+
+    public void call(Command c) {
+        MethodCall e = (MethodCall) c.getP1();
+        int i = 0;
+        for (Expression ex : e.getExpressions()) {
+            if (ex instanceof VarLocation) {
+                VarLocation param = (VarLocation) ex;
+                codeAssembly.add("      movl " + calculateOffset(param) + ", %eax");
+                codeAssembly.add("      movl %eax, " + i + "(%esp)");
+            } else {
+                Literal param = (Literal) ex;
+                codeAssembly.add("      movl $" + param.toString() + ", %eax");
+                codeAssembly.add("      movl %eax, " + i + "(%esp)");
+            }
+            i = i + 4;
+        }
+        codeAssembly.add("      call " + e.getId());
+        if (c.getP2() != null) {
+            VarLocation res = (VarLocation) c.getP2();
+            codeAssembly.add("      movl " + " %eax, " + calculateOffset(res));
+        }
+    }
+
+    private void plg(Command c) {
+        codeAssembly.add("      pushl %ebp");
+        codeAssembly.add("      movl %esp, %ebp");
+        codeAssembly.add("      subl $" + -((Method) c.getP1()).getOffset() + ",%esp");
     }
 
 }

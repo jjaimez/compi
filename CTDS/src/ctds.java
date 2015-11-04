@@ -75,7 +75,9 @@ public class ctds {
             }
             c.writeFile(commandString);
         }
-        // for (int i = 1; i < 2; i++) {
+         
+//        //ESTO ES PARA CORRERLO DESDE NETBEANS
+//        for (int i = 1; i < 2; i++) {
 //        System.out.println("test2.ctds");
 //        BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/testProfe/testAssembly.ctds"));
 //        Lexer lex = new Lexer(br);
@@ -98,7 +100,11 @@ public class ctds {
 //            System.out.println(c.toString());
 //        }
 //        AssemblyCode genCode= new AssemblyCode(icgv.getCode(), p);
-        // }
+//       for (String s:  genCode.generateAssembly()){
+//            System.out.println(s+"\n");
+//       }
+//        
+//         }
 
 //         System.out.println("<<<<<<<<<< Comienzan los test negativos >>>>>>>>>>");
 //         for (int i = 35; i < 36; i++) {

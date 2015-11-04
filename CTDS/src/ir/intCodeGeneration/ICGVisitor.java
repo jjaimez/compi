@@ -8,6 +8,7 @@ package ir.intCodeGeneration;
 
 import ir.ASTVisitor;
 import ir.TablaDeSimbolos.Atributo;
+import ir.TablaDeSimbolos.Metodo;
 import ir.ast.AssignOpType;
 import ir.ast.AssignStmt;
 import ir.ast.BinOpExpr;
@@ -68,25 +69,37 @@ public class ICGVisitor implements ASTVisitor<Expression> {
         Atributo a = (Atributo) p.getReference();
         offsetFuncion += 4;
         a.setOffset(offsetFuncion);
-        code.add(new Command(ICGOpType.PARAM, p, null, null));
         return null;
     }
 
     @Override
-    public Expression visit(Method m) {
-        ++labelId;
+    public Expression visit(Method m) {       
         offsetStack = 0;
         offsetFuncion = 0;
-        code.add(new Command(ICGOpType.LBL, new Pair(labelId, m.getId()), null, null));
-        if (m.getParameters() != null) {
-            List<Parameter> listP = m.getParameters();
-            for (int i = (listP.size()) - 1; i >= 0; i--) {
-                listP.get(i).accept(this);
+        if (!m.getBody().toString().equals("extern")) {
+             ++labelId;
+            code.add(new Command(ICGOpType.LBL, new Pair(labelId, m.getId()), null, null));
+            if (m.getParameters() != null) {
+                List<Parameter> listP = m.getParameters();
+                for (int i = (listP.size()) - 1; i >= 0; i--) {
+                    listP.get(i).accept(this);
+                }
             }
-        }
-        m.getBody().accept(this);
-        if (!code.getLast().getOp().equals(ICGOpType.RET)) {
-            code.add(new Command(ICGOpType.RET, null, null, null));
+            code.add(new Command(ICGOpType.PLG, m, null, null));
+
+            m.getBody().accept(this);
+            if (!code.getLast().getOp().equals(ICGOpType.RET)) {
+                code.add(new Command(ICGOpType.RET, null, null, null));
+            }
+            m.setOffset(offsetFuncion);
+        } else {
+            if (m.getParameters() != null) {
+                List<Parameter> listP = m.getParameters();
+                for (int i = (listP.size()) - 1; i >= 0; i--) {
+                    listP.get(i).accept(this);
+                }
+            }
+            ((Metodo)m.getReference()).setIsExtern(true);
         }
         return null;
     }

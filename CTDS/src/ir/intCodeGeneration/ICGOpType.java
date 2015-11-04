@@ -34,5 +34,6 @@ public enum ICGOpType {
     CALL, //CALL FUNCTION
     DEF, // DEFINICION
     GDEF, //DEF VARIABLES GLOBALES
-    PARAM; //PARAM
+    PARAM, //PARAMETRO
+    PLG; //PROLOGO
 }

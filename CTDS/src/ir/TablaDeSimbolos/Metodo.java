@@ -18,6 +18,8 @@ public class Metodo {
     private String nombre;
     private Type tipoReturn;
     private List<Parameter> parametros = new LinkedList<>();
+   
+    private boolean isExtern = false;
 
     public Metodo(String nombre, Type tipoReturn, List<Parameter> parametros) {
         this.nombre = nombre;
@@ -48,7 +50,15 @@ public class Metodo {
     public void setParametros(List<Parameter> parametros) {
         this.parametros = parametros;
     }
+    public boolean isExtern() {
+        return isExtern;
+    }
+
+    public void setIsExtern(boolean isExtern) {
+        this.isExtern = isExtern;
+    }
     
+   
     
     
 }

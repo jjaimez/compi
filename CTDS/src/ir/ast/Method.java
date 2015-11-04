@@ -15,6 +15,7 @@ public class Method extends Expression {
     private String id;
     private List<Parameter> parameters = new LinkedList<Parameter>();
     private Body body;
+    private int offset = 0;
 
     public Method(String id) {
         this.id = id;
@@ -88,6 +89,16 @@ public class Method extends Expression {
         }
         return s;
     }
+
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
+
+    
 
     @Override
     public <T> T accept(ASTVisitor<T> v) {
