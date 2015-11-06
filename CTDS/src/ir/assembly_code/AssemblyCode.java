@@ -34,7 +34,7 @@ public class AssemblyCode {
         this.commands = l;
         this.codeAssembly = new LinkedList();
         this.pars = pars;
-       // System.out.println("\n\n\n *****GENERANDO CÓDIGO ASSEMBLY*****\n");
+    // System.out.println("\n\n\n *****GENERANDO CÓDIGO ASSEMBLY*****\n");
         // for (String s : generateAssembly()) {
         //     System.out.println(s);
         // }
@@ -44,8 +44,8 @@ public class AssemblyCode {
     public LinkedList<String> generateAssembly() {
         Iterator<Command> it = commands.iterator();
         //recorro toda la lista de codigo intermedio
-        codeAssembly.add(".globl  main"); //con esto hago que reconozca el main globalmente
-        codeAssembly.add(".type main, @function");// asi se puede correr despues de compilar
+        //codeAssembly.add(".globl  main"); //con esto hago que reconozca el main globalmente
+       // codeAssembly.add(".type main, @function");// asi se puede correr despues de compilar
         for (Command c : commands) {
             switch (c.getOp()) {
                 case GDEF://variables globales
@@ -111,10 +111,10 @@ public class AssemblyCode {
                     cmp(c);
                     break;
                 case JNE:
-                    codeAssembly.add("      jne " + ((Pair) c.getP1()).snd());
+                    codeAssembly.add("  jne " + ((Pair) c.getP1()).snd());
                     break;
                 case JE:
-                    codeAssembly.add("      je " + ((Pair) c.getP1()).snd());
+                    codeAssembly.add("  je " + ((Pair) c.getP1()).snd());
                     break;
                 case JMP:
                     codeAssembly.add(" jmp " + ((Pair) c.getP1()).snd());
@@ -177,7 +177,7 @@ public class AssemblyCode {
      * @param c
      */
     public void add(Command c) {
-        //Tengo que revisar los 4 casos para los operandos
+    //Tengo que revisar los 4 casos para los operandos
         //primer caso variable + Literal ej: x+1
         if ((c.getP1() instanceof VarLocation) && (c.getP2() instanceof Literal)) {
             VarLocation atr1 = ((VarLocation) c.getP1());
@@ -203,7 +203,7 @@ public class AssemblyCode {
             VarLocation atr1 = ((VarLocation) c.getP1());
             VarLocation atr2 = ((VarLocation) c.getP1());
             VarLocation result = ((VarLocation) c.getP3());
-            if (((Atributo)atr1.getReference()).getTipo().isInt() ) { //si el primero es int, el sgundo tambien es int
+            if (((Atributo) atr1.getReference()).getTipo().isInt()) { //si el primero es int, el sgundo tambien es int
                 codeAssembly.add("  movl " + calculateOffset(atr1) + ", %eax");
                 codeAssembly.add("  movl " + calculateOffset(atr2) + ", %edx");
                 codeAssembly.add("  addl %edx, %eax");
@@ -227,7 +227,7 @@ public class AssemblyCode {
      * @param c
      */
     public void sub(Command c) {
-        //Tengo que revisar los 4 casos para los operandos
+    //Tengo que revisar los 4 casos para los operandos
         //primer caso variable - Literal ej: x-1
         if ((c.getP1() instanceof VarLocation) && (c.getP2() instanceof Literal)) {
             VarLocation atr1 = ((VarLocation) c.getP1());
@@ -253,7 +253,7 @@ public class AssemblyCode {
             VarLocation atr1 = ((VarLocation) c.getP1());
             VarLocation atr2 = ((VarLocation) c.getP1());
             VarLocation result = ((VarLocation) c.getP3());
-            if (((Atributo)atr1.getReference()).getTipo().isInt()) { //si el primero es int, el sgundo tambien es int
+            if (((Atributo) atr1.getReference()).getTipo().isInt()) { //si el primero es int, el sgundo tambien es int
                 codeAssembly.add("  movl " + calculateOffset(atr1) + ", %eax");
                 codeAssembly.add("  movl " + calculateOffset(atr2) + ", %edx");
                 codeAssembly.add("  subl %edx, %eax");
@@ -311,10 +311,10 @@ public class AssemblyCode {
         String offset = calculateOffset(res);
         if ((c.getP2() instanceof VarLocation)) {
             VarLocation loc = (VarLocation) c.getP2();
-            codeAssembly.add("      movl " + calculateOffset(loc) + ", %eax");
-            codeAssembly.add("      movl %eax, " + offset);
+            codeAssembly.add("  movl " + calculateOffset(loc) + ", %eax");
+            codeAssembly.add("  movl %eax, " + offset);
         } else {
-            codeAssembly.add("      movl $" + c.getP2().toString() + "," + offset);
+            codeAssembly.add("  movl $" + c.getP2().toString() + "," + offset);
         }
     }
 
@@ -326,20 +326,20 @@ public class AssemblyCode {
     public void not(Command c) {
         if (c.getP1() instanceof VarLocation) {
             VarLocation loc = (VarLocation) c.getP1();
-            codeAssembly.add("      movl " + calculateOffset(loc) + ", %eax");
+            codeAssembly.add("  movl " + calculateOffset(loc) + ", %eax");
         } else {
-            codeAssembly.add("      movl " + c.getP1().toString() + ", %eax");
+            codeAssembly.add("  movl " + c.getP1().toString() + ", %eax");
         }
-        codeAssembly.add("      cmp $1, %eax");
-        codeAssembly.add("      je  .true" + labelTrue);
-        codeAssembly.add("      movl $1, %eax");
-        codeAssembly.add("      jmp  .endtrue" + labelTrue);
+        codeAssembly.add("  cmp $1, %eax");
+        codeAssembly.add("  je  .true" + labelTrue);
+        codeAssembly.add("  movl $1, %eax");
+        codeAssembly.add("  jmp  .endtrue" + labelTrue);
         codeAssembly.add(".true" + labelTrue + ":");
-        codeAssembly.add("      movl $0, %eax");
+        codeAssembly.add("  movl $0, %eax");
         codeAssembly.add(".endtrue" + labelTrue + ":");
         labelTrue++;
         VarLocation res = (VarLocation) c.getP2();
-        codeAssembly.add("      movl " + " %eax, " + calculateOffset(res));
+        codeAssembly.add("  movl " + " %eax, " + calculateOffset(res));
     }
 
     /**
@@ -350,15 +350,15 @@ public class AssemblyCode {
     public void min(Command c) {
         if (c.getP1() instanceof VarLocation) {
             VarLocation loc = (VarLocation) c.getP1();
-            codeAssembly.add("      movl " + calculateOffset(loc) + ", %eax");
-            codeAssembly.add("      not  %eax");
+            codeAssembly.add("  movl " + calculateOffset(loc) + ", %eax");
+            codeAssembly.add("  not  %eax");
             VarLocation res = (VarLocation) c.getP2();
-            codeAssembly.add("      movl " + " %eax, " + calculateOffset(res));
+            codeAssembly.add("  movl " + " %eax, " + calculateOffset(res));
         } else {
-            codeAssembly.add("      movl " + c.getP1().toString() + ", %eax");
-            codeAssembly.add("      not  %eax");
+            codeAssembly.add("  movl " + c.getP1().toString() + ", %eax");
+            codeAssembly.add("  not  %eax");
             VarLocation res = (VarLocation) c.getP2();
-            codeAssembly.add("      movl " + " %eax, " + calculateOffset(res));
+            codeAssembly.add("  movl " + " %eax, " + calculateOffset(res));
         }
     }
 
@@ -371,24 +371,24 @@ public class AssemblyCode {
         boolean opFloat = false;
         if ((c.getP1() instanceof VarLocation) && (c.getP2() instanceof Literal)) {
             VarLocation loc = (VarLocation) c.getP1();
-            codeAssembly.add("      movl " + calculateOffset((loc)) + ", %eax");
-            codeAssembly.add("      cmp $" + c.getP2().toString() + ", %eax");
+            codeAssembly.add("  movl " + calculateOffset((loc)) + ", %eax");
+            codeAssembly.add("  cmp $" + c.getP2().toString() + ", %eax");
         }
         if ((c.getP2() instanceof VarLocation) && (c.getP1() instanceof Literal)) {
             VarLocation loc = (VarLocation) c.getP2();
-            codeAssembly.add("      movl $" + c.getP1().toString() + ", %eax");
-            codeAssembly.add("      cmp " + calculateOffset(loc) + ", %eax");
+            codeAssembly.add("  movl $" + c.getP1().toString() + ", %eax");
+            codeAssembly.add("  cmp " + calculateOffset(loc) + ", %eax");
         }
         if ((c.getP1() instanceof Literal) && (c.getP2() instanceof Literal)) {
-            codeAssembly.add("      movl $" + c.getP1().toString() + ", %eax"); //muevo un literal a un registro
-            codeAssembly.add("      cmp $" + c.getP2().toString() + ", %eax");
+            codeAssembly.add("  movl $" + c.getP1().toString() + ", %eax"); //muevo un literal a un registro
+            codeAssembly.add("  cmp $" + c.getP2().toString() + ", %eax");
         }
         if ((c.getP1() instanceof VarLocation) && (c.getP2() instanceof VarLocation)) {
             VarLocation loc = (VarLocation) c.getP1();
             VarLocation loc2 = (VarLocation) c.getP2();
-            codeAssembly.add("      movl " + calculateOffset(loc) + ", %eax");
+            codeAssembly.add("  movl " + calculateOffset(loc) + ", %eax");
             //muevo el primer operando al registro eax
-            codeAssembly.add("      cmp " + calculateOffset(loc2) + ", %eax"); //sumo los dos registros
+            codeAssembly.add("  cmp " + calculateOffset(loc2) + ", %eax"); //sumo los dos registros
         }
     }
 
@@ -400,14 +400,14 @@ public class AssemblyCode {
     public void eqeq(Command c) {
         cmp(c);
         VarLocation res = (VarLocation) c.getP3();
-        codeAssembly.add("      je  .true" + labelTrue);
-        codeAssembly.add("      movl $0, %eax");
-        codeAssembly.add("      jmp  .endtrue" + labelTrue);
+        codeAssembly.add("  je  .true" + labelTrue);
+        codeAssembly.add("  movl $0, %eax");
+        codeAssembly.add("  jmp  .endtrue" + labelTrue);
         codeAssembly.add(".true" + labelTrue + ":");
-        codeAssembly.add("      movl $1, %eax");
+        codeAssembly.add("  movl $1, %eax");
         codeAssembly.add(".endtrue" + labelTrue + ":");
         labelTrue++;
-        codeAssembly.add("      movl " + " %eax, " + calculateOffset(res));
+        codeAssembly.add("  movl " + " %eax, " + calculateOffset(res));
     }
 
     /**
@@ -418,14 +418,14 @@ public class AssemblyCode {
     private void noteq(Command c) {
         cmp(c);
         VarLocation res = (VarLocation) c.getP3();
-        codeAssembly.add("      jne  .true" + labelTrue);
-        codeAssembly.add("      movl $0, %eax");
-        codeAssembly.add("      jmp  .endtrue" + labelTrue);
+        codeAssembly.add("  jne  .true" + labelTrue);
+        codeAssembly.add("  movl $0, %eax");
+        codeAssembly.add("  jmp  .endtrue" + labelTrue);
         codeAssembly.add(".true" + labelTrue + ":");
-        codeAssembly.add("      movl $1, %eax");
+        codeAssembly.add("  movl $1, %eax");
         codeAssembly.add(".endtrue" + labelTrue + ":");
         labelTrue++;
-        codeAssembly.add("      movl " + " %eax, " + calculateOffset(res));
+        codeAssembly.add("  movl " + " %eax, " + calculateOffset(res));
     }
 
     /**
@@ -436,14 +436,14 @@ public class AssemblyCode {
     private void gteq(Command c) {
         cmp(c);
         VarLocation res = (VarLocation) c.getP3();
-        codeAssembly.add("      jge  .true" + labelTrue);
-        codeAssembly.add("      movl $0, %eax");
-        codeAssembly.add("      jmp  .endtrue" + labelTrue);
+        codeAssembly.add("  jge  .true" + labelTrue);
+        codeAssembly.add("  movl $0, %eax");
+        codeAssembly.add("  jmp  .endtrue" + labelTrue);
         codeAssembly.add(".true" + labelTrue + ":");
-        codeAssembly.add("      movl $1, %eax");
+        codeAssembly.add("  movl $1, %eax");
         codeAssembly.add(".endtrue" + labelTrue + ":");
         labelTrue++;
-        codeAssembly.add("      movl " + " %eax, " + calculateOffset(res));
+        codeAssembly.add("  movl " + " %eax, " + calculateOffset(res));
     }
 
     /**
@@ -454,14 +454,14 @@ public class AssemblyCode {
     private void gt(Command c) {
         cmp(c);
         VarLocation res = (VarLocation) c.getP3();
-        codeAssembly.add("      jg  .true" + labelTrue);
-        codeAssembly.add("      movl $0, %eax");
-        codeAssembly.add("      jmp  .endtrue" + labelTrue);
+        codeAssembly.add("  jg  .true" + labelTrue);
+        codeAssembly.add("  movl $0, %eax");
+        codeAssembly.add("  jmp  .endtrue" + labelTrue);
         codeAssembly.add(".true" + labelTrue + ":");
-        codeAssembly.add("      movl $1, %eax");
+        codeAssembly.add("  movl $1, %eax");
         codeAssembly.add(".endtrue" + labelTrue + ":");
         labelTrue++;
-        codeAssembly.add("      movl " + " %eax, " + calculateOffset(res));
+        codeAssembly.add("  movl " + " %eax, " + calculateOffset(res));
     }
 
     /**
@@ -473,14 +473,14 @@ public class AssemblyCode {
     private void lteq(Command c) {
         cmp(c);
         VarLocation res = (VarLocation) c.getP3();
-        codeAssembly.add("      jle  .true" + labelTrue);
-        codeAssembly.add("      movl $0, %eax");
-        codeAssembly.add("      jmp  .endtrue" + labelTrue);
+        codeAssembly.add("  jle  .true" + labelTrue);
+        codeAssembly.add("  movl $0, %eax");
+        codeAssembly.add("  jmp  .endtrue" + labelTrue);
         codeAssembly.add(".true" + labelTrue + ":");
-        codeAssembly.add("      movl $1, %eax");
+        codeAssembly.add("  movl $1, %eax");
         codeAssembly.add(".endtrue" + labelTrue + ":");
         labelTrue++;
-        codeAssembly.add("      movl " + " %eax, " + calculateOffset(res));
+        codeAssembly.add("  movl " + " %eax, " + calculateOffset(res));
 
     }
 
@@ -493,14 +493,14 @@ public class AssemblyCode {
     private void lt(Command c) {
         cmp(c);
         VarLocation res = (VarLocation) c.getP3();
-        codeAssembly.add("      jl  .true" + labelTrue);
-        codeAssembly.add("      movl $0, %eax");
-        codeAssembly.add("      jmp  .endtrue" + labelTrue);
+        codeAssembly.add("  jl  .true" + labelTrue);
+        codeAssembly.add("  movl $0, %eax");
+        codeAssembly.add("  jmp  .endtrue" + labelTrue);
         codeAssembly.add(".true" + labelTrue + ":");
-        codeAssembly.add("      movl $1, %eax");
+        codeAssembly.add("  movl $1, %eax");
         codeAssembly.add(".endtrue" + labelTrue + ":");
         labelTrue++;
-        codeAssembly.add("      movl " + " %eax, " + calculateOffset(res));
+        codeAssembly.add("  movl " + " %eax, " + calculateOffset(res));
     }
 
     /**
@@ -611,7 +611,7 @@ public class AssemblyCode {
     }
 
     public void mod(Command c) {
-        //es igual que la division pero el resto se guarda en EDX. EDX:EAX = resto:cociente
+    //es igual que la division pero el resto se guarda en EDX. EDX:EAX = resto:cociente
         //caso en que el primero es una varariable y la segunda un literal, ej x mod 1
         if ((c.getP1() instanceof VarLocation) && (c.getP2() instanceof Literal)) {
             VarLocation atr1 = ((VarLocation) c.getP1());
@@ -750,26 +750,30 @@ public class AssemblyCode {
         for (Expression ex : e.getExpressions()) {
             if (ex instanceof VarLocation) {
                 VarLocation param = (VarLocation) ex;
-                codeAssembly.add("      movl " + calculateOffset(param) + ", %eax");
-                codeAssembly.add("      movl %eax, " + i + "(%esp)");
+                codeAssembly.add("  movl " + calculateOffset(param) + ", %eax");
+                codeAssembly.add("  movl %eax, " + i + "(%esp)");
             } else {
                 Literal param = (Literal) ex;
-                codeAssembly.add("      movl $" + param.toString() + ", %eax");
-                codeAssembly.add("      movl %eax, " + i + "(%esp)");
+                codeAssembly.add("  movl $" + param.toString() + ", %eax");
+                codeAssembly.add("  movl %eax, " + i + "(%esp)");
             }
             i = i + 4;
         }
-        codeAssembly.add("      call " + e.getId());
+        codeAssembly.add("  call " + e.getId());
         if (c.getP2() != null) {
             VarLocation res = (VarLocation) c.getP2();
-            codeAssembly.add("      movl " + " %eax, " + calculateOffset(res));
+            codeAssembly.add("  movl " + " %eax, " + calculateOffset(res));
         }
     }
 
     private void plg(Command c) {
-        codeAssembly.add("      pushl %ebp");
-        codeAssembly.add("      movl %esp, %ebp");
-        codeAssembly.add("      subl $" + ((Method) c.getP1()).getOffset() + ",%esp");
+        String nombre = ((Method) c.getP1()).getId().toString();
+        codeAssembly.add("  .globl " + nombre);
+        codeAssembly.add("  .type " + nombre + ", @function");
+        codeAssembly.add(nombre + ":");
+        codeAssembly.add("  pushl %ebp");
+        codeAssembly.add("  movl %esp, %ebp");
+        codeAssembly.add("  subl $" + ((Method) c.getP1()).getOffset() + ",%esp");
     }
 
 }
