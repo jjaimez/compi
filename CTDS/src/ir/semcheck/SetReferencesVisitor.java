@@ -20,6 +20,7 @@ import ir.ast.BreakStmt;
 import ir.ast.ClassDeclaration;
 import ir.ast.ContinueStmt;
 import ir.ast.Declaration;
+import ir.ast.Expression;
 import ir.ast.ExternStmt;
 import ir.ast.FieldDeclaration;
 import ir.ast.FloatLiteral;
@@ -37,6 +38,7 @@ import ir.ast.Statement;
 import ir.ast.UnaryOpExpr;
 import ir.ast.VarLocation;
 import ir.ast.WhileStmt;
+import java.util.LinkedList;
 
 /**
  *
@@ -137,8 +139,8 @@ public class SetReferencesVisitor implements ASTVisitor<Object> {
 
     @Override
     public Object visit(AssignStmt stmt) {
-        if (stmt.getLocation().getExpr() != null) {
-            stmt.getLocation().getExpr().accept(this);
+        if (stmt.getExpression()!= null) {
+            stmt.getExpression().accept(this);
         }
         stmt.getLocation().accept(this);
         return null;
@@ -186,6 +188,14 @@ public class SetReferencesVisitor implements ASTVisitor<Object> {
     @Override
     public Object visit(MethodCall stmt) {
         Metodo met = tablaSimbolos.getMetodo(tablaSimbolos.getUltimaClase(), stmt.getId());
+                LinkedList<Expression> list = (LinkedList) stmt.getExpressions();
+        for (int i = 0; i < list.size(); i++) {
+            Expression e = list.get(i);
+            if (e instanceof VarLocation){
+                Atributo var = tablaSimbolos.getAtributo(((VarLocation)e).getId());
+                e.setReference(var);
+            }
+        }
         stmt.setReference(met);
         return null;
     }

@@ -13,6 +13,8 @@ class Main {
         int y;
         printInt(0);
         y = inc(0);
+                printInt(y);
+
         return;
     }
 }

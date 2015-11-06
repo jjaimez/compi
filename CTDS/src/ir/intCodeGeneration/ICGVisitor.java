@@ -67,7 +67,7 @@ public class ICGVisitor implements ASTVisitor<Expression> {
     @Override
     public Expression visit(Parameter p) {
         Atributo a = (Atributo) p.getReference();
-        offsetFuncion += 4;
+        offsetFuncion += 8;
         a.setOffset(offsetFuncion);
         return null;
     }

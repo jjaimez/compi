@@ -35,76 +35,76 @@ public class ctds {
     boolean rename = false;
 
     public static void main(String[] args) throws Exception, RuntimeException {
-        ctds c = new ctds();
-        String path = System.getProperty("user.dir") + args[args.length - 1];
-        String[] aux = path.split("/");
-        c.name = aux[aux.length - 1].replace(".ctds", "");
-        int i = 0;
-        while (i < args.length - 1) {
-            c.commandTerminal(args, i);
-            i += 2;
-        }
-
-        BufferedReader br = new BufferedReader(new FileReader(path));
-        Lexer lex = new Lexer(br);
-        parser p = new parser(lex);
-        p.parse();
-        Program prog = p.getAST();
-        c.typeEvaluator(prog);
-        LinkedList<Command> ic = c.compileICG(prog);
-        if (".s".equals(c.extension)) { //si estoy generando codigo assembly llamo al compilador de C
-            System.out.println("***Generando codigo assembly***");
-            LinkedList<String> codeAsm = c.genAseembly(ic, p);
-            c.writeFile(codeAsm);
-            String s = null;
-            Process process = Runtime.getRuntime().exec("gcc -o " + c.name + " -m32 " + c.name + c.extension);
-            BufferedReader stdInput = new BufferedReader(new InputStreamReader(
-                    process.getInputStream()));
-
-            BufferedReader stdError = new BufferedReader(new InputStreamReader(
-                    process.getErrorStream()));
-            // Leemos los errores si los hubiera
-            while ((s = stdError.readLine()) != null) {
-                System.out.println(s);
-            }
-        } else { // si no genero assembly, entones genero codigo intermedio
-            System.out.println("***Generando codigo intermedio***");
-            LinkedList commandString = new LinkedList();
-            for (Command com : ic) {
-                commandString.add(com.toString());
-            }
-            c.writeFile(commandString);
-        }
-         
-//        //ESTO ES PARA CORRERLO DESDE NETBEANS
-//        for (int i = 1; i < 2; i++) {
-//        System.out.println("test2.ctds");
-//        BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/testProfe/testAssembly.ctds"));
+//        ctds c = new ctds();
+//        String path = System.getProperty("user.dir") + args[args.length - 1];
+//        String[] aux = path.split("/");
+//        c.name = aux[aux.length - 1].replace(".ctds", "");
+//        int i = 0;
+//        while (i < args.length - 1) {
+//            c.commandTerminal(args, i);
+//            i += 2;
+//        }
+//
+//        BufferedReader br = new BufferedReader(new FileReader(path));
 //        Lexer lex = new Lexer(br);
 //        parser p = new parser(lex);
 //        p.parse();
 //        Program prog = p.getAST();
-//        
-//        TypeEvaluationVisitor tev = new TypeEvaluationVisitor();
-//        tev.visit(prog);
-//        BreakContinueVisitor bcv = new BreakContinueVisitor();
-//        bcv.visit(prog);
+//        c.typeEvaluator(prog);
+//        LinkedList<Command> ic = c.compileICG(prog);
+//        if (".s".equals(c.extension)) { //si estoy generando codigo assembly llamo al compilador de C
+//            System.out.println("***Generando codigo assembly***");
+//            LinkedList<String> codeAsm = c.genAseembly(ic, p);
+//            c.writeFile(codeAsm);
+//            String s = null;
+//            Process process = Runtime.getRuntime().exec("gcc -o " + c.name + " -m32 " + c.name + c.extension);
+//            BufferedReader stdInput = new BufferedReader(new InputStreamReader(
+//                    process.getInputStream()));
 //
-//        SetReferencesVisitor srv = new SetReferencesVisitor();
-//        srv.visit(prog);
-//        
-//        ICGVisitor icgv = new ICGVisitor();
-//        icgv.visit(prog);
-//        
-//        for (Command c : icgv.getCode()) {
-//            System.out.println(c.toString());
+//            BufferedReader stdError = new BufferedReader(new InputStreamReader(
+//                    process.getErrorStream()));
+//            // Leemos los errores si los hubiera
+//            while ((s = stdError.readLine()) != null) {
+//                System.out.println(s);
+//            }
+//        } else { // si no genero assembly, entones genero codigo intermedio
+//            System.out.println("***Generando codigo intermedio***");
+//            LinkedList commandString = new LinkedList();
+//            for (Command com : ic) {
+//                commandString.add(com.toString());
+//            }
+//            c.writeFile(commandString);
 //        }
-//        AssemblyCode genCode= new AssemblyCode(icgv.getCode(), p);
-//       for (String s:  genCode.generateAssembly()){
-//            System.out.println(s+"\n");
-//       }
-//        
-//         }
+         
+        //ESTO ES PARA CORRERLO DESDE NETBEANS
+        for (int i = 1; i < 2; i++) {
+        System.out.println("test2.ctds");
+        BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/testProfe/testAssembly.ctds"));
+        Lexer lex = new Lexer(br);
+        parser p = new parser(lex);
+        p.parse();
+        Program prog = p.getAST();
+        
+        TypeEvaluationVisitor tev = new TypeEvaluationVisitor();
+        tev.visit(prog);
+        BreakContinueVisitor bcv = new BreakContinueVisitor();
+        bcv.visit(prog);
+
+        SetReferencesVisitor srv = new SetReferencesVisitor();
+        srv.visit(prog);
+        
+        ICGVisitor icgv = new ICGVisitor();
+        icgv.visit(prog);
+        
+        for (Command c : icgv.getCode()) {
+            System.out.println(c.toString());
+        }
+        AssemblyCode genCode= new AssemblyCode(icgv.getCode(), p);
+       for (String s:  genCode.generateAssembly()){
+            System.out.println(s+"\n");
+       }
+        
+         }
 
 //         System.out.println("<<<<<<<<<< Comienzan los test negativos >>>>>>>>>>");
 //         for (int i = 35; i < 36; i++) {

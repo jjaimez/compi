@@ -203,7 +203,7 @@ public class AssemblyCode {
             VarLocation atr1 = ((VarLocation) c.getP1());
             VarLocation atr2 = ((VarLocation) c.getP1());
             VarLocation result = ((VarLocation) c.getP3());
-            if (c.getP1() instanceof IntLiteral) { //si el primero es int, el sgundo tambien es int
+            if (((Atributo)atr1.getReference()).getTipo().isInt() ) { //si el primero es int, el sgundo tambien es int
                 codeAssembly.add("  movl " + calculateOffset(atr1) + ", %eax");
                 codeAssembly.add("  movl " + calculateOffset(atr2) + ", %edx");
                 codeAssembly.add("  addl %edx, %eax");
@@ -253,7 +253,7 @@ public class AssemblyCode {
             VarLocation atr1 = ((VarLocation) c.getP1());
             VarLocation atr2 = ((VarLocation) c.getP1());
             VarLocation result = ((VarLocation) c.getP3());
-            if (c.getP1() instanceof IntLiteral) { //si el primero es int, el sgundo tambien es int
+            if (((Atributo)atr1.getReference()).getTipo().isInt()) { //si el primero es int, el sgundo tambien es int
                 codeAssembly.add("  movl " + calculateOffset(atr1) + ", %eax");
                 codeAssembly.add("  movl " + calculateOffset(atr2) + ", %edx");
                 codeAssembly.add("  subl %edx, %eax");
@@ -769,7 +769,7 @@ public class AssemblyCode {
     private void plg(Command c) {
         codeAssembly.add("      pushl %ebp");
         codeAssembly.add("      movl %esp, %ebp");
-        codeAssembly.add("      subl $" + -((Method) c.getP1()).getOffset() + ",%esp");
+        codeAssembly.add("      subl $" + ((Method) c.getP1()).getOffset() + ",%esp");
     }
 
 }
