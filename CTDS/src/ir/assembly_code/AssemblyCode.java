@@ -44,8 +44,8 @@ public class AssemblyCode {
     public LinkedList<String> generateAssembly() {
         Iterator<Command> it = commands.iterator();
         //recorro toda la lista de codigo intermedio
-        //codeAssembly.add(".globl  main"); //con esto hago que reconozca el main globalmente
-       // codeAssembly.add(".type main, @function");// asi se puede correr despues de compilar
+        codeAssembly.add(".globl  main"); //con esto hago que reconozca el main globalmente
+        codeAssembly.add(".type main, @function");// asi se puede correr despues de compilar
         for (Command c : commands) {
             switch (c.getOp()) {
                 case GDEF://variables globales
@@ -201,7 +201,7 @@ public class AssemblyCode {
         //los dos son variables, ej : x+x
         if ((c.getP1() instanceof VarLocation) && (c.getP2() instanceof VarLocation)) {
             VarLocation atr1 = ((VarLocation) c.getP1());
-            VarLocation atr2 = ((VarLocation) c.getP1());
+            VarLocation atr2 = ((VarLocation) c.getP2());
             VarLocation result = ((VarLocation) c.getP3());
             if (((Atributo) atr1.getReference()).getTipo().isInt()) { //si el primero es int, el sgundo tambien es int
                 codeAssembly.add("  movl " + calculateOffset(atr1) + ", %eax");
@@ -251,7 +251,7 @@ public class AssemblyCode {
         //los dos son variables, ej : x-x
         if ((c.getP1() instanceof VarLocation) && (c.getP2() instanceof VarLocation)) {
             VarLocation atr1 = ((VarLocation) c.getP1());
-            VarLocation atr2 = ((VarLocation) c.getP1());
+            VarLocation atr2 = ((VarLocation) c.getP2());
             VarLocation result = ((VarLocation) c.getP3());
             if (((Atributo) atr1.getReference()).getTipo().isInt()) { //si el primero es int, el sgundo tambien es int
                 codeAssembly.add("  movl " + calculateOffset(atr1) + ", %eax");
@@ -736,7 +736,7 @@ public class AssemblyCode {
                 codeAssembly.add("  movl " + calculateOffset(((VarLocation) c.getP1())) + ", %eax");
             }
             if (c.getP1() instanceof IntLiteral) {
-                codeAssembly.add("  movl " + c.getP1().toString() + ", %eax");
+                codeAssembly.add("  movl $" + c.getP1().toString() + ", %eax");
             }
         }
         codeAssembly.add("  leave");
@@ -750,12 +750,10 @@ public class AssemblyCode {
         for (Expression ex : e.getExpressions()) {
             if (ex instanceof VarLocation) {
                 VarLocation param = (VarLocation) ex;
-                codeAssembly.add("  movl " + calculateOffset(param) + ", %eax");
-                codeAssembly.add("  movl %eax, " + i + "(%esp)");
+                codeAssembly.add("  pushl " + calculateOffset(param));
             } else {
                 Literal param = (Literal) ex;
-                codeAssembly.add("  movl $" + param.toString() + ", %eax");
-                codeAssembly.add("  movl %eax, " + i + "(%esp)");
+                codeAssembly.add("  pushl $" + param.toString());
             }
             i = i + 4;
         }
@@ -768,8 +766,6 @@ public class AssemblyCode {
 
     private void plg(Command c) {
         String nombre = ((Method) c.getP1()).getId().toString();
-        codeAssembly.add("  .globl " + nombre);
-        codeAssembly.add("  .type " + nombre + ", @function");
         codeAssembly.add(nombre + ":");
         codeAssembly.add("  pushl %ebp");
         codeAssembly.add("  movl %esp, %ebp");

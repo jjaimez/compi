@@ -5,16 +5,19 @@ class Main {
         return x+1;
     }
 
-    
+    int sum(int x, int y){
+    	return x+y;
+    }
 
     void printInt(int x) extern;
     
     void main() {
         int y;
-        printInt(0);
-        y = inc(0);
-                printInt(y);
-
+        printInt(0); //print 0
+        y = inc(7);
+        printInt(y); // print 8
+        y = sum(y,5); 
+        printInt(y); //print 13
         return;
     }
 }
