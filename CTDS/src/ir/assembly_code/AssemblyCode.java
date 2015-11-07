@@ -773,7 +773,7 @@ public class AssemblyCode {
         codeAssembly.add(nombre + ":");
         codeAssembly.add("  pushl %ebp");
         codeAssembly.add("  movl %esp, %ebp");
-        codeAssembly.add("  subl $" + ((Method) c.getP1()).getOffset() + ",%esp");
+        codeAssembly.add("  subl $" + -((Method) c.getP1()).getOffset() + ",%esp");
     }
 
 }

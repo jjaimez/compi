@@ -73,32 +73,25 @@ public class ICGVisitor implements ASTVisitor<Expression> {
     }
 
     @Override
-    public Expression visit(Method m) {       
+    public Expression visit(Method m) {
         offsetStack = 0;
         offsetFuncion = 0;
-        if (!m.getBody().toString().equals("extern")) {
-             ++labelId;
-            //code.add(new Command(ICGOpType.LBL, new Pair(labelId, m.getId()), null, null));
-            if (m.getParameters() != null) {
-                List<Parameter> listP = m.getParameters();
-                for (int i = (listP.size()) - 1; i >= 0; i--) {
-                    listP.get(i).accept(this);
-                }
+        if (m.getParameters() != null) {
+            List<Parameter> listP = m.getParameters();
+            for (int i = (listP.size()) - 1; i >= 0; i--) {
+                listP.get(i).accept(this);
             }
+        }
+        if (!m.getBody().toString().equals("extern")) {
+            ++labelId;
             code.add(new Command(ICGOpType.PLG, m, null, null));
             m.getBody().accept(this);
             if (!code.getLast().getOp().equals(ICGOpType.RET)) {
                 code.add(new Command(ICGOpType.RET, null, null, null));
             }
-            m.setOffset(offsetFuncion);
+            m.setOffset(offsetStack);
         } else {
-            if (m.getParameters() != null) {
-                List<Parameter> listP = m.getParameters();
-                for (int i = (listP.size()) - 1; i >= 0; i--) {
-                    listP.get(i).accept(this);
-                }
-            }
-            ((Metodo)m.getReference()).setIsExtern(true);
+            ((Metodo) m.getReference()).setIsExtern(true);
         }
         return null;
     }
