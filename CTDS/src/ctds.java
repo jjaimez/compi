@@ -77,8 +77,9 @@ public class ctds {
 //        }
 //         
         //ESTO ES PARA CORRERLO DESDE NETBEANS
-        System.out.println("testAssembly.ctds");
-        BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/testProfe/testAssembly.ctds"));
+             ctds c = new ctds();
+        System.out.println("test_bloques.ctds");
+        BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/testProfe/test_bloques.ctds"));
         Lexer lex = new Lexer(br);
         parser p = new parser(lex);
         p.parse();
@@ -95,11 +96,14 @@ public class ctds {
         ICGVisitor icgv = new ICGVisitor();
         icgv.visit(prog);
         
-        for (Command c : icgv.getCode()) {
-            System.out.println(c.toString());
+        for (Command c2 : icgv.getCode()) {
+            System.out.println(c2.toString());
         }
         AssemblyCode genCode= new AssemblyCode(icgv.getCode(), p);
+        c.name = "testAssembly";
+        c.writeFile(genCode.generateAssembly());
        for (String s:  genCode.generateAssembly()){
+           
             System.out.println(s+"\n");
        }
         

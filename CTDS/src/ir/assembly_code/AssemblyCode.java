@@ -34,7 +34,7 @@ public class AssemblyCode {
         this.commands = l;
         this.codeAssembly = new LinkedList();
         this.pars = pars;
-    // System.out.println("\n\n\n *****GENERANDO CÓDIGO ASSEMBLY*****\n");
+        // System.out.println("\n\n\n *****GENERANDO CÓDIGO ASSEMBLY*****\n");
         // for (String s : generateAssembly()) {
         //     System.out.println(s);
         // }
@@ -108,16 +108,16 @@ public class AssemblyCode {
                     ret(c);
                     break;
                 case CMP:
-                    cmp(c);
+                    cmp2(c);
                     break;
                 case JNE:
-                    codeAssembly.add("  jne " + ((Pair) c.getP1()).snd());
+                    codeAssembly.add("  jne " + ((Pair) c.getP1()).snd() + ((Pair) c.getP1()).fst());
                     break;
                 case JE:
-                    codeAssembly.add("  je " + ((Pair) c.getP1()).snd());
+                    codeAssembly.add("  je " + ((Pair) c.getP1()).snd()+ ((Pair) c.getP1()).fst());
                     break;
                 case JMP:
-                    codeAssembly.add(" jmp " + ((Pair) c.getP1()).snd());
+                    codeAssembly.add(" jmp " + ((Pair) c.getP1()).snd() + ((Pair) c.getP1()).fst());
                     break;
                 case INC:
                     inc(c);
@@ -154,7 +154,7 @@ public class AssemblyCode {
      * @param c
      */
     public void lbl(Command c) {
-        codeAssembly.add(((Pair) c.getP1()).snd() + ":");
+        codeAssembly.add(((Pair) c.getP1()).snd() + ((Pair) c.getP1()).fst().toString() + ":");
 
     }
 
@@ -177,7 +177,7 @@ public class AssemblyCode {
      * @param c
      */
     public void add(Command c) {
-    //Tengo que revisar los 4 casos para los operandos
+        //Tengo que revisar los 4 casos para los operandos
         //primer caso variable + Literal ej: x+1
         if ((c.getP1() instanceof VarLocation) && (c.getP2() instanceof Literal)) {
             VarLocation atr1 = ((VarLocation) c.getP1());
@@ -227,7 +227,7 @@ public class AssemblyCode {
      * @param c
      */
     public void sub(Command c) {
-    //Tengo que revisar los 4 casos para los operandos
+        //Tengo que revisar los 4 casos para los operandos
         //primer caso variable - Literal ej: x-1
         if ((c.getP1() instanceof VarLocation) && (c.getP2() instanceof Literal)) {
             VarLocation atr1 = ((VarLocation) c.getP1());
@@ -360,6 +360,12 @@ public class AssemblyCode {
             VarLocation res = (VarLocation) c.getP2();
             codeAssembly.add("  movl " + " %eax, " + calculateOffset(res));
         }
+    }
+
+    public void cmp2(Command c) {
+        VarLocation loc = (VarLocation) c.getP2();
+        codeAssembly.add("  movl " + calculateOffset((loc)) + ", %eax");
+        codeAssembly.add("  cmp $" + c.getP1().toString() + ", %eax");
     }
 
     /**
@@ -611,7 +617,7 @@ public class AssemblyCode {
     }
 
     public void mod(Command c) {
-    //es igual que la division pero el resto se guarda en EDX. EDX:EAX = resto:cociente
+        //es igual que la division pero el resto se guarda en EDX. EDX:EAX = resto:cociente
         //caso en que el primero es una varariable y la segunda un literal, ej x mod 1
         if ((c.getP1() instanceof VarLocation) && (c.getP2() instanceof Literal)) {
             VarLocation atr1 = ((VarLocation) c.getP1());
