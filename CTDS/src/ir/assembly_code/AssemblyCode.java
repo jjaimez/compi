@@ -114,7 +114,7 @@ public class AssemblyCode {
                     codeAssembly.add("  jne " + ((Pair) c.getP1()).snd() + ((Pair) c.getP1()).fst());
                     break;
                 case JE:
-                    codeAssembly.add("  je " + ((Pair) c.getP1()).snd()+ ((Pair) c.getP1()).fst());
+                    codeAssembly.add("  je " + ((Pair) c.getP1()).snd() + ((Pair) c.getP1()).fst());
                     break;
                 case JMP:
                     codeAssembly.add(" jmp " + ((Pair) c.getP1()).snd() + ((Pair) c.getP1()).fst());
@@ -243,8 +243,8 @@ public class AssemblyCode {
             VarLocation atr2 = ((VarLocation) c.getP2());
             VarLocation result = ((VarLocation) c.getP3());
             if (c.getP1() instanceof IntLiteral) {
-                codeAssembly.add("  movl " + calculateOffset(atr2) + ", %eax");
-                codeAssembly.add("  subl $" + c.getP1().toString() + ", %eax");
+                codeAssembly.add("  movl $" + c.getP1().toString() + ", %eax");
+                codeAssembly.add("  subl " + calculateOffset(atr2) + ", %eax");
                 codeAssembly.add("  movl " + " %eax, " + calculateOffset(result));
             }
         }
@@ -264,8 +264,8 @@ public class AssemblyCode {
         if ((c.getP1() instanceof Literal) && (c.getP2() instanceof Literal)) {
             if (c.getP1() instanceof IntLiteral) { //si el primero es int, el sgundo tambien es int
                 VarLocation result = ((VarLocation) c.getP3());
-                codeAssembly.add("  movl $" + c.getP2().toString() + ", %eax");
-                codeAssembly.add("  subl $" + c.getP1().toString() + ", %eax");
+                codeAssembly.add("  movl $" + c.getP1().toString() + ", %eax");
+                codeAssembly.add("  subl $" + c.getP2().toString() + ", %eax");
                 codeAssembly.add("  movl " + " %eax, " + calculateOffset(result));
             }
         }
@@ -355,7 +355,7 @@ public class AssemblyCode {
             VarLocation res = (VarLocation) c.getP2();
             codeAssembly.add("  movl " + " %eax, " + calculateOffset(res));
         } else {
-            codeAssembly.add("  movl " + c.getP1().toString() + ", %eax");
+            codeAssembly.add("  movl $" + c.getP1().toString() + ", %eax");
             codeAssembly.add("  not  %eax");
             VarLocation res = (VarLocation) c.getP2();
             codeAssembly.add("  movl " + " %eax, " + calculateOffset(res));
@@ -581,8 +581,8 @@ public class AssemblyCode {
             VarLocation result = ((VarLocation) c.getP3());
             if (c.getP1() instanceof IntLiteral) {
                 codeAssembly.add("  movl $0, %edx");// muevo un 0 a edx
-                codeAssembly.add("  movl " + calculateOffset(atr2) + ", %eax"); //muevo el valor de la variable a eax 
-                codeAssembly.add("  movl $" + c.getP1().toString() + ", %ecx"); //muevo el literal a ecx
+                codeAssembly.add("  movl $" +  c.getP1().toString() + ", %eax"); //muevo el valor de la variable a eax 
+                codeAssembly.add("  movl " +  calculateOffset(atr2)+ ", %ecx"); //muevo el literal a ecx
                 codeAssembly.add("  cltd"); //converts signed long to signed double long
                 codeAssembly.add("  idivl %ecx"); //divide the contents of EDX:EAX by the contents of ECX
                 codeAssembly.add("  movl " + " %eax, " + calculateOffset(result)); //el cociente esta en eax
@@ -593,27 +593,28 @@ public class AssemblyCode {
             if (c.getP2() instanceof IntLiteral) {//si el primero es un int, el segundo tambien
                 VarLocation result = ((VarLocation) c.getP3());
                 codeAssembly.add("  movl $0, %edx");// muevo un 0 a edx
-                codeAssembly.add("  movl " + c.getP1().toString() + ", %eax"); //muevo el valor de la variable a eax 
+                codeAssembly.add("  movl $" + c.getP1().toString() + ", %eax"); //muevo el valor de la variable a eax 
                 codeAssembly.add("  movl $" + c.getP2().toString() + ", %ecx"); //muevo el literal a ecx
                 codeAssembly.add("  cltd"); //converts signed long to signed double long
                 codeAssembly.add("  idivl %ecx"); //divide the contents of EDX:EAX by the contents of ECX
                 codeAssembly.add("  movl " + " %eax, " + calculateOffset(result)); //el cociente esta en eax
             }
-            //caso x*x
-            if ((c.getP1() instanceof VarLocation) && (c.getP2() instanceof VarLocation)) {
-                VarLocation atr1 = ((VarLocation) c.getP1());
-                VarLocation atr2 = ((VarLocation) c.getP2());
-                VarLocation result = ((VarLocation) c.getP3());
-                if (((Atributo) atr1.getReference()).getTipo().isInt()) {
-                    codeAssembly.add("  movl $0, %edx");// muevo un 0 a edx
-                    codeAssembly.add("  movl " + calculateOffset(atr1) + ", %eax"); //muevo el valor de la variable a eax 
-                    codeAssembly.add("  movl $" + calculateOffset(atr2) + ", %ecx"); //muevo el literal a ecx
-                    codeAssembly.add("  cltd"); //converts signed long to signed double long
-                    codeAssembly.add("  idivl %ecx"); //divide the contents of EDX:EAX by the contents of ECX
-                    codeAssembly.add("  movl " + " %eax, " + calculateOffset(result)); //el cociente esta en eax
-                }
+        }
+        //caso x*x
+        if ((c.getP1() instanceof VarLocation) && (c.getP2() instanceof VarLocation)) {
+            VarLocation atr1 = ((VarLocation) c.getP1());
+            VarLocation atr2 = ((VarLocation) c.getP2());
+            VarLocation result = ((VarLocation) c.getP3());
+            if (((Atributo) atr1.getReference()).getTipo().isInt()) {
+                codeAssembly.add("  movl $0, %edx");// muevo un 0 a edx
+                codeAssembly.add("  movl " + calculateOffset(atr1) + ", %eax"); //muevo el valor de la variable a eax 
+                codeAssembly.add("  movl " + calculateOffset(atr2) + ", %ecx"); //muevo el literal a ecx
+                codeAssembly.add("  cltd"); //converts signed long to signed double long
+                codeAssembly.add("  idivl %ecx"); //divide the contents of EDX:EAX by the contents of ECX
+                codeAssembly.add("  movl " + " %eax, " + calculateOffset(result)); //el cociente esta en eax
             }
         }
+
     }
 
     public void mod(Command c) {

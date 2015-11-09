@@ -1,23 +1,69 @@
 class Main {
-    int global;
-    
-    int inc(int x) {
-        return x+1;
+
+    void assert(){
+        int x;
+        x = 4;
+        assertEquals(x,4);
+        x = 5 + 4; 
+        assertEquals(x,9);  // intLiteral + intLiteral
+        x = 0;
+        x = x + 4;
+        assertEquals(x,4);  // varLocation + intLiteral
+        x = 0;
+        x = 4 + x;
+        assertEquals(x,4);  // intLiteral + varLocation 
+        x = 0;
+        x = x + x;
+        assertEquals(x,0);  //varLocation + varLocation
+
+        //TEST RESTA
+
+        x = 5 - 4; 
+        assertEquals(x,1);  // intLiteral - intLiteral
+        x = 0;
+        x = x - 4;
+        assertEquals(x,-4);  // varLocation - intLiteral
+        x = 2;
+        x = 4 - x;
+        assertEquals(x,2);  // intLiteral - varLocation 
+        x = 5;
+        x = x - x;
+        assertEquals(x,0);  //varLocation - varLocation
+
+        // TEST MULTIPLICACION
+
+        x = 3 * 2; 
+        assertEquals(x,6);  // intLiteral * intLiteral
+        x = 2;
+        x = x * 4;
+        assertEquals(x,8);  // varLocation * intLiteral
+        x = 2;
+        x = 4 * x;
+        assertEquals(x,8);  // intLiteral * varLocation 
+        x = 5;
+        x = x * x;
+        assertEquals(x,25);  //varLocation * varLocation
+
+        // TEST DIVISION
+
+        x = 6 / 2 ; 
+        assertEquals(x,3);  // intLiteral / intLiteral
+        x = 8;
+        x = x / 4;
+        assertEquals(x,2);  // varLocation / intLiteral
+        x = 2;
+        x = 4 / x;
+        assertEquals(x,2);  // intLiteral / varLocation 
+        x = 5;
+        x = x / x;
+        assertEquals(x,1);  //varLocation / varLocation
+
+
     }
 
-    int sum(int x, int y){
-    	return x+y;
-    }
-
-    void printInt(int x) extern;
+    void assertEquals(int x,int y) extern;
     
     void main() {
-        int y;
-        printInt(0); //print 0
-        y = inc(7);
-        printInt(y); // print 8
-        y = sum(y,5); 
-        printInt(y); //print 13
-        return;
+        assert();
     }
 }
