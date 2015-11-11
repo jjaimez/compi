@@ -1,0 +1,54 @@
+class Main {
+
+    void assert(){
+        //TEST OR
+        int x,y;
+        x = 1;
+        y = 2;
+        if(1 < 2){
+           printIf(); 
+        }
+        if(1 < y){
+            printIf();
+        }
+        if(x < 2){
+            printIf();
+        }
+        if(x < y){
+            printIf();
+        }
+
+        if(2 < 1){
+           printIf(); 
+        }
+        else{
+            printElse();
+        }
+        if(2 < x){
+            printIf();
+        }
+        else{
+            printElse();
+        }
+        if(y < 1){
+            printIf();
+        }
+        else{
+            printElse();
+        }
+        if(x < x){
+            printIf();
+        }
+        else{
+            printElse();
+        }
+     }
+
+    void assertEquals(int x,int y) extern;
+    void printIf() extern;
+    void printElse() extern;
+    
+    void main() {
+        assert();
+    }
+}

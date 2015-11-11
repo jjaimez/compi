@@ -57,55 +57,55 @@ public class AssemblyCode {
                 case PARAM://apilar todo empezando por el ultimo y llamar con +4, +8
                     break;
                 case ADD:
-                    add(c);
+                    add(c); //TEEEESTEADO
                     break;
                 case SUB:
-                    sub(c);
+                    sub(c); //TEEEESTEADO
                     break;
                 case STR:
-                    str(c);
+                    str(c); //TEEEESTEADO
                     break;
                 case MUL:
-                    mul(c);
+                    mul(c); //TEEEESTEADO
                     break;
                 case DIV:
-                    div(c);
+                    div(c); //TEEEESTEADO
                     break;
                 case MOD:
-                    mod(c);
+                    mod(c); //TEEEESTEADO
                     break;
                 case MIN:
                     min(c);
                     break;
                 case AND:
-                    and(c);
+                    and(c); //TEEEESTEADO
                     break;
                 case OR:
-                    or(c);
+                    or(c); //TEEEESTEADO
                     break;
                 case NOT:
                     not(c);
                     break;
                 case LT:
-                    lt(c);
+                    lt(c); //TEEEESTEADO
                     break;
                 case LTEQ:
-                    lteq(c);
+                    lteq(c); //TEEEESTEADO
                     break;
                 case GT:
-                    gt(c);
+                    gt(c); //TEEEESTEADO
                     break;
                 case GTEQ:
-                    gteq(c);
+                    gteq(c); //TEEEESTEADO
                     break;
                 case NOTEQ:
-                    noteq(c);
+                    noteq(c); //TEEEESTEADO
                     break;
                 case EQEQ:
-                    eqeq(c);
+                    eqeq(c); //TEEEESTEADO
                     break;
-                case RET:
-                    ret(c);
+                case RET: 
+                    ret(c); //TEEEESTEADO
                     break;
                 case CMP:
                     cmp2(c);
@@ -585,7 +585,7 @@ public class AssemblyCode {
                 codeAssembly.add("  movl " +  calculateOffset(atr2)+ ", %ecx"); //muevo el literal a ecx
                 codeAssembly.add("  cltd"); //converts signed long to signed double long
                 codeAssembly.add("  idivl %ecx"); //divide the contents of EDX:EAX by the contents of ECX
-                codeAssembly.add("  movl " + " %eax, " + calculateOffset(result)); //el cociente esta en eax
+                codeAssembly.add("  movl " + " %eax, " + calculateOffset(result)); //el resto esta en edx
             }
         }
         //caso 1*1
@@ -597,7 +597,7 @@ public class AssemblyCode {
                 codeAssembly.add("  movl $" + c.getP2().toString() + ", %ecx"); //muevo el literal a ecx
                 codeAssembly.add("  cltd"); //converts signed long to signed double long
                 codeAssembly.add("  idivl %ecx"); //divide the contents of EDX:EAX by the contents of ECX
-                codeAssembly.add("  movl " + " %eax, " + calculateOffset(result)); //el cociente esta en eax
+                codeAssembly.add("  movl " + " %eax, " + calculateOffset(result)); //el resto esta en edx
             }
         }
         //caso x*x
@@ -611,7 +611,7 @@ public class AssemblyCode {
                 codeAssembly.add("  movl " + calculateOffset(atr2) + ", %ecx"); //muevo el literal a ecx
                 codeAssembly.add("  cltd"); //converts signed long to signed double long
                 codeAssembly.add("  idivl %ecx"); //divide the contents of EDX:EAX by the contents of ECX
-                codeAssembly.add("  movl " + " %eax, " + calculateOffset(result)); //el cociente esta en eax
+                codeAssembly.add("  movl " + " %eax, " + calculateOffset(result)); //el resto esta en edx
             }
         }
 
@@ -637,8 +637,8 @@ public class AssemblyCode {
             VarLocation atr2 = ((VarLocation) c.getP2());
             VarLocation result = ((VarLocation) c.getP3());
             codeAssembly.add("  movl $0, %edx");// muevo un 0 a edx
-            codeAssembly.add("  movl " + calculateOffset(atr2) + ", %eax"); //muevo el valor de la variable a eax 
-            codeAssembly.add("  movl $" + c.getP1().toString() + ", %ecx"); //muevo el literal a ecx
+            codeAssembly.add("  movl $" + c.getP1().toString() + ", %eax"); //muevo el valor de la variable a eax 
+            codeAssembly.add("  movl " + calculateOffset(atr2) + ", %ecx"); //muevo el literal a ecx
             codeAssembly.add("  cltd"); //converts signed long to signed double long
             codeAssembly.add("  idivl %ecx"); //divide the contents of EDX:EAX by the contents of ECX
             codeAssembly.add("  movl " + " %edx, " + calculateOffset(result)); //el cociente esta en eax
@@ -647,7 +647,7 @@ public class AssemblyCode {
         if ((c.getP1() instanceof Literal) && (c.getP2() instanceof Literal)) {
             VarLocation result = ((VarLocation) c.getP3());
             codeAssembly.add("  movl $0, %edx");// muevo un 0 a edx
-            codeAssembly.add("  movl " + c.getP1().toString() + ", %eax"); //muevo el valor de la variable a eax 
+            codeAssembly.add("  movl $" + c.getP1().toString() + ", %eax"); //muevo el valor de la variable a eax 
             codeAssembly.add("  movl $" + c.getP2().toString() + ", %ecx"); //muevo el literal a ecx
             codeAssembly.add("  cltd"); //converts signed long to signed double long
             codeAssembly.add("  idivl %ecx"); //divide the contents of EDX:EAX by the contents of ECX
@@ -660,7 +660,7 @@ public class AssemblyCode {
             VarLocation result = ((VarLocation) c.getP3());
             codeAssembly.add("  movl $0, %edx");// muevo un 0 a edx
             codeAssembly.add("  movl " + calculateOffset(atr1) + ", %eax"); //muevo el valor de la variable a eax 
-            codeAssembly.add("  movl $" + calculateOffset(atr2) + ", %ecx"); //muevo el literal a ecx
+            codeAssembly.add("  movl " + calculateOffset(atr2) + ", %ecx"); //muevo el literal a ecx
             codeAssembly.add("  cltd"); //converts signed long to signed double long
             codeAssembly.add("  idivl %ecx"); //divide the contents of EDX:EAX by the contents of ECX
             codeAssembly.add("  movl " + " %edx, " + calculateOffset(result)); //el cociente esta en eax
@@ -687,7 +687,7 @@ public class AssemblyCode {
         //caso 1 and 1
         if ((c.getP1() instanceof Literal) && (c.getP2() instanceof Literal)) {
             VarLocation result = ((VarLocation) c.getP3());
-            codeAssembly.add("  movl " + c.getP1().toString() + ", %eax");
+            codeAssembly.add("  movl $" + c.getP1().toString() + ", %eax");
             codeAssembly.add("  and $" + c.getP2().toString() + ", %eax");
             codeAssembly.add("  movl " + " %eax, " + calculateOffset(result));
         }
@@ -697,7 +697,7 @@ public class AssemblyCode {
             VarLocation atr2 = ((VarLocation) c.getP2());
             VarLocation result = ((VarLocation) c.getP3());
             codeAssembly.add("  movl " + calculateOffset(atr1) + ", %eax");
-            codeAssembly.add("  and $" + calculateOffset(atr2) + ", %eax");
+            codeAssembly.add("  and " + calculateOffset(atr2) + ", %eax");
             codeAssembly.add("  movl " + " %eax, " + calculateOffset(result));
         }
     }
@@ -722,7 +722,7 @@ public class AssemblyCode {
         //caso 1 or 1
         if ((c.getP1() instanceof Literal) && (c.getP2() instanceof Literal)) {
             VarLocation result = ((VarLocation) c.getP3());
-            codeAssembly.add("  movl " + c.getP1().toString() + ", %eax");
+            codeAssembly.add("  movl $" + c.getP1().toString() + ", %eax");
             codeAssembly.add("  or $" + c.getP2().toString() + ", %eax");
             codeAssembly.add("  movl " + " %eax, " + calculateOffset(result));
         }
@@ -732,7 +732,7 @@ public class AssemblyCode {
             VarLocation atr2 = ((VarLocation) c.getP2());
             VarLocation result = ((VarLocation) c.getP3());
             codeAssembly.add("  movl " + calculateOffset(atr1) + ", %eax");
-            codeAssembly.add("  or $" + calculateOffset(atr2) + ", %eax");
+            codeAssembly.add("  or " + calculateOffset(atr2) + ", %eax");
             codeAssembly.add("  movl " + " %eax, " + calculateOffset(result));
         }
     }
@@ -742,7 +742,7 @@ public class AssemblyCode {
             if (c.getP1() instanceof VarLocation) {
                 codeAssembly.add("  movl " + calculateOffset(((VarLocation) c.getP1())) + ", %eax");
             }
-            if (c.getP1() instanceof IntLiteral) {
+            if (c.getP1() instanceof Literal) {//TENEMOS QUE HACER OTRO CASO CUANDO TENGAMOS FLOAT
                 codeAssembly.add("  movl $" + c.getP1().toString() + ", %eax");
             }
         }

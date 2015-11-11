@@ -1,0 +1,28 @@
+class Main {
+
+    void assert(){
+        int x;
+		x = 4;
+        // TEST DIVISION
+
+        x = 6 / 2 ; 
+        assertEquals(x,3);  // intLiteral / intLiteral
+        x = 8;
+        x = x / 4;
+        assertEquals(x,2);  // varLocation / intLiteral
+        x = 2;
+        x = 4 / x;
+        assertEquals(x,2);  // intLiteral / varLocation 
+        x = 5;
+        x = x / x;
+        assertEquals(x,1);  //varLocation / varLocation
+     }
+
+    void assertEquals(int x,int y) extern;
+    void printIf() extern;
+    void printElse() extern;
+    
+    void main() {
+        assert();
+    }
+}

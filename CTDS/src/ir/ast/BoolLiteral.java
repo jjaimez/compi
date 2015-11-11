@@ -33,7 +33,17 @@ public class BoolLiteral extends Literal {
     
     @Override
     public String toString() {
-        return String.valueOf(value);
+                if(value)
+            return "1";
+        else 
+            return "0";
+    }
+    
+    public int getIntValue(){
+        if(value)
+            return 1;
+        else 
+            return 0;
     }
     
     @Override

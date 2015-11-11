@@ -1,0 +1,54 @@
+class Main {
+
+    void assert(){
+        //TEST NOTEQ
+        int x,y;
+        x = 3;
+        y = 1;
+        if(3 != 2){
+           printIf(); 
+        }
+        if(3 != y){
+            printIf();
+        }
+        if(x != 1){
+            printIf();
+        }
+        if(x != y){
+            printIf();
+        }
+
+        if(1 != 1){
+           printIf(); 
+        }
+        else{
+            printElse();
+        }
+        if(3 != x){
+            printIf();
+        }
+        else{
+            printElse();
+        }
+        if(y != 1){
+            printIf();
+        }
+        else{
+            printElse();
+        }
+        if(y != y){
+            printIf();
+        }
+        else{
+            printElse();
+        }
+     }
+
+    void assertEquals(int x,int y) extern;
+    void printIf() extern;
+    void printElse() extern;
+    
+    void main() {
+        assert();
+    }
+}

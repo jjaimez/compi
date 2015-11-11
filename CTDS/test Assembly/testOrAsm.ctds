@@ -1,0 +1,54 @@
+class Main {
+
+    void assert(){
+        //TEST OR
+        boolean y;
+        y = true;
+        if(true || false){
+           printIf(); 
+        }
+        if(false || y){
+            printIf();
+        }
+        if(y || false){
+            printIf();
+        }
+        if(y || y){
+            printIf();
+        }
+
+        y = false;
+        if(false || false){
+           printIf(); 
+        }
+        else{
+            printElse();
+        }
+        if(false || y){
+            printIf();
+        }
+        else{
+            printElse();
+        }
+        if(y || false){
+            printIf();
+        }
+        else{
+            printElse();
+        }
+        if(y || y){
+            printIf();
+        }
+        else{
+            printElse();
+        }
+     }
+
+    void assertEquals(int x,int y) extern;
+    void printIf() extern;
+    void printElse() extern;
+    
+    void main() {
+        assert();
+    }
+}

@@ -1,0 +1,54 @@
+class Main {
+
+    void assert(){
+        //TEST GTEQ
+        int x,y;
+        x = 3;
+        y = 1;
+        if(2 >= 2){
+           printIf(); 
+        }
+        if(3 >= x){
+            printIf();
+        }
+        if(x >= 1){
+            printIf();
+        }
+        if(x >= y){
+            printIf();
+        }
+
+        if(1 >= 2){
+           printIf(); 
+        }
+        else{
+            printElse();
+        }
+        if(2 >= x){
+            printIf();
+        }
+        else{
+            printElse();
+        }
+        if(y >= 2){
+            printIf();
+        }
+        else{
+            printElse();
+        }
+        if(y >= x){
+            printIf();
+        }
+        else{
+            printElse();
+        }
+     }
+
+    void assertEquals(int x,int y) extern;
+    void printIf() extern;
+    void printElse() extern;
+    
+    void main() {
+        assert();
+    }
+}

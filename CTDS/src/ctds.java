@@ -100,8 +100,8 @@ public class ctds {
             System.out.println(c2.toString());
         }
         AssemblyCode genCode= new AssemblyCode(icgv.getCode(), p);
-        c.name = "testAssembly";
-        c.writeFile(genCode.generateAssembly());
+       // c.name = "testAssembly";
+       // c.writeFile(genCode.generateAssembly());
        for (String s:  genCode.generateAssembly()){
            
             System.out.println(s+"\n");

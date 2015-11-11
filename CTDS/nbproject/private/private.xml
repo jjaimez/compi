@@ -2,6 +2,10 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/home/nico/Universidad/Cuarto%20año/Compiladores/compi/CTDS/src/ir/assembly_code/AssemblyCode.java</file>
+            <file>file:/home/nico/Universidad/Cuarto%20año/Compiladores/compi/CTDS/src/ir/intCodeGeneration/ICGVisitor.java</file>
+            <file>file:/home/nico/Universidad/Cuarto%20año/Compiladores/compi/CTDS/src/ctds.java</file>
+        </group>
     </open-files>
 </project-private>
