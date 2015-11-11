@@ -1,0 +1,40 @@
+class Main {
+
+    int returnIntTest(){
+        return 5;
+     }
+
+    boolean returnBooleanTest(){
+        return true;
+     }
+
+    boolean returnBooleanTest2(){
+        return false;
+     }
+
+
+    void assertEquals(int x,int y) extern;
+    void printIf() extern;
+    void printElse() extern;
+    
+    void main() {
+        int x;
+        boolean y;
+        y = true;
+        x = returnIntTest();
+        assertEquals(x,5);
+        y = returnBooleanTest();
+        if(y){
+            printIf();
+        }else{
+            printElse();
+        }
+        y = returnBooleanTest2();
+        if(y){
+            printIf();
+        }
+        else{
+            printElse();
+        }
+    }
+}
