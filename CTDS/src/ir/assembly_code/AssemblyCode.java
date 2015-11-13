@@ -134,11 +134,12 @@ public class AssemblyCode {
                     plg(c); //prologo
                     break;
             }
-            for (Pair<Integer, Float> pair : listaFloats) {
+
+        }
+                    for (Pair<Integer, Float> pair : listaFloats) {
                 codeAssembly.add(".LF" + pair.fst().toString() + ":");
                 codeAssembly.add("      .float " + pair.snd().toString());
             }
-        }
 
         return codeAssembly;
     }
@@ -979,7 +980,13 @@ public class AssemblyCode {
                 codeAssembly.add("  pushl " + calculateOffset(param));
             } else {
                 Literal param = (Literal) ex;
-                codeAssembly.add("  pushl $" + param.toString());
+                if(param instanceof FloatLiteral){
+                    FloatLiteral floatLit = (FloatLiteral) param;
+                    codeAssembly.add("  pushl .LF" +codFloat);
+                    listaFloats.add(new Pair(codFloat++, floatLit.getValue()));
+                }else{
+                    codeAssembly.add("  pushl $" + param.toString());
+                }
             }
             i = i + 4;
         }

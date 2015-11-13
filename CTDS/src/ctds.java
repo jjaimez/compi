@@ -27,6 +27,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.LinkedList;
+import parser.Lexer;
 
 public class ctds {
 
@@ -103,7 +104,6 @@ public class ctds {
        // c.name = "testAssembly";
        // c.writeFile(genCode.generateAssembly());
        for (String s:  genCode.generateAssembly()){
-           
             System.out.println(s+"\n");
        }
         

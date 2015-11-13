@@ -11,10 +11,10 @@ public class FloatLiteral extends Literal {
 
     private Float value;
 
-    public FloatLiteral(Float value, int line, int col) {
+    public FloatLiteral(String value, int line, int col) {
         this.setLineNumber(line+1);
         this.setColumnNumber(col+1);
-        this.value = value;
+        this.value = Float.valueOf(value);
     }
 
     @Override
