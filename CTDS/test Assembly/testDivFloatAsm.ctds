@@ -1,0 +1,31 @@
+class Main {
+
+void assertEqualsFloat(float x, float y) extern;
+
+ void assert(){
+        float x;
+        x = 4.4;
+        // TEST DIV FLOAT
+
+        x = 3.2 / 2.5; 
+        assertEqualsFloat(x,1.28);  // FloatLiteral / FloatLiteral
+        x = 2.5;
+        x = x / 5.0; //este anda mal
+        assertEqualsFloat(x,0.5);  // varLocation / FloatLiteral
+        x = 2.5;
+        x = 4.9 / x;
+        assertEqualsFloat(x,1.96);  // FloatLiteral / varLocation 
+        x = 5.5;
+        x = x / x;
+        assertEqualsFloat(x,1.0);  //varLocation / varLocation
+     }
+
+
+void main(){
+
+      assert();
+
+    
+}
+
+}

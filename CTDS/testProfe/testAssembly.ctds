@@ -1,49 +1,103 @@
 class Main {
 
-/*
     void assert(){
-        int y;
-        y = -6;
-        assertEquals(-y,-4);  // varLocation - intLiteral ESTE NO ANDAAAAAAAA
+        //TEST EQEQ
+        int x,y;
+        float z,w;
+
+        x = 3;
+        y = 1;
+        if(2 == 2){
+           printIf(); 
+        }
+        if(1 == y){
+            printIf();
+        }
+        if(x == 3){
+            printIf();
+        }
+        if(x == x){
+            printIf();
+        }
+
+        if(1 == 2){
+           printIf(); 
+        }
+        else{
+            printElse();
+        }
+        if(3 == y){
+            printIf();
+        }
+        else{
+            printElse();
+        }
+        if(y == 2){
+            printIf();
+        }
+        else{
+            printElse();
+        }
+        if(y == x){
+            printIf();
+        }
+        else{
+            printElse();
+        }
+
+        printSeparador();
+
+
+        z = 3.3;
+        w = 1.5;
+        if(2.9 == 2.9){ //mal
+             printIf();
+        } else{
+
+        }
+        if(1.5 == w){ //mal
+            printIf();
+        }
+        if(z == 3.3){ //mal
+            printIf();
+        }
+        if(z == z){ //mal
+            printIf();
+        }
+
+        if(1.5 == 2.9){
+           printIf(); 
+        }
+        else{
+            printElse();
+        }
+        if(3.3 == w){
+            printIf();
+        }
+        else{
+            printElse();
+        }
+        if(w == 2.9){
+            printIf();
+        }
+        else{
+            printElse();
+        }
+        if(w == z){
+            printIf();
+        }
+        else{
+            printElse();
+        }
      }
 
+    void assertEqualsFloat(float x, float y) extern;
     void assertEquals(int x,int y) extern;
     void printIf() extern;
     void printElse() extern;
+    void printSeparador() extern;
     
     void main() {
         assert();
     }
-    */
-
-
-
-void assertEqualsFloat(float x, float y) extern;
-
- void assert(){
-        float x;
-        x = 4.4;
-        // TEST DIV FLOAT
-
-        x = 3.2 / 2.5; 
-        assertEqualsFloat(x,1.28);  // FloatLiteral / FloatLiteral
-        x = 2.5;
-        x = x / 5.0;
-        assertEqualsFloat(x,0.5);  // varLocation / FloatLiteral
-        x = 2.5;
-        x = 4.9 / x;
-        assertEqualsFloat(x,1.96);  // FloatLiteral / varLocation 
-        x = 5.5;
-        x = x / x;
-        assertEqualsFloat(x,1.0);  //varLocation / varLocation
-     }
-
-
-void main(){
-
-      assert();
-
-    
-}
-
 }

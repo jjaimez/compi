@@ -2,41 +2,41 @@ class Main {
 
     void assert(){
         //TEST LT
-        int x,y;
-        x = 1;
-        y = 2;
-        if(1 < 2){
+        float x,y;
+        x = 1.2;
+        y = 2.3;
+        if(1.2 < 2.3){
            printIf(); 
         }
-        if(1 < y){
+        if(1.2 < y){
             printIf();
         }
-        if(x < 2){
+        if(x < 2.3){
             printIf();
         }
         if(x < y){
             printIf();
         }
 
-        if(2 < 1){
+        if(2.3 < 1.2){  //mal
            printIf(); 
         }
         else{
             printElse();
         }
-        if(2 < x){
+        if(2.3 < x){ //mal
             printIf();
         }
         else{
             printElse();
         }
-        if(y < 1){
+        if(y < 1.2){ //mal
             printIf();
         }
         else{
             printElse();
         }
-        if(x < x){
+        if(x < x){ //mal 
             printIf();
         }
         else{

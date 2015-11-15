@@ -37,6 +37,10 @@
  	printf("else correct \n");
  }
 
+ void printSeparador(){
+ 	printf("-------------\n");
+ }
+
 
 
 

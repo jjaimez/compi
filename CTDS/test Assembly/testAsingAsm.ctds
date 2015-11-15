@@ -1,0 +1,49 @@
+class Main {
+
+//funciona bien
+
+void printIf() extern;
+void assertEqualsFloat(float x, float y) extern;
+void assertEquals(int x, int y) extern;
+void printElse() extern;
+
+ void assert(){
+        float x;
+        int i;
+        boolean b;
+
+        b = false;
+        if (b){
+            printIf();
+        } else {
+            printElse();
+        }
+        b = true;
+        if (b){
+            printIf();
+        } else {
+            printElse();
+        }
+
+
+        x = 4.4;
+        assertEqualsFloat(x,4.4);
+        x += 1.4;
+        assertEqualsFloat(x,5.8);
+        x -= 5.9;
+        assertEqualsFloat(x,-0.1);
+
+        i = 100;
+        assertEquals(i,100);
+        i += 100;
+        assertEquals(i,200);
+        i -= 201;
+        assertEquals(i,-1);       
+     }
+
+
+void main(){
+      assert();    
+}
+
+}
