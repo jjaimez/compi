@@ -67,7 +67,7 @@ public class ICGVisitor implements ASTVisitor<Expression> {
     @Override
     public Expression visit(Parameter p) {
         Atributo a = (Atributo) p.getReference();
-        offsetFuncion += 8;
+        offsetFuncion += 4;
         a.setOffset(offsetFuncion);
         return null;
     }
@@ -75,10 +75,10 @@ public class ICGVisitor implements ASTVisitor<Expression> {
     @Override
     public Expression visit(Method m) {
         offsetStack = 0;
-        offsetFuncion = 0;
+        offsetFuncion = 4;
         if (m.getParameters() != null) {
             List<Parameter> listP = m.getParameters();
-            for (int i = (listP.size()) - 1; i >= 0; i--) {
+            for (int i = 0; i < listP.size(); i++) {
                 listP.get(i).accept(this);
             }
         }
@@ -330,6 +330,7 @@ public class ICGVisitor implements ASTVisitor<Expression> {
         ++commId;
         int id = commId;
         Expression e = expr.getOperand().accept(this);
+        
         VarLocation var = new VarLocation("t" + id);
         Atributo a = new Atributo(null, expr.getType(), "t" + id);
         offsetStack -= 4;

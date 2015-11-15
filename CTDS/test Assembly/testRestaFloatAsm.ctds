@@ -1,0 +1,30 @@
+class Main {
+
+    void assert(){
+        float x;
+        float y;
+        x = 4.1;
+        assertEqualsFloat(x,4.1);
+        x = 5.2 - 4.2; 
+        assertEqualsFloat(x,1.0);  // floatLiteral - floatLiteral
+        x = 5.0;
+        x = x - 4.2;
+        assertEqualsFloat(x,0.8);  // varLocation - floatLiteral
+        x = 0.1;
+        x = 4.2 - x;
+        assertEqualsFloat(x,4.1);  // floatLiteral - varLocation 
+        x = 1.1;
+        y = 2.2;
+        x = y - x;
+        assertEqualsFloat(x,1.1);  //varLocation - varLocation
+     }
+
+    void assertEquals(int x,int y) extern;
+    void assertEqualsFloat(float x,float y) extern;
+    void printIf() extern;
+    void printElse() extern;
+    
+    void main() {
+        assert();
+    }
+}

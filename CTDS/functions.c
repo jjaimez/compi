@@ -15,6 +15,15 @@
 	}
  }
 
+ void assertEqualsFloat(float x, float y){
+	if(x == y){
+		printf("correct  %f %f ************\n",x,y);
+	}
+	else{
+		printf("incorrect %f %f ************\n",x,y);
+	}
+ }
+
  void printIf(){
 	printf("if correct \n");
  }

@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import parser.parser;
 import ir.intCodeGeneration.Pair;
+import java.util.List;
 
 /**
  *
@@ -136,10 +137,10 @@ public class AssemblyCode {
             }
 
         }
-                    for (Pair<Integer, Float> pair : listaFloats) {
-                codeAssembly.add(".LF" + pair.fst().toString() + ":");
-                codeAssembly.add("      .float " + pair.snd().toString());
-            }
+        for (Pair<Integer, Float> pair : listaFloats) {
+            codeAssembly.add(".LF" + pair.fst().toString() + ":");
+            codeAssembly.add("      .float " + pair.snd().toString());
+        }
 
         return codeAssembly;
     }
@@ -273,10 +274,11 @@ public class AssemblyCode {
             VarLocation atr1 = ((VarLocation) c.getP1());
             VarLocation result = ((VarLocation) c.getP3());
             if (c.getP2() instanceof FloatLiteral) {
-                codeAssembly.add("      flds " + calculateOffset(atr1));
-                codeAssembly.add("      flds .LF" + codFloat);
                 FloatLiteral f2 = (FloatLiteral) c.getP2();
+                codeAssembly.add("      flds .LF" + codFloat);
                 listaFloats.add(new Pair(codFloat++, f2.getValue()));
+
+                codeAssembly.add("      flds " + calculateOffset(atr1));
                 codeAssembly.add("      fsubp %st, %st(1)");
                 codeAssembly.add("      fstps " + calculateOffset(result));
             } else {
@@ -308,8 +310,8 @@ public class AssemblyCode {
             VarLocation atr2 = ((VarLocation) c.getP2());
             VarLocation result = ((VarLocation) c.getP3());
             if (((Atributo) atr1.getReference()).getTipo().isFloat()) {
-                codeAssembly.add("      flds " + calculateOffset(atr1));
                 codeAssembly.add("      flds " + calculateOffset(atr2));
+                codeAssembly.add("      flds " + calculateOffset(atr1));
                 codeAssembly.add("      fsubp %st, %st(1)");
                 codeAssembly.add("      fstps " + calculateOffset(result));
             } else {
@@ -323,12 +325,12 @@ public class AssemblyCode {
         if ((c.getP1() instanceof Literal) && (c.getP2() instanceof Literal)) {
             if (c.getP2() instanceof FloatLiteral) {
                 FloatLiteral f1 = (FloatLiteral) c.getP1();
-                codeAssembly.add("      flds .LF" + codFloat);
-                listaFloats.add(new Pair(codFloat++, f1.getValue()));
                 FloatLiteral f2 = (FloatLiteral) c.getP2();
                 codeAssembly.add("      flds .LF" + codFloat);
                 listaFloats.add(new Pair(codFloat++, f2.getValue()));
-                codeAssembly.add("      fsubp %st, %st(1)");
+                codeAssembly.add("      flds .LF" + codFloat);
+                listaFloats.add(new Pair(codFloat++, f1.getValue()));
+                codeAssembly.add("      fsubp %st, %st(1)"); // aca anda algo raro
                 VarLocation res = (VarLocation) c.getP3();
                 codeAssembly.add("      fstps " + calculateOffset(res));
             } else {
@@ -434,6 +436,8 @@ public class AssemblyCode {
             } else {
                 codeAssembly.add("  movl " + calculateOffset(loc) + ", %eax");
                 codeAssembly.add("  not  %eax");
+                codeAssembly.add("  addl $1,  %eax");
+
                 VarLocation res = (VarLocation) c.getP2();
                 codeAssembly.add("  movl " + " %eax, " + calculateOffset(res));
             }
@@ -446,8 +450,7 @@ public class AssemblyCode {
                 VarLocation res = (VarLocation) c.getP2();
                 codeAssembly.add("      fstps " + calculateOffset(res));
             } else {
-                codeAssembly.add("  movl $" + c.getP1().toString() + ", %eax"); //ACA PUEDE ESTAR EL ERROR
-                codeAssembly.add("  not  %eax");
+                codeAssembly.add("  movl $-" + c.getP1().toString() + ", %eax"); //ACA PUEDE ESTAR EL ERROR
                 VarLocation res = (VarLocation) c.getP2();
                 codeAssembly.add("  movl " + " %eax, " + calculateOffset(res));
             }
@@ -790,7 +793,7 @@ public class AssemblyCode {
         }
         //caso 1*1
         if ((c.getP1() instanceof Literal) && (c.getP2() instanceof Literal)) {
-             if (c.getP2() instanceof FloatLiteral) {
+            if (c.getP2() instanceof FloatLiteral) {
                 FloatLiteral f1 = (FloatLiteral) c.getP1();
                 codeAssembly.add("      flds .LF" + codFloat);
                 listaFloats.add(new Pair(codFloat++, f1.getValue()));
@@ -973,22 +976,24 @@ public class AssemblyCode {
 
     public void call(Command c) {
         MethodCall e = (MethodCall) c.getP1();
-        int i = 0;
-        for (Expression ex : e.getExpressions()) {
+        List<Expression> exprs = e.getExpressions();
+        int i = exprs.size() - 1;
+        while (i >= 0) {
+            Expression ex = exprs.get(i);
             if (ex instanceof VarLocation) {
                 VarLocation param = (VarLocation) ex;
                 codeAssembly.add("  pushl " + calculateOffset(param));
             } else {
                 Literal param = (Literal) ex;
-                if(param instanceof FloatLiteral){
+                if (param instanceof FloatLiteral) {
                     FloatLiteral floatLit = (FloatLiteral) param;
-                    codeAssembly.add("  pushl .LF" +codFloat);
+                    codeAssembly.add("  pushl .LF" + codFloat);
                     listaFloats.add(new Pair(codFloat++, floatLit.getValue()));
-                }else{
+                } else {
                     codeAssembly.add("  pushl $" + param.toString());
                 }
             }
-            i = i + 4;
+            i--;
         }
         codeAssembly.add("  call " + e.getId());
         if (c.getP2() != null) {

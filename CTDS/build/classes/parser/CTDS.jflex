@@ -57,7 +57,7 @@ EndOfLineComment = "//" {InputCharacter}* {LineTerminator}?
                     }
 {FloatLit}          {
                         //System.out.println("FLOAT_LITERAL" + new Float(yytext())); 
-                        return  new Symbol(sym.FLOAT_LITERAL, yyline, yycolumn, Float.valueOf(yytext()));
+                        return  new Symbol(sym.FLOAT_LITERAL, 3, 3, yytext());
                     }
 
 //operadores

@@ -51,9 +51,7 @@ public class SetReferencesVisitor implements ASTVisitor<Object> {
     public SetReferencesVisitor() {
         this.tablaSimbolos = new TablaDeSimbolos();
     }
-    
-    
-    
+
     @Override
     public Object visit(Parameter p) {
         Atributo atributo;
@@ -139,7 +137,7 @@ public class SetReferencesVisitor implements ASTVisitor<Object> {
 
     @Override
     public Object visit(AssignStmt stmt) {
-        if (stmt.getExpression()!= null) {
+        if (stmt.getExpression() != null) {
             stmt.getExpression().accept(this);
         }
         stmt.getLocation().accept(this);
@@ -148,7 +146,7 @@ public class SetReferencesVisitor implements ASTVisitor<Object> {
 
     @Override
     public Object visit(ReturnStmt stmt) {
-        if(stmt.getExpression()!=null){
+        if (stmt.getExpression() != null) {
             stmt.getExpression().accept(this);
         }
         return null;
@@ -188,12 +186,18 @@ public class SetReferencesVisitor implements ASTVisitor<Object> {
     @Override
     public Object visit(MethodCall stmt) {
         Metodo met = tablaSimbolos.getMetodo(tablaSimbolos.getUltimaClase(), stmt.getId());
-                LinkedList<Expression> list = (LinkedList) stmt.getExpressions();
+        LinkedList<Expression> list = (LinkedList) stmt.getExpressions();
         for (int i = 0; i < list.size(); i++) {
             Expression e = list.get(i);
-            if (e instanceof VarLocation){
-                Atributo var = tablaSimbolos.getAtributo(((VarLocation)e).getId());
+            if (e instanceof VarLocation) {
+                Atributo var = tablaSimbolos.getAtributo(((VarLocation) e).getId());
                 e.setReference(var);
+            }
+            if (e instanceof UnaryOpExpr) {
+                if (((UnaryOpExpr) e).getOperand() instanceof VarLocation) {
+                    Atributo var = tablaSimbolos.getAtributo(((VarLocation) ((UnaryOpExpr) e).getOperand()).getId());
+                    ((UnaryOpExpr) e).getOperand().setReference(var);
+                }
             }
         }
         stmt.setReference(met);
@@ -270,8 +274,8 @@ public class SetReferencesVisitor implements ASTVisitor<Object> {
                         atributo = new Atributo(null, fd.getType(), ld.getId(), ld.getSize().getValue());
                     }
                     tablaSimbolos.setVariableBloque(atributo);
-                    ld.setReference(atributo);             
-                    
+                    ld.setReference(atributo);
+
                 }
             }
         }

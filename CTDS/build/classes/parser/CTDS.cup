@@ -41,7 +41,7 @@ parser code {:
 
 /*LITERALES*/
 terminal Integer INT_LITERAL; 
-terminal Float FLOAT_LITERAL;
+terminal String FLOAT_LITERAL;
 /*OPERADORES*/
 terminal    PLUS, MINUS, TIMES, DIVIDE, MOD, OR, AND, NOT, EQ, NOTEQ, EQEQ, LT, GT, LTEQ, GTEQ, PLUSEQ, MINUSEQ;
 terminal UMINUS;
