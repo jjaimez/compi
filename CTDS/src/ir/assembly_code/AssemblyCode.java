@@ -435,8 +435,8 @@ public class AssemblyCode {
                 codeAssembly.add("      fstps " + calculateOffset(res));
             } else {
                 codeAssembly.add("  movl " + calculateOffset(loc) + ", %eax");
-                codeAssembly.add("  not  %eax");
-                codeAssembly.add("  addl $1,  %eax");
+                codeAssembly.add("  not  %eax"); // hago esto para evitar modificar la varLocation
+                codeAssembly.add("  addl $1,  %eax"); // y esto por por ser complemento a la base -1
 
                 VarLocation res = (VarLocation) c.getP2();
                 codeAssembly.add("  movl " + " %eax, " + calculateOffset(res));
