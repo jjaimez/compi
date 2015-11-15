@@ -5,6 +5,11 @@
 	return 1 ;
  }
 
+ void printFloat(float x){
+ 	printf("value %f", x);
+ }
+
+
 
  void assertEquals(int x, int y){
 	if(x == y){

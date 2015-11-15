@@ -754,8 +754,8 @@ public class AssemblyCode {
         if ((c.getP1() instanceof VarLocation) && (c.getP2() instanceof Literal)) {
             VarLocation atr1 = ((VarLocation) c.getP1());
             VarLocation result = ((VarLocation) c.getP3());
-            if (c.getP2() instanceof FloatLiteral) {
-                codeAssembly.add("      flds " + calculateOffset(atr1));
+            if (c.getP2() instanceof FloatLiteral) {     
+                codeAssembly.add("      flds " + calculateOffset(atr1));              
                 codeAssembly.add("      flds .LF" + codFloat);
                 FloatLiteral f2 = (FloatLiteral) c.getP2();
                 listaFloats.add(new Pair(codFloat++, f2.getValue()));
@@ -795,11 +795,11 @@ public class AssemblyCode {
         if ((c.getP1() instanceof Literal) && (c.getP2() instanceof Literal)) {
             if (c.getP2() instanceof FloatLiteral) {
                 FloatLiteral f1 = (FloatLiteral) c.getP1();
+                 FloatLiteral f2 = (FloatLiteral) c.getP2();
+                codeAssembly.add("      flds .LF" + codFloat);
+                listaFloats.add(new Pair(codFloat++, f2.getValue()));               
                 codeAssembly.add("      flds .LF" + codFloat);
                 listaFloats.add(new Pair(codFloat++, f1.getValue()));
-                FloatLiteral f2 = (FloatLiteral) c.getP2();
-                codeAssembly.add("      flds .LF" + codFloat);
-                listaFloats.add(new Pair(codFloat++, f2.getValue()));
                 codeAssembly.add("      fdivp %st, %st(1)");
                 VarLocation res = (VarLocation) c.getP3();
                 codeAssembly.add("      fstps " + calculateOffset(res));

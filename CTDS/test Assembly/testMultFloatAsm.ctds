@@ -1,0 +1,29 @@
+class Main {
+
+
+void assertEqualsFloat(float x, float y) extern;
+
+ void assert(){
+        float x;
+        x = 4.4;
+        // TEST MULTIPLICACION FLOAT
+
+        x = 3.2 * 2.8; 
+        assertEqualsFloat(x,8.96);  // FloatLiteral * FloatLiteral
+        x = 2.3;
+        x = x * 4.4;
+        assertEqualsFloat(x,10.12);  // varLocation * FloatLiteral
+        x = 2.1;
+        x = 4.9 * x;
+        assertEqualsFloat(x,10.29);  // FloatLiteral * varLocation 
+        x = 5.5;
+        x = x * x;
+        assertEqualsFloat(x,30.25);  //varLocation * varLocation
+     }
+
+
+void main(){
+      assert();    
+}
+
+}
