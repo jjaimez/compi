@@ -236,6 +236,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
             System.err.println("Error en la cantidad de parametros en la llamada del metodo " + stmt.getId() + ", linea: " + stmt.getLineNumber());
             System.exit(1);
         }
+
         for (int i = 0; i < stmt.getExpressions().size(); i++) {
             if (stmt.getExpressions().get(i).accept(this) != met.getParametros().get(i).getType()) {
                 System.err.println("Error de tipo de parametros en la llamada del metodo " + stmt.getId() + ", linea: " + stmt.getLineNumber());
@@ -243,7 +244,9 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
             }
         }
 
-        return met.getTipoReturn();
+            return met.getTipoReturn();
+
+
 
     }
 

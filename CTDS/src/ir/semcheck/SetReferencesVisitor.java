@@ -105,6 +105,9 @@ public class SetReferencesVisitor implements ASTVisitor<Object> {
         for (Method m : d.getMethodDecl()) {
             m.accept(this);
             Metodo metodo = new Metodo(m.getId(), m.getType(), m.getParameters());
+            if (m.getBody() instanceof ExternStmt){
+                metodo.setIsExtern(true);
+            }
             m.setReference(metodo);
             tablaSimbolos.insertMetClase(tablaSimbolos.getUltimaClase(), metodo);
         }
@@ -256,6 +259,9 @@ public class SetReferencesVisitor implements ASTVisitor<Object> {
     @Override
     public Object visit(VarLocation loc) {
         Atributo var = tablaSimbolos.getAtributo(loc.getId());
+        if(loc.getExp()!=null){
+            loc.getExp().accept(this);
+        }
         loc.setReference(var);
         return null;
     }

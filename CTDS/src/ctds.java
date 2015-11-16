@@ -80,7 +80,7 @@ public class ctds {
         //ESTO ES PARA CORRERLO DESDE NETBEANS
              ctds c = new ctds();
         System.out.println("test_bloques.ctds");
-        BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/testProfe/testAssembly.ctds"));
+        BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/TestProfeAssembly/testCTDS.ctds"));
         Lexer lex = new Lexer(br);
         parser p = new parser(lex);
         p.parse();

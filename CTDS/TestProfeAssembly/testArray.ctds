@@ -1,0 +1,21 @@
+class Main {
+
+// retorna el factorial de v
+void factorial (int v){
+	float x,y;
+	x = 5.0;
+	y = 6.0;
+	if(x< y){
+		print_float(x);
+	}
+	else{
+		print_float(y);
+	}
+}
+
+	void print_float(float x) extern;
+
+    void main() {
+        factorial(10);
+    }
+}
