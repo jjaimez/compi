@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>src/ir/TablaDeSimbolos/Metodo.java</url>
+            <bookmark id="1">
+                <name/>
+                <line>44</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/nico/Universidad/Cuarto%20año/Compiladores/compi/CTDS/src/ir/semcheck/SetReferencesVisitor.java</file>
-            <file>file:/home/nico/Universidad/Cuarto%20año/Compiladores/compi/CTDS/src/ir/semcheck/TypeEvaluationVisitor.java</file>
-            <file>file:/home/nico/Universidad/Cuarto%20año/Compiladores/compi/CTDS/src/ir/assembly_code/AssemblyCode.java</file>
-            <file>file:/home/nico/Universidad/Cuarto%20año/Compiladores/compi/CTDS/src/ir/intCodeGeneration/ICGVisitor.java</file>
-            <file>file:/home/nico/Universidad/Cuarto%20año/Compiladores/compi/CTDS/src/ir/TablaDeSimbolos/Metodo.java</file>
-            <file>file:/home/nico/Universidad/Cuarto%20año/Compiladores/compi/CTDS/src/ctds.java</file>
-            <file>file:/home/nico/Universidad/Cuarto%20año/Compiladores/compi/CTDS/src/ir/TablaDeSimbolos/TablaDeSimbolos.java</file>
+            <file>file:/home/jacinto/compi/CTDS/src/ctds.java</file>
+            <file>file:/home/jacinto/compi/CTDS/src/parser/CTDS.cup</file>
+            <file>file:/home/jacinto/compi/CTDS/src/ir/optimization/OptimizationVisitor.java</file>
+            <file>file:/home/jacinto/compi/CTDS/src/ir/semcheck/SetReferencesVisitor.java</file>
+            <file>file:/home/jacinto/compi/CTDS/src/ir/ast/BoolLiteral.java</file>
+            <file>file:/home/jacinto/compi/CTDS/src/ir/ast/IntLiteral.java</file>
+            <file>file:/home/jacinto/compi/CTDS/src/ir/ast/MethodCallStmt.java</file>
+            <file>file:/home/jacinto/compi/CTDS/src/ir/ast/Method.java</file>
         </group>
     </open-files>
 </project-private>

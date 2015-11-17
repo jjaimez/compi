@@ -1,7 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Autores: Jaimez Jacinto, Pereyra Orcasitas Nicolás
+ * Proyecto: CompiladorCTDS
+ * Generador de codigo assembler
  */
 package ir.assembly_code;
 
@@ -23,10 +23,6 @@ import parser.parser;
 import ir.intCodeGeneration.Pair;
 import java.util.List;
 
-/**
- *
- * @author nico
- */
 public class AssemblyCode {
 
     private LinkedList<Command> commands;

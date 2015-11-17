@@ -18,6 +18,13 @@ public class BoolLiteral extends Literal {
         type = Type.BOOL;
     }
     
+       public BoolLiteral(boolean val, int line, int col) {
+        this.setLineNumber(line+1);
+        this.setColumnNumber(col+1);
+        value = val;
+        type = Type.BOOL;
+    }
+    
     @Override
     public Type getType() {
         return Type.BOOL;
