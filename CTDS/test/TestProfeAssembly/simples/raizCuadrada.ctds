@@ -1,0 +1,24 @@
+class Main{
+
+    void print_float(float x) extern;
+    void print_int(int i) extern;
+
+
+    float raiz(float x){
+        float r,t;
+        r = x;
+        t = 0.0;
+        while (t != r){
+            t = r;
+            r = (x/r + r)/2.0;
+        }
+        return r;
+    }
+    
+    void main(){
+        print_float(raiz(16.0));
+        print_float( raiz(255.0));
+        print_float( raiz(256.0));
+    }
+
+}

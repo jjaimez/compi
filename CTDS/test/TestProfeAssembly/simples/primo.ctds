@@ -1,0 +1,51 @@
+class Main{
+
+    void print_float(float x) extern;
+    void print_int(int i) extern;
+    void print_orig() extern;
+    void print_reverse() extern;
+    void print_ln()extern;
+
+    int toInt(boolean b){
+        if(b){
+           return 1;
+        }
+        else{
+           return 0;
+        }
+    }
+
+
+    boolean isPrimo(int c){
+        int i;
+        i = 1;
+        if(c==0){
+            return false;
+        }
+        if(c==1){
+            return false;
+        }
+        if(c==2){
+            return true;
+        }        
+        while(i != c-1){
+            if(c % (c-i) == 0){
+                return false;
+            }
+            i += 1;
+        }
+        return true;
+    }
+
+    void main(){    
+        print_int(toInt( isPrimo(13));
+        print_int(toInt( isPrimo(37));
+        print_int(toInt( isPrimo(1));
+        print_int(toInt( isPrimo(0));
+        print_int(toInt( isPrimo(2));
+        print_int(toInt( isPrimo(544));
+        print_int(toInt( isPrimo(733));
+        return;
+    }
+
+}

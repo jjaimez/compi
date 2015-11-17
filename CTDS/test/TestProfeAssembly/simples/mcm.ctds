@@ -1,0 +1,45 @@
+class Main{
+
+    
+
+    void print_float(float x) extern;
+    void print_int(int i) extern;
+    void print_orig() extern;
+    void print_reverse() extern;
+    void print_ln()extern;
+
+
+
+
+    int maxcomdiv (int a, int b){
+        int dividendo,divisor,resto;
+	    if(a > b){
+		    dividendo = a;
+		    divisor = b;
+	    } else {
+		    dividendo = b;
+		    divisor = a;
+	    }
+	    resto = 1;
+	    while ((resto != 0)){
+		    resto = dividendo % divisor;
+		    dividendo = divisor;
+		    divisor = resto;
+	    }
+	    return dividendo;
+    }
+
+    int mincommult (int a, int b){
+        print_ln();
+        print_int( maxcomdiv(a,b));
+        print_int(a*b);
+        print_ln();
+        return ((a*b) / maxcomdiv(a,b));
+    }
+
+    void main(){
+       print_int(mincommult(3,7));
+       return;
+    }
+
+}

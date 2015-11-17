@@ -12,6 +12,7 @@ import ir.ast.AST;
 import ir.ast.Program;
 import ir.intCodeGeneration.Command;
 import ir.intCodeGeneration.ICGVisitor;
+import ir.optimization.OptimizationVisitor;
 import ir.semcheck.BreakContinueVisitor;
 import ir.semcheck.InterpreterVisitor;
 import ir.semcheck.PrintVisitor;
@@ -90,6 +91,9 @@ public class ctds {
         tev.visit(prog);
         BreakContinueVisitor bcv = new BreakContinueVisitor();
         bcv.visit(prog);
+        
+        OptimizationVisitor ov = new OptimizationVisitor();
+        ov.visit(prog);
 
         SetReferencesVisitor srv = new SetReferencesVisitor();
         srv.visit(prog);

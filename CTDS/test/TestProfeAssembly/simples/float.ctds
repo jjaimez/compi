@@ -1,0 +1,70 @@
+class Main {
+    float arr[10];
+    
+    void print_float(float x) extern;
+    void print_int(int i) extern;
+    void print_ln()extern;
+
+
+    float sum(float a,float b){
+        return a+b;
+    }
+
+    int toInt(boolean b){
+        if(b){
+           return 1;
+        }
+        else{
+           return 0;
+        }
+    }
+
+    
+    void llenar(){
+        int index;
+        arr[0] = 1.0;
+        for index = 1, index == 10{
+            arr[index] = arr[index - 1] * 2.0;
+        }  
+        return;  
+    }
+    
+    void main(){
+        float a,b,c;
+        int d,e,f;
+        
+        print_float( sum(3.14,2.33));
+        
+        a = sum(1.22,0.78);
+        print_float( -a);
+        
+        llenar();
+        for d = 0, d == 10{
+            print_float( arr[d]);
+            print_ln( );
+        }
+        print_ln();
+        
+        a = 1.0;
+        b = 2.0;
+        c = ((a + 7.011) * b) / 0.99;
+        c -= 1.0;
+        
+        print_float( c);
+        
+        c += 1.33;
+        
+        print_float(c);
+        
+        a = 12.0;
+        b = 6.4;
+        c = 6.4;
+        
+        print_int(toInt(a > b));
+        print_int(toInt( b < a));
+        print_int(toInt( b == c));
+        print_int(toInt( b != c));
+        return;
+    }
+
+}

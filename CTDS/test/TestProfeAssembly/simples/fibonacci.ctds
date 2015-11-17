@@ -1,0 +1,41 @@
+
+
+class Main{
+
+    void print_float(float x) extern;
+    void print_int(int i) extern;
+    void print_ln()extern;
+
+
+    // Calculo fibonacci iterativo
+    int fib(int n){
+        int first,second,tmp;
+        first = 0;
+        second = 1;
+        while (n>0) {
+            tmp = first+second;
+            first = second;
+            second = tmp;
+            n -= 1;
+        }
+        return first;
+    }
+    
+    void main(){
+
+        print_int( fib(6));
+        print_ln();
+
+        print_int( fib(10));
+        print_ln();
+
+        print_int( fib(14));
+        print_ln();
+
+        print_int( fib(30));
+        print_ln();
+
+        return;
+
+    }
+}

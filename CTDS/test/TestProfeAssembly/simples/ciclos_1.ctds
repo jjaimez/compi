@@ -1,0 +1,50 @@
+class Main{
+
+    void print_float(float x) extern;
+    void print_int(int i) extern;
+
+
+    void fun(int a){        
+        while(a<100){
+            while(true){
+                a -= 1;
+                print_int(a);
+                if(true){
+                    break;
+                } else {
+                    continue;
+                }
+            }        
+            a += 2;
+           
+        }
+        return;
+    }
+    
+    void testRet(){
+        int i;
+        i = 0;
+        while(true){
+            if(i>50){
+                return;
+            } else {
+                i += 1;
+            }        
+        }
+    }
+
+    int getDouble(int a){
+        return a * a;
+    }
+    
+    int getValue(){
+        return 6 % 3 + 5;
+    }
+
+    void main(){
+        fun(getDouble(getValue()));
+        testRet();
+        return;
+    }
+
+}

@@ -1,0 +1,36 @@
+
+class Main{
+
+    void print_float(float x) extern;
+    void print_int(int i) extern;
+    void print_ln()extern;
+
+    int factorial(int n){
+	    int i;
+	    int total;
+            i = n;
+            total = 1;
+	    while (i > 0 ){
+		    total = total * i;
+		    i = i - 1;
+	    }
+	    return total;
+    }
+    
+    int factorialRec(int n){
+        if(n == 1 || n == 0){
+            return 1;
+        }
+        else{
+            return (n * factorialRec(n-1));
+        }
+        return;
+    }
+
+    void main(){
+        print_int(factorial(8));
+        print_ln();
+        print_int( factorialRec(8));
+        return;
+    }
+}

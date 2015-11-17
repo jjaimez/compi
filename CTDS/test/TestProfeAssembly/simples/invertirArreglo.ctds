@@ -1,0 +1,64 @@
+
+
+class Main{
+    int arr[22];
+    int Arr[10];
+    int largo;
+
+
+    void print_float(float x) extern;
+    void print_int(int i) extern;
+    void print_orig() extern;
+    void print_reverse() extern;
+    void print_ln()extern;
+
+
+    
+    void llenar(){
+        int i;
+        arr[0] = 2;
+        for i = 1, i==largo {
+            arr[i] = arr[i-1] * 2;
+        }
+        return;
+    }
+    
+    
+    void test(){
+        int i;
+        for i = 0,i==largo{
+            arr[i] = 9;
+        }
+        return;
+    }
+    
+    void invertir(){
+        int i,tmp,tmp2;
+        
+        for i=0,i == largo/2 {
+            tmp = arr[i];
+            tmp2 = arr[(largo-1)-i];
+            arr[i] = tmp2;
+            arr[(largo-1)-i] = tmp;
+        }
+        return;
+    }
+
+    void printArr(){
+        int i;
+        for i=0,i==largo{
+            print_int(arr[i]);
+        }
+        print_ln();
+        return;
+    }
+    
+    void main(){
+        largo = 22;
+        llenar();
+        printArr();
+        invertir();
+        printArr();
+        return;
+    }
+}

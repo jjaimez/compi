@@ -1,0 +1,70 @@
+
+class Main{
+    int ar[500],ar2[500];
+    int largo;
+
+    void print_float(float x) extern;
+    void print_int(int i) extern;
+    void print_orig() extern;
+    void print_reverse() extern;
+    void print_ln()extern;
+
+
+    
+    void llenar(){
+        int i;
+        for i=0, i == largo {
+            ar[i] = i;
+        }
+        i = 0;
+        while(i<largo){
+            ar2[i] = ar[(largo-1)-i];
+            i += 1;            
+        }
+        return;
+    }
+        
+    void doble(){
+        int i;
+        i = 0;
+        print_ln();
+        while(true){
+            print_orig();
+            print_int(ar[i]);
+            i += 1;
+            if(i<largo){
+                continue;
+            } else {
+                break;
+            }
+        
+        }
+
+        print_ln();
+
+        print_reverse();
+        i = 0;
+        while(true){
+            print_int( ar2[i]);
+           
+            i += 1;
+            if(i<largo){
+                continue;
+            } else {
+                break;
+            }
+        }
+
+        print_ln();
+
+        return;
+        
+    }
+
+    void main(){
+        largo = 20;
+        llenar();
+        doble();
+        return;
+    }
+}

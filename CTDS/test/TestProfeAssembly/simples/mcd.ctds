@@ -1,0 +1,43 @@
+class Main{
+
+
+
+    void print_float(float x) extern;
+    void print_int(int i) extern;
+    void print_orig() extern;
+    void print_reverse() extern;
+    void print_ln()extern;
+
+
+
+
+    int maxcomdiv (int a, int b){
+        int dividendo,divisor,resto;
+         
+        print_int(a);
+        print_ln();
+        print_int(b);
+        
+	if(a > b){
+		dividendo = a;
+		divisor = b;
+	}
+	else{
+		dividendo = b;
+		divisor = a;
+	}
+	resto = 1;
+	while ((resto != 0)){
+		resto = dividendo % divisor;
+		dividendo = divisor;
+		divisor = resto;
+	}
+	return dividendo;
+}
+
+void main(){
+   print_int( maxcomdiv(500,400));
+   return;
+}
+
+}
