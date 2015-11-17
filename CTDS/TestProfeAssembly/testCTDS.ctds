@@ -10,6 +10,7 @@ void print_string(int s) extern;
 int close_input() extern;
 int init_input(int f) extern;
 int get_int() extern;
+void print_int(int x) extern;
 
 
 // retorna el factorial de v

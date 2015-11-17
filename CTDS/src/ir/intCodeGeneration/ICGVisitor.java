@@ -82,7 +82,7 @@ public class ICGVisitor implements ASTVisitor<Expression> {
                 listP.get(i).accept(this);
             }
         }
-        if (!m.getBody().toString().equals("extern")) {
+        if (!(m.getBody() instanceof ExternStmt)) {
             ++labelId;
             code.add(new Command(ICGOpType.PLG, m, null, null));
             m.getBody().accept(this);
@@ -234,7 +234,7 @@ public class ICGVisitor implements ASTVisitor<Expression> {
         Atributo a = new Atributo(null, stmt.getType(), "t" + id);
         offsetStack -= 4;
         a.setOffset(offsetStack);
-        var.setReference(a);
+        var.setReference(a);       
         code.add(new Command(ICGOpType.CALL, stmt, var, null));
         return var;
     }

@@ -103,13 +103,14 @@ public class SetReferencesVisitor implements ASTVisitor<Object> {
         }
         //recorro la definicion de metodos
         for (Method m : d.getMethodDecl()) {
-            m.accept(this);
             Metodo metodo = new Metodo(m.getId(), m.getType(), m.getParameters());
-            if (m.getBody() instanceof ExternStmt){
+
+            if (m.getBody() instanceof ExternStmt) {
                 metodo.setIsExtern(true);
             }
             m.setReference(metodo);
             tablaSimbolos.insertMetClase(tablaSimbolos.getUltimaClase(), metodo);
+            m.accept(this);
         }
         return null;
     }
@@ -189,31 +190,38 @@ public class SetReferencesVisitor implements ASTVisitor<Object> {
     @Override
     public Object visit(MethodCall stmt) {
         Metodo met = tablaSimbolos.getMetodo(tablaSimbolos.getUltimaClase(), stmt.getId());
+        stmt.setReference(met);
         LinkedList<Expression> list = (LinkedList) stmt.getExpressions();
         for (int i = 0; i < list.size(); i++) {
             Expression e = list.get(i);
-            if (e instanceof VarLocation) {
+            e.accept(this);
+         /*   if (e instanceof VarLocation) {
                 Atributo var = tablaSimbolos.getAtributo(((VarLocation) e).getId());
                 e.setReference(var);
-            }
-            if (e instanceof UnaryOpExpr) {
-                if (((UnaryOpExpr) e).getOperand() instanceof VarLocation) {
-                    Atributo var = tablaSimbolos.getAtributo(((VarLocation) ((UnaryOpExpr) e).getOperand()).getId());
-                    ((UnaryOpExpr) e).getOperand().setReference(var);
+            } else {
+                if (e instanceof UnaryOpExpr) {
+                    if (((UnaryOpExpr) e).getOperand() instanceof VarLocation) {
+                        Atributo var = tablaSimbolos.getAtributo(((VarLocation) ((UnaryOpExpr) e).getOperand()).getId());
+                        ((UnaryOpExpr) e).getOperand().setReference(var);
+                    } else {
+                        e.accept(this);
+                    }
                 }
-            }
+
+            }*/
         }
-        stmt.setReference(met);
         return null;
     }
 
     @Override
-    public Object visit(ExternStmt stmt) {
+    public Object visit(ExternStmt stmt
+    ) {
         return null;
     }
 
     @Override
-    public Object visit(ForStmt stmt) {
+    public Object visit(ForStmt stmt
+    ) {
         stmt.getExpr().accept(this);
         stmt.getExpr2().accept(this);
         if (stmt.getStatement() != null) {
@@ -223,43 +231,50 @@ public class SetReferencesVisitor implements ASTVisitor<Object> {
     }
 
     @Override
-    public Object visit(MethodCallStmt stmt) {
+    public Object visit(MethodCallStmt stmt
+    ) {
         stmt.getM().accept(this);
         return null;
     }
 
     @Override
-    public Object visit(BinOpExpr expr) {
+    public Object visit(BinOpExpr expr
+    ) {
         expr.getLeftOperand().accept(this);
         expr.getRightOperand().accept(this);
         return null;
     }
 
     @Override
-    public Object visit(UnaryOpExpr expr) {
+    public Object visit(UnaryOpExpr expr
+    ) {
         expr.getOperand().accept(this);
         return null;
     }
 
     @Override
-    public Object visit(IntLiteral lit) {
+    public Object visit(IntLiteral lit
+    ) {
         return null;
     }
 
     @Override
-    public Object visit(BoolLiteral lit) {
+    public Object visit(BoolLiteral lit
+    ) {
         return null;
     }
 
     @Override
-    public Object visit(FloatLiteral lit) {
+    public Object visit(FloatLiteral lit
+    ) {
         return null;
     }
 
     @Override
-    public Object visit(VarLocation loc) {
+    public Object visit(VarLocation loc
+    ) {
         Atributo var = tablaSimbolos.getAtributo(loc.getId());
-        if(loc.getExp()!=null){
+        if (loc.getExp() != null) {
             loc.getExp().accept(this);
         }
         loc.setReference(var);
@@ -267,7 +282,8 @@ public class SetReferencesVisitor implements ASTVisitor<Object> {
     }
 
     @Override
-    public Object visit(Block bl) {
+    public Object visit(Block bl
+    ) {
         tablaSimbolos.pushBloque(new Bloque());
         for (FieldDeclaration fd : bl.getFd()) {
             for (LocationDeclaration ld : fd.getL()) {
@@ -294,7 +310,8 @@ public class SetReferencesVisitor implements ASTVisitor<Object> {
     }
 
     @Override
-    public Object visit(Body bl) {
+    public Object visit(Body bl
+    ) {
         bl.getBlock().accept(this);
         return null;
     }

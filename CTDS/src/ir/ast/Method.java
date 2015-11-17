@@ -16,6 +16,7 @@ public class Method extends Expression {
     private List<Parameter> parameters = new LinkedList<Parameter>();
     private Body body;
     private int offset = 0;
+    private boolean extern = false;
 
     public Method(String id) {
         this.id = id;
@@ -96,6 +97,14 @@ public class Method extends Expression {
 
     public void setOffset(int offset) {
         this.offset = offset;
+    }
+
+    public boolean isExtern() {
+        return extern;
+    }
+
+    public void setExtern(boolean extern) {
+        this.extern = extern;
     }
 
     

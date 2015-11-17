@@ -6,7 +6,9 @@ package ir.TablaDeSimbolos;
  * Pila para guardar los ambientes de cada bloque del programa.
  */
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map.Entry;
 
 public class TablaDeSimbolos {
 
@@ -87,6 +89,19 @@ public class TablaDeSimbolos {
         Clase c = clases.get(nombreClase);
         return c.getMetodo(nombreMetodo);
     }
+    
+     public Metodo getMetodoHard(String nombreMetodo) {
+        Iterator it = clases.entrySet().iterator();
+        while (it.hasNext()){
+            Clase c = (Clase) ((Entry) it.next()).getValue();
+            Metodo m = c.getMetodo(nombreMetodo);
+            if (m != null){
+                return m;
+            }
+        }
+        return null;
+    }
+
 
     public void pushBloque(Bloque ambiente) {
         pilaBloque.add(ambiente);

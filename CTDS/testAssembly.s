@@ -833,7 +833,7 @@ main:
   cmp $1, %eax
   jne .EI64
   call get_float
-  movl  %eax, -64(%ebp)
+  fstps -64(%ebp)
   movl -64(%ebp), %eax
   movl %eax, -60(%ebp)
   pushl -60(%ebp)

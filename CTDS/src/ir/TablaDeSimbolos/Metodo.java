@@ -19,12 +19,13 @@ public class Metodo {
     private Type tipoReturn;
     private List<Parameter> parametros = new LinkedList<>();
    
-    private boolean isExtern = false;
+    private boolean isExtern;
 
     public Metodo(String nombre, Type tipoReturn, List<Parameter> parametros) {
         this.nombre = nombre;
         this.tipoReturn = tipoReturn;
         this.parametros = parametros;
+         isExtern = false;
     }
 
     public String getNombre() {

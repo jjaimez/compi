@@ -980,12 +980,10 @@ public class AssemblyCode {
                 }
             }
         }
-            codeAssembly.add("  leave");
-            codeAssembly.add("  ret");
-            codeAssembly.add("");
+        codeAssembly.add("  leave");
+        codeAssembly.add("  ret");
+        codeAssembly.add("");
     }
-
-    
 
     public void call(Command c) {
         MethodCall e = (MethodCall) c.getP1();
@@ -1011,11 +1009,12 @@ public class AssemblyCode {
         codeAssembly.add("  call " + e.getId());
         if (c.getP2() != null) {
             VarLocation res = (VarLocation) c.getP2();
-            System.out.print(((Metodo)e.getReference()));
-            if(((Metodo)e.getReference()).isExtern() && ((Metodo)e.getReference()).getTipoReturn() == Type.FLOAT  ){
-            codeAssembly.add("  fstps "  + calculateOffset(res));
+            System.out.print(((Metodo) e.getReference()));
+            if (((Metodo) e.getReference()).isExtern() && ((Metodo) e.getReference()).getTipoReturn() == Type.FLOAT) {
+                codeAssembly.add("  fstps " + calculateOffset(res));
+            } else {
+                codeAssembly.add("  movl " + " %eax, " + calculateOffset(res));
             }
-            codeAssembly.add("  movl " + " %eax, " + calculateOffset(res));
         }
     }
 

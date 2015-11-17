@@ -32,6 +32,7 @@ public enum ICGOpType {
     LBL, //LABEL
     INC, // INCREMENTAR
     CALL, //CALL FUNCTION
+    ECALL, //Llamada externa
     DEF, // DEFINICION
     GDEF, //DEF VARIABLES GLOBALES
     PARAM, //PARAMETRO
