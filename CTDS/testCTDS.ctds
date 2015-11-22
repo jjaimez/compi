@@ -2,13 +2,15 @@
  * Necesita el archivo libtestCTDS.c
  * */
 
-class main{
+class Main{
 
 float get_float() extern;
 void print_float(float x) extern;
 void print_string(int s) extern;
 int close_input() extern;
 int init_input(int f) extern;
+int get_int() extern;
+void print_int(int x) extern;
 
 
 // retorna el factorial de v
@@ -17,9 +19,9 @@ int factorial (int v){
   limit = 15;
   if ( v > limit) { return -1;}
   { 
-	int c, fact;
-	c = 0;
-	fact = 1;
+    int c, fact;
+    c = 0;
+    fact = 1;
     while (c<v){
        c = c+1;
        fact = fact*c;
@@ -34,9 +36,9 @@ int factorialFor (int v){
   limit = 15;
   if ( v > limit) { return -1;}
   { 
-	int c, fact;
-	c = 0;
-	fact = 1;
+    int c, fact;
+    c = 0;
+    fact = 1;
     while (c<v){
        c = c+1;
        fact = fact*c;
@@ -49,28 +51,25 @@ int factorialFor (int v){
 // retorna el factorial de la parte entera de v
 float factorialF (float v){
   float limit;
+  float c, fact;
   limit = 15.0;
   if ( v > limit ) { return -1.0; }
     
-  {
-    float c, fact;
     c =    0.0;
     fact = 1.0;
     while (c<v) {
-	    c = c+1.0; 
+        c = c+1.0; 
         fact = fact*c;
     }
     return  fact;
-  }
 }
 
 // Calcula el factorial de 0 a 14 y retorna el factorial de v
 int factorialArray (int v){
-  int limit;
-  limit = 15;
-  
-  { int i;
+    int limit;
+    int i;
     int arr_fact[15];
+    limit = 15;
     i=0;
     while (i<limit){
        int c, fact;
@@ -83,9 +82,11 @@ int factorialArray (int v){
        arr_fact[i]=fact;  
        i=i+1;
     }
-    if ( v > limit-1) return -1; 
-    else return arr_fact[v];
-  }
+    if ( v > limit-1) 
+      return -1; 
+    else 
+      return arr_fact[v];
+    return -1;
 }
 
 // retorna el n esimo primo
@@ -99,14 +100,14 @@ int nthprime (int n) {
       int divides;
       divides = 0;
       i = i + 1;
-      while ( ! divides && divs < i) {
+      while ( ( divides!=1) && divs < i) {
        if ( i % divs == 0)
          { divides = 1; }
        else
          { divs = divs + 1; }
       }
       divs = 2;
-      if ( ! divides)
+      if (  divides!=1)
         { n = n - 1; }
     }
     return i;
@@ -125,27 +126,25 @@ int nthprimeArray (int n) {
   return arr[n-1];
 }
 
-// retorna la representacion de d en binario
+/// retorna la representacion de d en binario
 int int2bin(int d){
    int acum, aux, i;
    acum=0;
    i=0;
-
-   while (1)
-      if(d>1){               
+   while (true)
+      if(d>1){  
+        int j;             
         aux = d % 2;   // toma el ultimo digito
-        { int j;
-          j=0;   
+        j=0;   
                             
-          while (1){    // ubica el digito en la posicion que le corresponde
+          while (true){    // ubica el digito en la posicion que le corresponde
              if (j<i){
                aux = aux * 10;  
                j=j+1;
                continue;  
              } 
              else { break; }
-          }
-         }     			
+          }         
 
           acum=acum +aux;  // resultado parcial 
           i=i+1;           
@@ -157,46 +156,47 @@ int int2bin(int d){
        { int j;
          j=0;
                             
-         while (1){         // ubica el ultimo digito en la posicion que corresponde
+         while (true){         // ubica el ultimo digito en la posicion que corresponde
             if (j<i){
               d = d * 10;
               j=j+1;
               continue;  
             } 
             else { break; }
-         }   	
-	   }
-	return acum + d;  // resultaod final y retorna
+         }    
+     }
+  return acum + d;  // resultaod final y retorna
 }
+
 
 // retorna el maximo comun divisor de a y b,
 int gcd (int a, int b) {
-	int i;
-	int result;
+    int i;
+    int result;
        i=1;
        result = i;
-	while ( i < (a+b)) {
-		if (((a % i) == 0) &&  ((b%i) ==0 ))
-			{ result = i; }
-		i = i + 1;
-	}
-	return result;
+    while ( i < (a+b)) {
+        if (((a % i) == 0) &&  ((b%i) ==0 ))
+            { result = i; }
+        i = i + 1;
+    }
+    return result;
 }
 
 /* Calcula el valor del real m elevado a la n*/
 float potenciaR(float m, int n){
-	int i;
-	float acum;
-	acum=1.0;
-	i=1;
-	while (1){
-		if(i<n || i==n){
-			acum=acum * m;
-			i=i+1;
-		}
-		else { break;}
-	} 
-	return(acum);  
+    int i;
+    float acum;
+    acum=1.0;
+    i=1;
+    while (true){
+        if(i<n || i==n){
+            acum=acum * m;
+            i=i+1;
+        }
+        else { break;}
+    } 
+    return(acum);  
 }
 
 // invoca varias funciones
@@ -214,14 +214,14 @@ void test1(){
     float aux;
     aux = 2.0; 
     test();
-	print_float(aux);
+    print_float(aux);
 }
 
 // funcion main 
-int main (){
+void main (){
        
         int x, i; 
-	init_input(1); 
+    init_input(1); 
 
 // test factorial entero    
         print_string(2);    
@@ -232,12 +232,12 @@ int main (){
             aux=get_int(); // lee los datos para invocar a la funcion
             aux = factorial(aux);
             print_int(aux);             
-            i++;
-	    }
-		print_string(1);
-		
+            i+=1;
+        }
+        print_string(1);
+        
 // test factorial real 
-	print_string(3);
+    print_string(3);
         x=get_int();  
         i = 0;
         while (i<x){
@@ -245,8 +245,8 @@ int main (){
             aux=get_float();
             aux = factorialF(aux);
             print_float(aux); 
-            i++;
-	    }
+            i+=1;
+        }
          print_string(1);
 
 // test factorial array entero    
@@ -258,9 +258,9 @@ int main (){
             aux=get_int(); // lee los datos para invocar a la funcion
             aux = factorialArray(aux);
             print_int(aux);             
-            i++;
-	    }
-		print_string(1);
+            i+=1;
+        }
+        print_string(1);
 
 // test nthprime entero    
         print_string(5);    
@@ -271,9 +271,9 @@ int main (){
             aux=get_int(); // lee los datos para invocar a la funcion
             aux = nthprime(aux);
             print_int(aux);             
-            i++;
-	    }
-		print_string(1);
+            i+=1;
+        }
+        print_string(1);
 
 // test nthprime array entero    
         print_string(6);    
@@ -284,9 +284,9 @@ int main (){
             aux=get_int(); // lee los datos para invocar a la funcion
             aux = nthprimeArray(aux);
             print_int(aux);             
-            i++;
-	    }
-		print_string(1);
+            i+=1;
+        }
+        print_string(1);
 
 // test int2bin entero    
         print_string(7);    
@@ -297,9 +297,9 @@ int main (){
             aux=get_int(); // lee los datos para invocar a la funcion
             aux = int2bin(aux);
             print_int(aux);             
-            i++;
-	    }
-		print_string(1);
+            i+=1;
+        }
+        print_string(1);
 
 // test gcd entero    
         print_string(8);    
@@ -309,25 +309,24 @@ int main (){
             int aux;// lee los datos para invocar a la funcion
             aux = gcd(get_int(),get_int());
             print_int(aux);             
-            i++;
-	    }
-		print_string(1);
+            i+=1;
+        }
+        print_string(1);
 
 // test test    
         print_string(9);    
         test();
-		print_string(1);
+        print_string(1);
 
 
 // test test1    
         print_string(10);    
         test1();
-		print_string(1);
+        print_string(1);
 
 
 
         close_input();
-        return 1;   
 }
 
 }

@@ -3,7 +3,7 @@
 factorial:
   pushl %ebp
   movl %esp, %ebp
-  subl $32,%esp
+  subl $28,%esp
   movl $15,-4(%ebp)
   movl 8(%ebp), %eax
   cmp -4(%ebp), %eax
@@ -18,18 +18,16 @@ factorial:
   cmp $1, %eax
   jne .LIF2
   movl $-1, %eax
-  movl  %eax, -12(%ebp)
-  movl -12(%ebp), %eax
   leave
   ret
 
  jmp .LEIF3
 .LIF2:
 .LEIF3:
-  movl $0,-16(%ebp)
-  movl $1,-20(%ebp)
+  movl $0,-12(%ebp)
+  movl $1,-16(%ebp)
 .BI4:
-  movl -16(%ebp), %eax
+  movl -12(%ebp), %eax
   cmp 8(%ebp), %eax
   jl  .true1
   movl $0, %eax
@@ -37,31 +35,31 @@ factorial:
 .true1:
   movl $1, %eax
 .endtrue1:
-  movl  %eax, -24(%ebp)
-  movl -24(%ebp), %eax
+  movl  %eax, -20(%ebp)
+  movl -20(%ebp), %eax
   cmp $1, %eax
   jne .EI5
-  movl -16(%ebp), %eax
+  movl -12(%ebp), %eax
   addl $1, %eax
+  movl  %eax, -24(%ebp)
+  movl -24(%ebp), %eax
+  movl %eax, -12(%ebp)
+  movl -16(%ebp), %eax
+  movl -12(%ebp), %edx
+  imull %edx, %eax
   movl  %eax, -28(%ebp)
   movl -28(%ebp), %eax
   movl %eax, -16(%ebp)
-  movl -20(%ebp), %eax
-  movl -16(%ebp), %edx
-  imull %edx, %eax
-  movl  %eax, -32(%ebp)
-  movl -32(%ebp), %eax
-  movl %eax, -20(%ebp)
  jmp .BI4
 .EI5:
-  movl -20(%ebp), %eax
+  movl -16(%ebp), %eax
   leave
   ret
 
 factorialFor:
   pushl %ebp
   movl %esp, %ebp
-  subl $32,%esp
+  subl $28,%esp
   movl $15,-4(%ebp)
   movl 8(%ebp), %eax
   cmp -4(%ebp), %eax
@@ -76,18 +74,16 @@ factorialFor:
   cmp $1, %eax
   jne .LIF7
   movl $-1, %eax
-  movl  %eax, -12(%ebp)
-  movl -12(%ebp), %eax
   leave
   ret
 
  jmp .LEIF8
 .LIF7:
 .LEIF8:
-  movl $0,-16(%ebp)
-  movl $1,-20(%ebp)
+  movl $0,-12(%ebp)
+  movl $1,-16(%ebp)
 .BI9:
-  movl -16(%ebp), %eax
+  movl -12(%ebp), %eax
   cmp 8(%ebp), %eax
   jl  .true3
   movl $0, %eax
@@ -95,37 +91,38 @@ factorialFor:
 .true3:
   movl $1, %eax
 .endtrue3:
-  movl  %eax, -24(%ebp)
-  movl -24(%ebp), %eax
+  movl  %eax, -20(%ebp)
+  movl -20(%ebp), %eax
   cmp $1, %eax
   jne .EI10
-  movl -16(%ebp), %eax
+  movl -12(%ebp), %eax
   addl $1, %eax
+  movl  %eax, -24(%ebp)
+  movl -24(%ebp), %eax
+  movl %eax, -12(%ebp)
+  movl -16(%ebp), %eax
+  movl -12(%ebp), %edx
+  imull %edx, %eax
   movl  %eax, -28(%ebp)
   movl -28(%ebp), %eax
   movl %eax, -16(%ebp)
-  movl -20(%ebp), %eax
-  movl -16(%ebp), %edx
-  imull %edx, %eax
-  movl  %eax, -32(%ebp)
-  movl -32(%ebp), %eax
-  movl %eax, -20(%ebp)
  jmp .BI9
 .EI10:
-  movl -20(%ebp), %eax
+  movl -16(%ebp), %eax
   leave
   ret
 
 factorialF:
   pushl %ebp
   movl %esp, %ebp
-  subl $32,%esp
+  subl $28,%esp
       movl .LF0, %eax
       movl %eax, -4(%ebp)
       flds 8(%ebp)
       flds -4(%ebp)
       fucompp
       fnstsw %ax
+      andb $69,%ah
   jg  .true4
   movl $0, %eax
   jmp  .endtrue4
@@ -136,10 +133,7 @@ factorialF:
   movl -16(%ebp), %eax
   cmp $1, %eax
   jne .LIF12
-      flds .LF1
-      fchs 
-      fstps -20(%ebp)
-  movl -20(%ebp), %eax
+      movl .LF1, %eax
   leave
   ret
 
@@ -155,27 +149,29 @@ factorialF:
       flds 8(%ebp)
       fucompp
       fnstsw %ax
+      andb $69,%ah
+      cmpb $1,%ah
   jl  .true5
   movl $0, %eax
   jmp  .endtrue5
 .true5:
   movl $1, %eax
 .endtrue5:
-  movl  %eax, -24(%ebp)
-  movl -24(%ebp), %eax
+  movl  %eax, -20(%ebp)
+  movl -20(%ebp), %eax
   cmp $1, %eax
   jne .EI15
       flds -8(%ebp)
       flds .LF4
       faddp %st, %st(1)
-      fstps -28(%ebp)
-  movl -28(%ebp), %eax
+      fstps -24(%ebp)
+  movl -24(%ebp), %eax
   movl %eax, -8(%ebp)
       flds -12(%ebp)
       flds -8(%ebp)
       fmulp %st, %st(1)
-      fstps -32(%ebp)
-  movl -32(%ebp), %eax
+      fstps -28(%ebp)
+  movl -28(%ebp), %eax
   movl %eax, -12(%ebp)
  jmp .BI14
 .EI15:
@@ -186,7 +182,7 @@ factorialF:
 factorialArray:
   pushl %ebp
   movl %esp, %ebp
-  subl $112,%esp
+  subl $104,%esp
   movl $15,-4(%ebp)
   movl $0,-8(%ebp)
 .BI17:
@@ -256,8 +252,6 @@ factorialArray:
   cmp $1, %eax
   jne .LIF21
   movl $-1, %eax
-  movl  %eax, -108(%ebp)
-  movl -108(%ebp), %eax
   leave
   ret
 
@@ -270,8 +264,6 @@ factorialArray:
 
 .LEIF22:
   movl $-1, %eax
-  movl  %eax, -112(%ebp)
-  movl -112(%ebp), %eax
   leave
   ret
 
@@ -766,7 +758,7 @@ test1:
 main:
   pushl %ebp
   movl %esp, %ebp
-  subl $272,%esp
+  subl $268,%esp
   pushl $1
   call init_input
   movl  %eax, -12(%ebp)
@@ -837,16 +829,13 @@ main:
   movl -64(%ebp), %eax
   movl %eax, -60(%ebp)
   pushl -60(%ebp)
-  call print_float
-  movl  %eax, -68(%ebp)
-  pushl -60(%ebp)
   call factorialF
-  movl  %eax, -72(%ebp)
-  movl -72(%ebp), %eax
+  movl  %eax, -68(%ebp)
+  movl -68(%ebp), %eax
   movl %eax, -60(%ebp)
   pushl -60(%ebp)
   call print_float
-  movl  %eax, -76(%ebp)
+  movl  %eax, -72(%ebp)
   movl -8(%ebp), %eax
   addl $1, %eax
   movl  %eax, -8(%ebp)
@@ -854,13 +843,13 @@ main:
 .EI64:
   pushl $1
   call print_string
-  movl  %eax, -80(%ebp)
+  movl  %eax, -76(%ebp)
   pushl $4
   call print_string
-  movl  %eax, -84(%ebp)
+  movl  %eax, -80(%ebp)
   call get_int
-  movl  %eax, -88(%ebp)
-  movl -88(%ebp), %eax
+  movl  %eax, -84(%ebp)
+  movl -84(%ebp), %eax
   movl %eax, -4(%ebp)
   movl $0,-8(%ebp)
 .BI65:
@@ -872,22 +861,22 @@ main:
 .true25:
   movl $1, %eax
 .endtrue25:
-  movl  %eax, -92(%ebp)
-  movl -92(%ebp), %eax
+  movl  %eax, -88(%ebp)
+  movl -88(%ebp), %eax
   cmp $1, %eax
   jne .EI66
   call get_int
+  movl  %eax, -96(%ebp)
+  movl -96(%ebp), %eax
+  movl %eax, -92(%ebp)
+  pushl -92(%ebp)
+  call factorialArray
   movl  %eax, -100(%ebp)
   movl -100(%ebp), %eax
-  movl %eax, -96(%ebp)
-  pushl -96(%ebp)
-  call factorialArray
-  movl  %eax, -104(%ebp)
-  movl -104(%ebp), %eax
-  movl %eax, -96(%ebp)
-  pushl -96(%ebp)
+  movl %eax, -92(%ebp)
+  pushl -92(%ebp)
   call print_int
-  movl  %eax, -108(%ebp)
+  movl  %eax, -104(%ebp)
   movl -8(%ebp), %eax
   addl $1, %eax
   movl  %eax, -8(%ebp)
@@ -895,13 +884,13 @@ main:
 .EI66:
   pushl $1
   call print_string
-  movl  %eax, -112(%ebp)
+  movl  %eax, -108(%ebp)
   pushl $5
   call print_string
-  movl  %eax, -116(%ebp)
+  movl  %eax, -112(%ebp)
   call get_int
-  movl  %eax, -120(%ebp)
-  movl -120(%ebp), %eax
+  movl  %eax, -116(%ebp)
+  movl -116(%ebp), %eax
   movl %eax, -4(%ebp)
   movl $0,-8(%ebp)
 .BI67:
@@ -913,22 +902,22 @@ main:
 .true26:
   movl $1, %eax
 .endtrue26:
-  movl  %eax, -124(%ebp)
-  movl -124(%ebp), %eax
+  movl  %eax, -120(%ebp)
+  movl -120(%ebp), %eax
   cmp $1, %eax
   jne .EI68
   call get_int
+  movl  %eax, -128(%ebp)
+  movl -128(%ebp), %eax
+  movl %eax, -124(%ebp)
+  pushl -124(%ebp)
+  call nthprime
   movl  %eax, -132(%ebp)
   movl -132(%ebp), %eax
-  movl %eax, -128(%ebp)
-  pushl -128(%ebp)
-  call nthprime
-  movl  %eax, -136(%ebp)
-  movl -136(%ebp), %eax
-  movl %eax, -128(%ebp)
-  pushl -128(%ebp)
+  movl %eax, -124(%ebp)
+  pushl -124(%ebp)
   call print_int
-  movl  %eax, -140(%ebp)
+  movl  %eax, -136(%ebp)
   movl -8(%ebp), %eax
   addl $1, %eax
   movl  %eax, -8(%ebp)
@@ -936,13 +925,13 @@ main:
 .EI68:
   pushl $1
   call print_string
-  movl  %eax, -144(%ebp)
+  movl  %eax, -140(%ebp)
   pushl $6
   call print_string
-  movl  %eax, -148(%ebp)
+  movl  %eax, -144(%ebp)
   call get_int
-  movl  %eax, -152(%ebp)
-  movl -152(%ebp), %eax
+  movl  %eax, -148(%ebp)
+  movl -148(%ebp), %eax
   movl %eax, -4(%ebp)
   movl $0,-8(%ebp)
 .BI69:
@@ -954,22 +943,22 @@ main:
 .true27:
   movl $1, %eax
 .endtrue27:
-  movl  %eax, -156(%ebp)
-  movl -156(%ebp), %eax
+  movl  %eax, -152(%ebp)
+  movl -152(%ebp), %eax
   cmp $1, %eax
   jne .EI70
   call get_int
+  movl  %eax, -160(%ebp)
+  movl -160(%ebp), %eax
+  movl %eax, -156(%ebp)
+  pushl -156(%ebp)
+  call nthprimeArray
   movl  %eax, -164(%ebp)
   movl -164(%ebp), %eax
-  movl %eax, -160(%ebp)
-  pushl -160(%ebp)
-  call nthprimeArray
-  movl  %eax, -168(%ebp)
-  movl -168(%ebp), %eax
-  movl %eax, -160(%ebp)
-  pushl -160(%ebp)
+  movl %eax, -156(%ebp)
+  pushl -156(%ebp)
   call print_int
-  movl  %eax, -172(%ebp)
+  movl  %eax, -168(%ebp)
   movl -8(%ebp), %eax
   addl $1, %eax
   movl  %eax, -8(%ebp)
@@ -977,13 +966,13 @@ main:
 .EI70:
   pushl $1
   call print_string
-  movl  %eax, -176(%ebp)
+  movl  %eax, -172(%ebp)
   pushl $7
   call print_string
-  movl  %eax, -180(%ebp)
+  movl  %eax, -176(%ebp)
   call get_int
-  movl  %eax, -184(%ebp)
-  movl -184(%ebp), %eax
+  movl  %eax, -180(%ebp)
+  movl -180(%ebp), %eax
   movl %eax, -4(%ebp)
   movl $0,-8(%ebp)
 .BI71:
@@ -995,22 +984,22 @@ main:
 .true28:
   movl $1, %eax
 .endtrue28:
-  movl  %eax, -188(%ebp)
-  movl -188(%ebp), %eax
+  movl  %eax, -184(%ebp)
+  movl -184(%ebp), %eax
   cmp $1, %eax
   jne .EI72
   call get_int
+  movl  %eax, -192(%ebp)
+  movl -192(%ebp), %eax
+  movl %eax, -188(%ebp)
+  pushl -188(%ebp)
+  call int2bin
   movl  %eax, -196(%ebp)
   movl -196(%ebp), %eax
-  movl %eax, -192(%ebp)
-  pushl -192(%ebp)
-  call int2bin
-  movl  %eax, -200(%ebp)
-  movl -200(%ebp), %eax
-  movl %eax, -192(%ebp)
-  pushl -192(%ebp)
+  movl %eax, -188(%ebp)
+  pushl -188(%ebp)
   call print_int
-  movl  %eax, -204(%ebp)
+  movl  %eax, -200(%ebp)
   movl -8(%ebp), %eax
   addl $1, %eax
   movl  %eax, -8(%ebp)
@@ -1018,13 +1007,13 @@ main:
 .EI72:
   pushl $1
   call print_string
-  movl  %eax, -208(%ebp)
+  movl  %eax, -204(%ebp)
   pushl $8
   call print_string
-  movl  %eax, -212(%ebp)
+  movl  %eax, -208(%ebp)
   call get_int
-  movl  %eax, -216(%ebp)
-  movl -216(%ebp), %eax
+  movl  %eax, -212(%ebp)
+  movl -212(%ebp), %eax
   movl %eax, -4(%ebp)
   movl $0,-8(%ebp)
 .BI73:
@@ -1036,23 +1025,23 @@ main:
 .true29:
   movl $1, %eax
 .endtrue29:
-  movl  %eax, -220(%ebp)
-  movl -220(%ebp), %eax
+  movl  %eax, -216(%ebp)
+  movl -216(%ebp), %eax
   cmp $1, %eax
   jne .EI74
   call get_int
-  movl  %eax, -228(%ebp)
+  movl  %eax, -224(%ebp)
   call get_int
-  movl  %eax, -232(%ebp)
-  pushl -232(%ebp)
+  movl  %eax, -228(%ebp)
   pushl -228(%ebp)
-  call gcd
-  movl  %eax, -236(%ebp)
-  movl -236(%ebp), %eax
-  movl %eax, -224(%ebp)
   pushl -224(%ebp)
+  call gcd
+  movl  %eax, -232(%ebp)
+  movl -232(%ebp), %eax
+  movl %eax, -220(%ebp)
+  pushl -220(%ebp)
   call print_int
-  movl  %eax, -240(%ebp)
+  movl  %eax, -236(%ebp)
   movl -8(%ebp), %eax
   addl $1, %eax
   movl  %eax, -8(%ebp)
@@ -1060,32 +1049,32 @@ main:
 .EI74:
   pushl $1
   call print_string
-  movl  %eax, -244(%ebp)
+  movl  %eax, -240(%ebp)
   pushl $9
   call print_string
-  movl  %eax, -248(%ebp)
+  movl  %eax, -244(%ebp)
   call test
-  movl  %eax, -252(%ebp)
+  movl  %eax, -248(%ebp)
   pushl $1
   call print_string
-  movl  %eax, -256(%ebp)
+  movl  %eax, -252(%ebp)
   pushl $10
   call print_string
-  movl  %eax, -260(%ebp)
+  movl  %eax, -256(%ebp)
   call test1
-  movl  %eax, -264(%ebp)
+  movl  %eax, -260(%ebp)
   pushl $1
   call print_string
-  movl  %eax, -268(%ebp)
+  movl  %eax, -264(%ebp)
   call close_input
-  movl  %eax, -272(%ebp)
+  movl  %eax, -268(%ebp)
   leave
   ret
 
 .LF0:
       .float 15.0
 .LF1:
-      .float 1.0
+      .float -1.0
 .LF2:
       .float 0.0
 .LF3:

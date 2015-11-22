@@ -548,9 +548,14 @@ public class AssemblyCode {
     public void eqeq(Command c) {
         cmp(c);
         VarLocation res = (VarLocation) c.getP3();
-        if (((Atributo) res.getReference()).getTipo().isFloat()) {
-            codeAssembly.add("      andb $69,%ah");
-            codeAssembly.add("      cmpb $64,%ah");
+
+        if (!((c.getP1() instanceof IntLiteral) || (c.getP2() instanceof IntLiteral))) {
+            if (c.getP1() instanceof FloatLiteral || c.getP2() instanceof FloatLiteral
+                    || ((Atributo) ((VarLocation) c.getP1()).getReference()).getTipo() == Type.FLOAT
+                    || ((Atributo) ((VarLocation) c.getP2()).getReference()).getTipo() == Type.FLOAT) {
+                codeAssembly.add("      andb $69,%ah");
+                codeAssembly.add("      cmpb $64,%ah");
+            }
         }
         codeAssembly.add("  je  .true" + labelTrue);
         codeAssembly.add("  movl $0, %eax");
@@ -571,9 +576,13 @@ public class AssemblyCode {
     private void noteq(Command c) {
         cmp(c);
         VarLocation res = (VarLocation) c.getP3();
-        if (((Atributo) res.getReference()).getTipo().isFloat()) {
-            codeAssembly.add("      andb $68,%ah");
-            codeAssembly.add("      xorb $64,%ah");
+        if (!((c.getP1() instanceof IntLiteral) || (c.getP2() instanceof IntLiteral))) {
+            if (c.getP1() instanceof FloatLiteral || c.getP2() instanceof FloatLiteral
+                    || ((Atributo) ((VarLocation) c.getP1()).getReference()).getTipo() == Type.FLOAT
+                    || ((Atributo) ((VarLocation) c.getP2()).getReference()).getTipo() == Type.FLOAT) {
+                codeAssembly.add("      andb $68,%ah");
+                codeAssembly.add("      xorb $64,%ah");
+            }
         }
         codeAssembly.add("  jne  .true" + labelTrue);
         codeAssembly.add("  movl $0, %eax");
@@ -593,8 +602,12 @@ public class AssemblyCode {
     private void gteq(Command c) {
         cmp(c);
         VarLocation res = (VarLocation) c.getP3();
-        if (((Atributo) res.getReference()).getTipo().isFloat()) {
-            codeAssembly.add("      andb $5,%ah");
+        if (!((c.getP1() instanceof IntLiteral) || (c.getP2() instanceof IntLiteral))) {
+            if (c.getP1() instanceof FloatLiteral || c.getP2() instanceof FloatLiteral
+                    || ((Atributo) ((VarLocation) c.getP1()).getReference()).getTipo() == Type.FLOAT
+                    || ((Atributo) ((VarLocation) c.getP2()).getReference()).getTipo() == Type.FLOAT) {
+                codeAssembly.add("      andb $5,%ah");
+            }
         }
         codeAssembly.add("  jge  .true" + labelTrue);
         codeAssembly.add("  movl $0, %eax");
@@ -614,8 +627,12 @@ public class AssemblyCode {
     private void gt(Command c) {
         cmp(c);
         VarLocation res = (VarLocation) c.getP3();
-        if (((Atributo) res.getReference()).getTipo().isFloat()) {
-            codeAssembly.add("      andb $69,%ah");
+        if (!((c.getP1() instanceof IntLiteral) || (c.getP2() instanceof IntLiteral))) {
+            if (c.getP1() instanceof FloatLiteral || c.getP2() instanceof FloatLiteral
+                    || ((Atributo) ((VarLocation) c.getP1()).getReference()).getTipo() == Type.FLOAT
+                    || ((Atributo) ((VarLocation) c.getP2()).getReference()).getTipo() == Type.FLOAT) {
+                codeAssembly.add("      andb $69,%ah");
+            }
         }
         codeAssembly.add("  jg  .true" + labelTrue);
         codeAssembly.add("  movl $0, %eax");
@@ -636,9 +653,13 @@ public class AssemblyCode {
     private void lteq(Command c) {
         cmp(c);
         VarLocation res = (VarLocation) c.getP3();
-        if (((Atributo) res.getReference()).getTipo().isFloat()) {
-            codeAssembly.add("      andb $69,%ah");
-            codeAssembly.add("      cmpb $64,%ah");
+        if (!((c.getP1() instanceof IntLiteral) || (c.getP2() instanceof IntLiteral))) {
+            if (c.getP1() instanceof FloatLiteral || c.getP2() instanceof FloatLiteral
+                    || ((Atributo) ((VarLocation) c.getP1()).getReference()).getTipo() == Type.FLOAT
+                    || ((Atributo) ((VarLocation) c.getP2()).getReference()).getTipo() == Type.FLOAT) {
+                codeAssembly.add("      andb $69,%ah");
+                codeAssembly.add("      cmpb $64,%ah");
+            }
         }
         codeAssembly.add("  jle  .true" + labelTrue);
         codeAssembly.add("  movl $0, %eax");
@@ -660,9 +681,13 @@ public class AssemblyCode {
     private void lt(Command c) {
         cmp(c);
         VarLocation res = (VarLocation) c.getP3();
-        if (((Atributo) res.getReference()).getTipo().isFloat()) {
-            codeAssembly.add("      andb $69,%ah");
-            codeAssembly.add("      cmpb $1,%ah");
+        if (!((c.getP1() instanceof IntLiteral) || (c.getP2() instanceof IntLiteral))) {
+            if (c.getP1() instanceof FloatLiteral || c.getP2() instanceof FloatLiteral
+                    || ((Atributo) ((VarLocation) c.getP1()).getReference()).getTipo() == Type.FLOAT
+                    || ((Atributo) ((VarLocation) c.getP2()).getReference()).getTipo() == Type.FLOAT) {
+                codeAssembly.add("      andb $69,%ah");
+                codeAssembly.add("      cmpb $1,%ah");
+            }
         }
         codeAssembly.add("  jl  .true" + labelTrue);
         codeAssembly.add("  movl $0, %eax");
@@ -1006,7 +1031,7 @@ public class AssemblyCode {
         if (c.getP2() != null) {
             VarLocation res = (VarLocation) c.getP2();
             System.out.print(((Metodo) e.getReference()));
-            if (((Metodo) e.getReference()).isExtern() && ((Metodo) e.getReference()).getTipoReturn() == Type.FLOAT) {
+            if (e.getReference() != null && ((Metodo) e.getReference()).isExtern() && ((Metodo) e.getReference()).getTipoReturn() == Type.FLOAT) {
                 codeAssembly.add("  fstps " + calculateOffset(res));
             } else {
                 codeAssembly.add("  movl " + " %eax, " + calculateOffset(res));

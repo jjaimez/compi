@@ -47,7 +47,7 @@ float get_float(){
 
 // imprime un real en la salida
 void print_float(float x){
-       printf("%f***\n",x);	
+       printf("%f\n",x);	
 	}
 	
 // imprime un string en la salida	
