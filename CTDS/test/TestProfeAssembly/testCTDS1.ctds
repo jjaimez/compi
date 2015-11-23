@@ -3,12 +3,14 @@
  * en el archivo output1 se encuentran las salidas esperadas
  * */
 
-class testing{
+class Main{
 
-  void print_float(float x) extern;
+ 
+  int global;
+
+ void print_float(float x) extern;
   void print_string(int s) extern;
 
-  int global;
 
   void ochoparametrosInt(int a, int b, int c, int d, int e, int f, int g, int h){
       int c1;
@@ -41,31 +43,36 @@ class testing{
 void main (){
        
     int v, i, c1,c2,c3; 
-	 
+	 int i1,i2,i3;
+   int i4,i5,i6;
+  int i7,i8,i9;
+   int c4,c5,c6;
+    int c7,c8,c9;
+    int v2;
+
 
     global = 100;
 
     i = 0;
     v = 11;
-    for c1=1 , v {      
-      for c2=1 , v {
-        for c3=1 , v {      
+    for c1=1 , c1 ==v {      
+      for c2=1 , c2==v {
+        for c3=1 , c3==v {      
           i = i +1;
         }    
       }
     } 
     print_int(i);             
 
-  { int i1,i2,i3;
 
     i1 = 0;
     i2 = 0;
     i3 = 0; 
     
-    for c1=1 , v {      
-      for c2=1 , v {
+    for c1=1 , c1==v {      
+      for c2=1 , c2==v {
         break;  
-        for c3=1 , v {      
+        for c3=1 , c3==v {      
           i3 = i3+1;
         }
         i2 = i2+1;    
@@ -75,66 +82,65 @@ void main (){
     print_int(i1);
     print_int(i2);
     print_int(i3);
-  } 
+   
 
-  { int i1,i2,i3;
-    int c1,c2,c3;
+   
+   
 
-    i1 = 1;
-    i2 = 1;
-    i3 = 1; 
-    c1 = i1;
-    c2 = i2;
-    c3 = i3;
+    i4 = 1;
+    i5 = 1;
+    i6 = 1; 
+    c4 = i4;
+    c5 = i5;
+    c6 = i6;
     v = 10;
     
-    while (c1<v){      
-      while (c2<v){          
-        while (c3<v){       
-          i3 = i3+1;
-          c3 = c3+1;
+    while (c4<v){      
+      while (c5<v){          
+        while (c6<v){       
+          i6 = i6+1;
+          c6 = c6+1;
         }
-        i2 = i2+1;
-        c2 = c2+1;    
+        i5 = i5+1;
+        c5 = c5+1;    
       }
-      i1 = i1+1;
-      c1 = c1+1;
+      i4 = i4+1;
+      c4 = c4+1;
      
-      { int i1,i2,i3;
-        int c1,c2,c3;
-        int v;
+      
+       
 
-        i1 = 100;
-        i2 = 100;
-        i3 = 100; 
-        c1 = i1;
-        c2 = i2;
-        c3 = i3;
-        v = 1000;
+        i7 = 100;
+        i8 = 100;
+        i9 = 100; 
+        c7 = i7;
+        c8 = i8;
+        c9 = i9;
+        v2 = 1000;
     
-        while (c1<v){      
-          while (c2<v){          
+        while (c7<v2){      
+          while (c8<v2){          
             break;
-            while (c3<v){       
-              i3 = i3+1;
-              c3 = c3+1;
+            while (c9<v2){       
+              i9 = i9+1;
+              c9 = c9+1;
             }
-            i2 = i2+1;
-            c2 = c2+1;    
+            i8 = i8+1;
+            c8 = c8+1;    
           }
-          i1 = i1+100;
-          c1 = c1+100;
+          i7 = i7+100;
+          c7 = c7+100;
           continue;
         } 
-        print_int(i1);
-        print_int(i2);
-        print_int(i3);
-     }
+        print_int(i7);
+        print_int(i8);
+        print_int(i9);
+     
     } 
-    print_int(i1);
-    print_int(i2);
-    print_int(i3);
-  } 
+    print_int(i4);
+    print_int(i5);
+    print_int(i6);
+   
 
   ochoparametrosInt(1,2,3,4,5,6,7,8); 
 

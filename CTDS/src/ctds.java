@@ -81,19 +81,19 @@ public class ctds {
         //ESTO ES PARA CORRERLO DESDE NETBEANS
              ctds c = new ctds();
         System.out.println("test_bloques.ctds");
-        BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/testCTDS.ctds"));
-        Lexer lex = new Lexer(br);
-        parser p = new parser(lex);
-        p.parse();
-        Program prog = p.getAST();
-        
-        TypeEvaluationVisitor tev = new TypeEvaluationVisitor();
-        tev.visit(prog);
-        BreakContinueVisitor bcv = new BreakContinueVisitor();
+        BufferedReader br = new BufferedReader(new FileReader(System.getProperty("user.dir") + "/test/TestProfeAssembly/testCTDS.ctds"));
+        Lexer lex = new Lexer(br);                                                            //test/TestProfeAssembly/simples/mcd.ctds
+        parser p = new parser(lex);                                                         //test/TestProfeAssembly/simples/ciclos_1.ctds 
+        p.parse();                                                                           //test/TestProfeAssembly/simples/continueBreak 
+        Program prog = p.getAST();                                                             //test/TestProfeAssembly/simples/mcm
+                                                                                              //test/TestProfeAssembly/simples/fibonacci.ctds 
+        TypeEvaluationVisitor tev = new TypeEvaluationVisitor();                              //test/TestProfeAssembly/simples/primo.ctds
+        tev.visit(prog);                                                                      //raizCuadrada se cuelga como en un ciclo infinito
+        BreakContinueVisitor bcv = new BreakContinueVisitor();  
         bcv.visit(prog);
         
-        OptimizationVisitor ov = new OptimizationVisitor();
-        ov.visit(prog);
+      //  OptimizationVisitor ov = new OptimizationVisitor();
+       // ov.visit(prog);
 
         SetReferencesVisitor srv = new SetReferencesVisitor();
         srv.visit(prog);
@@ -106,7 +106,7 @@ public class ctds {
         }
         AssemblyCode genCode= new AssemblyCode(icgv.getCode(), p);
        c.name = "testAssembly";
-       c.writeFile(genCode.generateAssembly());
+      c.writeFile(genCode.generateAssembly());
        for (String s:  genCode.generateAssembly()){
             System.out.println(s+"\n");
        }

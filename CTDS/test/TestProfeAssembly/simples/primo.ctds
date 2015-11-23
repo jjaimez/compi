@@ -13,6 +13,7 @@ class Main{
         else{
            return 0;
         }
+        return 0;
     }
 
 
@@ -38,13 +39,13 @@ class Main{
     }
 
     void main(){    
-        print_int(toInt( isPrimo(13));
-        print_int(toInt( isPrimo(37));
-        print_int(toInt( isPrimo(1));
-        print_int(toInt( isPrimo(0));
-        print_int(toInt( isPrimo(2));
-        print_int(toInt( isPrimo(544));
-        print_int(toInt( isPrimo(733));
+        print_int(toInt( isPrimo(13)));
+        print_int(toInt( isPrimo(37)));
+        print_int(toInt( isPrimo(1)));
+        print_int(toInt( isPrimo(0)));
+        print_int(toInt( isPrimo(2)));
+        print_int(toInt( isPrimo(544)));
+        print_int(toInt( isPrimo(733)));
         return;
     }
 

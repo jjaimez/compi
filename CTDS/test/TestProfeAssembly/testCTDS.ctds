@@ -243,7 +243,6 @@ void main (){
         while (i<x){
             float aux;
             aux=get_float();
-            print_float(aux);
             aux = factorialF(aux);
             print_float(aux); 
             i+=1;

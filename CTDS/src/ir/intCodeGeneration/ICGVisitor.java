@@ -248,6 +248,7 @@ public class ICGVisitor implements ASTVisitor<Expression> {
     public Expression visit(ForStmt stmt) {
         int lbl = ++labelId;
         iterLabels.push(new Pair<>(lbl, ++labelId));
+        //hay que cambiar el string de ForStmt por una var location.
         code.add(new Command(ICGOpType.STR, stmt.getId(), stmt.getExpr().accept(this), null));
         code.add(new Command(ICGOpType.LBL, new Pair(iterLabels.peek().fst(), ".BI"), null, null));
         Expression to = stmt.getExpr2().accept(this);

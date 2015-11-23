@@ -3,7 +3,7 @@
 factorial:
   pushl %ebp
   movl %esp, %ebp
-  subl $28,%esp
+  subl $32,%esp
   movl $15,-4(%ebp)
   movl 8(%ebp), %eax
   cmp -4(%ebp), %eax
@@ -18,16 +18,18 @@ factorial:
   cmp $1, %eax
   jne .LIF2
   movl $-1, %eax
+  movl  %eax, -12(%ebp)
+  movl -12(%ebp), %eax
   leave
   ret
 
  jmp .LEIF3
 .LIF2:
 .LEIF3:
-  movl $0,-12(%ebp)
-  movl $1,-16(%ebp)
+  movl $0,-16(%ebp)
+  movl $1,-20(%ebp)
 .BI4:
-  movl -12(%ebp), %eax
+  movl -16(%ebp), %eax
   cmp 8(%ebp), %eax
   jl  .true1
   movl $0, %eax
@@ -35,31 +37,31 @@ factorial:
 .true1:
   movl $1, %eax
 .endtrue1:
-  movl  %eax, -20(%ebp)
-  movl -20(%ebp), %eax
-  cmp $1, %eax
-  jne .EI5
-  movl -12(%ebp), %eax
-  addl $1, %eax
   movl  %eax, -24(%ebp)
   movl -24(%ebp), %eax
-  movl %eax, -12(%ebp)
+  cmp $1, %eax
+  jne .EI5
   movl -16(%ebp), %eax
-  movl -12(%ebp), %edx
-  imull %edx, %eax
+  addl $1, %eax
   movl  %eax, -28(%ebp)
   movl -28(%ebp), %eax
   movl %eax, -16(%ebp)
+  movl -20(%ebp), %eax
+  movl -16(%ebp), %edx
+  imull %edx, %eax
+  movl  %eax, -32(%ebp)
+  movl -32(%ebp), %eax
+  movl %eax, -20(%ebp)
  jmp .BI4
 .EI5:
-  movl -16(%ebp), %eax
+  movl -20(%ebp), %eax
   leave
   ret
 
 factorialFor:
   pushl %ebp
   movl %esp, %ebp
-  subl $28,%esp
+  subl $32,%esp
   movl $15,-4(%ebp)
   movl 8(%ebp), %eax
   cmp -4(%ebp), %eax
@@ -74,16 +76,18 @@ factorialFor:
   cmp $1, %eax
   jne .LIF7
   movl $-1, %eax
+  movl  %eax, -12(%ebp)
+  movl -12(%ebp), %eax
   leave
   ret
 
  jmp .LEIF8
 .LIF7:
 .LEIF8:
-  movl $0,-12(%ebp)
-  movl $1,-16(%ebp)
+  movl $0,-16(%ebp)
+  movl $1,-20(%ebp)
 .BI9:
-  movl -12(%ebp), %eax
+  movl -16(%ebp), %eax
   cmp 8(%ebp), %eax
   jl  .true3
   movl $0, %eax
@@ -91,31 +95,31 @@ factorialFor:
 .true3:
   movl $1, %eax
 .endtrue3:
-  movl  %eax, -20(%ebp)
-  movl -20(%ebp), %eax
-  cmp $1, %eax
-  jne .EI10
-  movl -12(%ebp), %eax
-  addl $1, %eax
   movl  %eax, -24(%ebp)
   movl -24(%ebp), %eax
-  movl %eax, -12(%ebp)
+  cmp $1, %eax
+  jne .EI10
   movl -16(%ebp), %eax
-  movl -12(%ebp), %edx
-  imull %edx, %eax
+  addl $1, %eax
   movl  %eax, -28(%ebp)
   movl -28(%ebp), %eax
   movl %eax, -16(%ebp)
+  movl -20(%ebp), %eax
+  movl -16(%ebp), %edx
+  imull %edx, %eax
+  movl  %eax, -32(%ebp)
+  movl -32(%ebp), %eax
+  movl %eax, -20(%ebp)
  jmp .BI9
 .EI10:
-  movl -16(%ebp), %eax
+  movl -20(%ebp), %eax
   leave
   ret
 
 factorialF:
   pushl %ebp
   movl %esp, %ebp
-  subl $28,%esp
+  subl $32,%esp
       movl .LF0, %eax
       movl %eax, -4(%ebp)
       flds 8(%ebp)
@@ -133,7 +137,10 @@ factorialF:
   movl -16(%ebp), %eax
   cmp $1, %eax
   jne .LIF12
-      movl .LF1, %eax
+      flds .LF1
+      fchs 
+      fstps -20(%ebp)
+  movl -20(%ebp), %eax
   leave
   ret
 
@@ -157,21 +164,21 @@ factorialF:
 .true5:
   movl $1, %eax
 .endtrue5:
-  movl  %eax, -20(%ebp)
-  movl -20(%ebp), %eax
+  movl  %eax, -24(%ebp)
+  movl -24(%ebp), %eax
   cmp $1, %eax
   jne .EI15
       flds -8(%ebp)
       flds .LF4
       faddp %st, %st(1)
-      fstps -24(%ebp)
-  movl -24(%ebp), %eax
+      fstps -28(%ebp)
+  movl -28(%ebp), %eax
   movl %eax, -8(%ebp)
       flds -12(%ebp)
       flds -8(%ebp)
       fmulp %st, %st(1)
-      fstps -28(%ebp)
-  movl -28(%ebp), %eax
+      fstps -32(%ebp)
+  movl -32(%ebp), %eax
   movl %eax, -12(%ebp)
  jmp .BI14
 .EI15:
@@ -182,7 +189,7 @@ factorialF:
 factorialArray:
   pushl %ebp
   movl %esp, %ebp
-  subl $104,%esp
+  subl $112,%esp
   movl $15,-4(%ebp)
   movl $0,-8(%ebp)
 .BI17:
@@ -252,6 +259,8 @@ factorialArray:
   cmp $1, %eax
   jne .LIF21
   movl $-1, %eax
+  movl  %eax, -108(%ebp)
+  movl -108(%ebp), %eax
   leave
   ret
 
@@ -264,6 +273,8 @@ factorialArray:
 
 .LEIF22:
   movl $-1, %eax
+  movl  %eax, -112(%ebp)
+  movl -112(%ebp), %eax
   leave
   ret
 
@@ -1074,7 +1085,7 @@ main:
 .LF0:
       .float 15.0
 .LF1:
-      .float -1.0
+      .float 1.0
 .LF2:
       .float 0.0
 .LF3:

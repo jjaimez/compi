@@ -13,6 +13,7 @@ class Main{
     
     void llenar(){
         int i;
+        i=0;
         for i=0, i == largo {
             ar[i] = i;
         }

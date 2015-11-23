@@ -244,9 +244,7 @@ public class TypeEvaluationVisitor implements ASTVisitor<Type> {
             }
         }
 
-            return met.getTipoReturn();
-
-
+        return met.getTipoReturn();
 
     }
 

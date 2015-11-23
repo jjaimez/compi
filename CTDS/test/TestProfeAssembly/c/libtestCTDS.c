@@ -74,3 +74,22 @@ void print_string(int op){
         if (op==10) 	printf("%s\n","test1----------------------------------");
 			
 	}
+
+void print_orig(){
+          printf("Original : \n", );  
+}
+
+
+void print_reverse(){
+              printf("Reverse : \n", ); 
+}
+
+void print_ln(){
+    printf("------------------------------------------------ \n", );
+}
+
+void print_Fib(int x){
+          printf("Fibonacci( %d ) = \n",x); 
+}
+
+
